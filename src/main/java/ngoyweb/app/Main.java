@@ -62,6 +62,6 @@ public class Main implements InitializingBean {
 	public static void main(String[] args) {
 		Main main = new Main();
 		main.createApp();
-		main.ngoy.renderSite(Paths.get("../ngoy/ngoy/docs"));
+		main.ngoy.renderSite(Paths.get("../ngoy/docs"));
 	}
 }

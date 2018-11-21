@@ -2,6 +2,7 @@
 
 [ngoy](https://github.com/krizzdewizz/ngoy) is a template engine for the JVM, based on the Angular+ component architecture.
 
-The web site is made with ngoy...of course ;)
+This is the source of ngoy's web site. Made with ngoy...of course ;)
 
-You can find it here
+You can visit the site [here](https://krizzdewizz.github.io/ngoy/).
+
