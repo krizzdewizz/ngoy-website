@@ -2,6 +2,8 @@ package ngoyweb.app;
 
 import static ngoy.core.Provider.useValue;
 
+import java.nio.file.Paths;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -55,5 +57,11 @@ public class Main implements InitializingBean {
 		ngoy = Ngoy.app(App.class)
 				.modules(RouterModule.forRoot(routerConfig))
 				.build();
+	}
+
+	public static void main(String[] args) {
+		Main main = new Main();
+		main.createApp();
+		main.ngoy.renderSite(Paths.get("../ngoy/ngoy/docs"));
 	}
 }
