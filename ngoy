@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ ! -e build/ngoy ]; then
+	echo "Extracting ngoy binaries..."
+    gradle extractNgoy
+fi
+java -cp "build/ngoy/*" ngoy.Ngoy $@
