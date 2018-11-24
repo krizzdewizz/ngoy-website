@@ -1,6 +1,9 @@
 #!/bin/bash
-if [ ! -e build/ngoy ]; then
+ngoyVersion=beta0
+ngoyPath=build/ngoy-$ngoyVersion
+
+if [ ! -e $ngoyPath ]; then
 	echo "Extracting ngoy binaries..."
     gradle extractNgoy
 fi
-java -cp "build/ngoy/*" ngoy.Ngoy $@
+java -cp "$ngoyPath/*" ngoy.Ngoy $@

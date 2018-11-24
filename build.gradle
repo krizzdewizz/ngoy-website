@@ -17,8 +17,10 @@ apply plugin:'application'
 
 mainClassName = "ngoystart.NgoyWebApplication"
 
+def ngoyVersion = 'beta0';
+
 group = 'ngoy'
-version = '0.8.0'
+version = '0.0.1'
 sourceCompatibility = 1.8
 
 repositories {
@@ -28,7 +30,7 @@ repositories {
 
 dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
-	implementation('com.github.krizzdewizz:ngoy:beta0')
+	implementation("com.github.krizzdewizz:ngoy:$ngoyVersion")
 }
 
 // include component html/css files that reside next to the class
@@ -42,8 +44,8 @@ sourceSets {
 
 // extract ngoy jar to use it's cli
 configurations { ngoy }
-dependencies { ngoy 'com.github.krizzdewizz:ngoy:beta0' }
+dependencies { ngoy "com.github.krizzdewizz:ngoy:$ngoyVersion" }
 task extractNgoy(type: Copy) {
-    into "$buildDir/ngoy"
+    into "$buildDir/ngoy-$ngoyVersion"
     from configurations.ngoy
 }
