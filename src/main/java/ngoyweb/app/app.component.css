@@ -34,3 +34,13 @@ pre {
 h3 {
 	font-size: 1.3rem;
 }
+
+.navbar {
+	position: fixed;
+	width: 100%;
+	z-index: 1;
+}
+
+.app-container {
+	padding-top: 2rem;
+}
