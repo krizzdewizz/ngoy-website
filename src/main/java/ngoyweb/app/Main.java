@@ -17,7 +17,11 @@ import ngoy.Ngoy;
 import ngoy.router.Location;
 import ngoy.router.RouterConfig;
 import ngoy.router.RouterModule;
+import ngoyweb.app.getstarted.GetStartedComponent;
 import ngoyweb.app.home.HomeComponent;
+import ngoyweb.app.motivation.MotivationComponent;
+import ngoyweb.app.tutorial.TutorialComponent;
+import ngoyweb.app.tutorial.editor.EditorComponent;
 
 @Controller
 @RequestMapping("/*")
@@ -26,7 +30,7 @@ public class Main implements InitializingBean {
 	// must be disabled in production!
 	private static final boolean DEV = true;
 
-	private Ngoy<App> ngoy;
+	private Ngoy<AppComponent> ngoy;
 
 	@Autowired
 	private HttpServletRequest request;
@@ -49,12 +53,16 @@ public class Main implements InitializingBean {
 
 	private void createApp() {
 		RouterConfig routerConfig = RouterConfig //
-				.baseHref("/router")
+				.baseHref("/")
 				.location(useValue(Location.class, () -> request.getRequestURI()))
 				.route("index", HomeComponent.class)
+				.route("get-started", GetStartedComponent.class)
+				.route("tutorial", TutorialComponent.class)
+				.route("tutorial-editor", EditorComponent.class)
+				.route("motivation", MotivationComponent.class)
 				.build();
 
-		ngoy = Ngoy.app(App.class)
+		ngoy = Ngoy.app(AppComponent.class)
 				.modules(RouterModule.forRoot(routerConfig))
 				.build();
 	}

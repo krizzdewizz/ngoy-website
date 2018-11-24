@@ -1,7 +1,36 @@
+body {
+	width: 100%;
+	margin: 0;
+	margin-bottom: 50px;
+}
+
 .ngoy-enjoy {
 	font-size: 5rem;
 }
 
 .ngoy-title {
 	font-weight: normal;
+}
+
+body {
+	letter-spacing: 1px;
+}
+
+p {
+	padding-top: 0.5rem;
+}
+
+
+ul {
+	list-style-position: inside;
+}
+
+pre {
+	text-align: left;
+	padding: 1rem;
+	background-color: lavender;
+}
+
+h3 {
+	font-size: 1.3rem;
 }
