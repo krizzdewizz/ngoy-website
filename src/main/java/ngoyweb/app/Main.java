@@ -42,15 +42,7 @@ public class Main implements InitializingBean {
 			createApp();
 		}
 
-		// renderSite();
-
 		ngoy.render(response.getOutputStream());
-	}
-
-	void renderSite() {
-		createApp();
-		ngoy.renderSite(java.nio.file.Paths.get(System.getProperty("java.io.tmpdir"), "ngoy-website"));
-		createApp();
 	}
 
 	@Override
@@ -74,6 +66,9 @@ public class Main implements InitializingBean {
 				.build();
 	}
 
+	/**
+	 * Renders the site to <code>../ngoy/docs</code>.
+	 */
 	public static void main(String[] args) {
 		Main main = new Main();
 		main.createApp();
