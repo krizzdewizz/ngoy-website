@@ -15,7 +15,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin:'application'
 
-mainClassName = "ngoystart.NgoyWebApplication"
+mainClassName = "ngoyweb.NgoyWebApplication"
 
 def ngoyVersion = 'beta0';
 
@@ -49,3 +49,9 @@ task extractNgoy(type: Copy) {
     into "$buildDir/ngoy-$ngoyVersion"
     from configurations.ngoy
 }
+
+task publish(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  main = 'ngoyweb.app.Main'
+}
+

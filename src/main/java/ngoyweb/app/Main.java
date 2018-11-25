@@ -37,13 +37,20 @@ public class Main implements InitializingBean {
 
 	@GetMapping()
 	public void home(HttpServletResponse response) throws Exception {
-//		ngoy.renderSite(java.nio.file.Paths.get(System.getProperty("java.io.tmpdir"), "ngoy-starter-web-router"));
 
 		if (DEV) {
 			createApp();
 		}
 
+		// renderSite();
+
 		ngoy.render(response.getOutputStream());
+	}
+
+	void renderSite() {
+		createApp();
+		ngoy.renderSite(java.nio.file.Paths.get(System.getProperty("java.io.tmpdir"), "ngoy-website"));
+		createApp();
 	}
 
 	@Override
