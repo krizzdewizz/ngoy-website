@@ -4,5 +4,5 @@
 
 This is the source of ngoy's web site. Made with ngoy...of course ;)
 
-You can visit the site [here](https://krizzdewizz.github.io/ngoy/).
+You can visit the site [here](https://krizzdewizz.github.io/ngoy-website/).
 
