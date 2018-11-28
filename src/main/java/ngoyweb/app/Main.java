@@ -61,6 +61,7 @@ public class Main implements InitializingBean {
 
 		ngoy = Ngoy.app(AppComponent.class)
 				.modules(RouterModule.forRoot(routerConfig))
+				.modules(Main.class.getPackage())
 				.build();
 	}
 
