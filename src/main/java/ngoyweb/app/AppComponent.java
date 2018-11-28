@@ -5,25 +5,30 @@ import java.util.List;
 import ngoy.core.Component;
 import ngoy.core.Inject;
 import ngoy.core.NgModule;
+import ngoy.core.OnInit;
 import ngoy.router.Route;
 import ngoy.router.Router;
-import ngoyweb.app.components.RouteTitlePipe;
-import ngoyweb.app.components.StarterComponent;
-import ngoyweb.app.components.TitleComponent;
+import ngoyweb.app.components.ComponentsModule;
 
 @Component(selector = "", templateUrl = "app.component.html", styleUrls = { "app.component.css" })
-@NgModule(declarations = { RouteTitlePipe.class, TitleComponent.class, StarterComponent.class })
-public class AppComponent {
+@NgModule(imports = { ComponentsModule.class })
+public class AppComponent implements OnInit {
 	public final String title = "ngoy";
 
 	@Inject
 	public Router router;
 
+	public Route activeRoute;
+
 	public List<Route> getRoutes() {
 		return router.getRoutes();
 	}
 
-	public boolean isActiveRoute(Route route) {
-		return router.isActive(route);
+	@Override
+	public void ngOnInit() {
+		activeRoute = getRoutes().stream()
+				.filter(router::isActive)
+				.findFirst()
+				.orElse(null);
 	}
 }

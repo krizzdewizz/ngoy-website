@@ -17,7 +17,7 @@ apply plugin:'application'
 
 mainClassName = "ngoyweb.NgoyWebApplication"
 
-def ngoyVersion = 'beta1';
+def ngoyVersion = 'beta2';
 
 group = 'ngoy'
 version = '0.0.1'
@@ -30,6 +30,8 @@ repositories {
 
 dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
+	implementation('org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.1')
+	implementation('org.jodd:jodd-lagarto:5.0.6')
 	implementation("com.github.krizzdewizz:ngoy:$ngoyVersion")
 }
 

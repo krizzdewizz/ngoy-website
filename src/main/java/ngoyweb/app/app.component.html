@@ -9,7 +9,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>ngoy</title>
+<title>{{title}} {{ activeRoute != null ? (' - ' + $routeTitle(activeRoute)) : '' }}</title>
 
 <!-- Bootstrap core CSS -->
 <link
@@ -33,7 +33,7 @@
 				<ul class="navbar-nav ml-auto">
 
 					<li *ngFor="let route of routes" class="nav-item "
-						[class.active]="isActiveRoute(route)"><a class="nav-link"
+						[class.active]="route == activeRoute"><a class="nav-link"
 						[routerLink]="route.path">{{route | routeTitle}} </a></li>
 
 					<li class="nav-item"><a class="nav-link"
@@ -48,9 +48,7 @@
 	<div class="container app-container">
 		<div class="row">
 			<div class="col">
-
 				<router-outlet></router-outlet>
-
 			</div>
 		</div>
 	</div>
