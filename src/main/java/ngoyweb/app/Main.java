@@ -21,7 +21,6 @@ import ngoyweb.app.getstarted.GetStartedComponent;
 import ngoyweb.app.home.HomeComponent;
 import ngoyweb.app.motivation.MotivationComponent;
 import ngoyweb.app.tutorial.TutorialComponent;
-import ngoyweb.app.tutorial.editor.EditorComponent;
 
 @Controller
 @RequestMapping("/*")
@@ -57,7 +56,6 @@ public class Main implements InitializingBean {
 				.route("index", HomeComponent.class)
 				.route("get-started", GetStartedComponent.class)
 				.route("tutorial", TutorialComponent.class)
-				.route("tutorial-editor", EditorComponent.class)
 				.route("motivation", MotivationComponent.class)
 				.build();
 

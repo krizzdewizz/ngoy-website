@@ -17,7 +17,7 @@ apply plugin:'application'
 
 mainClassName = "ngoyweb.NgoyWebApplication"
 
-def ngoyVersion = 'beta0';
+def ngoyVersion = 'beta1';
 
 group = 'ngoy'
 version = '0.0.1'
@@ -46,7 +46,7 @@ sourceSets {
 configurations { ngoy }
 dependencies { ngoy "com.github.krizzdewizz:ngoy:$ngoyVersion" }
 task extractNgoy(type: Copy) {
-    into "$buildDir/ngoy-$ngoyVersion"
+    into "$projectDir/build/tmp/ngoy-$ngoyVersion"
     from configurations.ngoy
 }
 

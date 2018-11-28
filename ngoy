@@ -1,6 +1,6 @@
 #!/bin/bash
-ngoyVersion=beta0
-ngoyPath=build/ngoy-$ngoyVersion
+ngoyVersion=beta1
+ngoyPath=build/tmp/ngoy-$ngoyVersion
 
 if [ ! -e $ngoyPath ]; then
 	echo "Extracting ngoy binaries..."

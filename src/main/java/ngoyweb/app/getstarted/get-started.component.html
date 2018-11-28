@@ -1,5 +1,5 @@
 <ngoy-title>Getting started</ngoy-title>
-<p>Welcome to ngoy! Nice to have you here.
+<p>Welcome to ngoy!
 <p>This guide shows you how to build and run a simple ngoy app.
 <p>
 <h3>Prerequisites</h3>
@@ -24,19 +24,10 @@
 	to
 	<code>"My first ngoy app"</code>
 	:
-<pre style="color: #000000;">@Component(selector = "", templateUrl = "app.component.html", styleUrls = <span
-		style="color: #800080;">{</span> <span style="color: #0000e6;">"app.component.css"</span> <span
-		style="color: #800080;">}</span>)
-<span style="color: #800000; font-weight: bold;">public</span> <span
-		style="color: #800000; font-weight: bold;">class</span> AppComponent <span
-		style="color: #800080;">{</span>
-	<span style="color: #800000; font-weight: bold;">public</span> <span
-		style="color: #800000; font-weight: bold;">final</span> <span
-		style="color: #bb7977; font-weight: bold;">String</span> title <span
-		style="color: #808030;">=</span> <span style="color: #0000e6;">"My first ngoy app"</span><span
-		style="color: #800080;">;</span>
-<span style="color: #800080;">}</span>
-</pre>
+<pre><code style="display:block;overflow-x:auto;padding:0.5em;color:#444"><span style="color:#1f7199">@Component</span>(selector = <span style="color:#880000">""</span>, templateUrl = <span style="color:#880000">"app.component.html"</span>, styleUrls = { <span style="color:#880000">"app.component.css"</span> })
+<span style="font-weight:bold">public</span> <span class="hljs-class"><span style="font-weight:bold">class</span> <span style="color:#880000;font-weight:bold">AppComponent</span> </span>{
+	<span style="font-weight:bold">public</span> <span style="font-weight:bold">final</span> String title = <span style="color:#880000">"My first ngoy app"</span>;
+}</code></pre>
 
 
 <p>
@@ -46,20 +37,11 @@
 	Open
 	<code>app.component.css</code>
 	and give it some style:
-<pre style="color: #000000"><span style="color: #800000; font-weight: bold;">h1</span> <span
-		style="color: #800080;">{</span>
-	<span style="color: #bb7977; font-weight: bold;">color</span><span
-		style="color: #808030;">:</span> <span style="color: #008c00;">#</span><span
-		style="color: #008000;">369</span><span style="color: #800080;">;</span>
-	<span style="color: #bb7977; font-weight: bold;">font-family</span><span
-		style="color: #808030;">:</span> Arial<span style="color: #808030;">,</span> Helvetica<span
-		style="color: #808030;">,</span> <span style="color: #074726;">sans-serif</span><span
-		style="color: #800080;">;</span>
-	<span style="color: #bb7977; font-weight: bold;">font-size</span><span
-		style="color: #808030;">:</span> <span style="color: #008c00;">250</span><span
-		style="color: #006600;">%</span><span style="color: #800080;">;</span>
-<span style="color: #800080;">}</span>
-</pre>
+<pre><code style="display:block;overflow-x:auto;padding:0.5em;color:#444"><span style="font-weight:bold">h1</span> {
+	<span style="font-weight:bold">color</span>: <span style="color:#880000">#369</span>;
+	<span style="font-weight:bold">font-family</span>: Arial, Helvetica, sans-serif;
+	<span style="font-weight:bold">font-size</span>: <span style="color:#880000">250%</span>;
+}</code></pre>
 
 Looking nice:
 <br>
