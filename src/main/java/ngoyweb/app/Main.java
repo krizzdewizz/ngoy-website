@@ -17,10 +17,10 @@ import ngoy.Ngoy;
 import ngoy.router.Location;
 import ngoy.router.RouterConfig;
 import ngoy.router.RouterModule;
+import ngoyweb.app.doc.DocComponent;
 import ngoyweb.app.getstarted.GetStartedComponent;
 import ngoyweb.app.home.HomeComponent;
 import ngoyweb.app.motivation.MotivationComponent;
-import ngoyweb.app.tutorial.TutorialComponent;
 
 @Controller
 @RequestMapping("/*")
@@ -55,7 +55,7 @@ public class Main implements InitializingBean {
 				.location(useValue(Location.class, () -> request.getRequestURI()))
 				.route("index", HomeComponent.class)
 				.route("get-started", GetStartedComponent.class)
-				.route("tutorial", TutorialComponent.class)
+				.route("doc", DocComponent.class)
 				.route("motivation", MotivationComponent.class)
 				.build();
 
@@ -70,6 +70,6 @@ public class Main implements InitializingBean {
 	public static void main(String[] args) {
 		Main main = new Main();
 		main.createApp();
-		main.ngoy.renderSite(Paths.get("../ngoy/docs"));
+		main.ngoy.renderSite(Paths.get("docs"));
 	}
 }

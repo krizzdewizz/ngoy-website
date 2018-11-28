@@ -17,8 +17,8 @@ public class RouteTitlePipe implements PipeTransform {
 			return "Motivation";
 		case "get-started":
 			return "Getting started";
-		case "tutorial":
-			return "Tutorial";
+		case "doc":
+			return "Docs";
 		default:
 			return route.getPath();
 		}
