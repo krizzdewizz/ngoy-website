@@ -1,3 +1,29 @@
+:root {
+	--primary1: #f8d3f1;
+	--primary2: #f4bde9;
+	--primary3: #f1a7e2;
+	--primary4: #ed91db;
+	--primary5: #ea7bd4;
+	--primary6: #e665cc;
+	--primary7: #e250c5;
+	--primary8: #df3abe;
+	--primary9: #db24b7;
+	--primary10: #c520a4;
+	--primary11: #af1d92;
+	--primary12: #ad1c91;
+	--primary13: #9a1980;
+	--primary14: #84156e;
+	--primary15: #6e125b;
+	--primary16: #580e49;
+	--primary17: #420b37;
+	--primary18: #2c0725;
+	--primary19: #160412;
+}
+
+.bg-dark {
+	background-color: var(--primary17) !important;
+}
+
 body {
 	width: 100%;
 	margin: 0;
@@ -13,7 +39,7 @@ body {
 }
 
 body {
-	letter-spacing: 1px;
+	letter-spacing: 0.05rem;
 }
 
 p {
@@ -45,6 +71,26 @@ h3 {
 	padding-top: 2rem;
 }
 
+.logo {
+	background-image: url("images/logo.png");
+	height: 128px;
+    width: 128px;
+    display: block;
+}
+
+home .logo {
+	margin-top: 4rem;
+	margin-left: auto;
+    margin-right: auto;
+}
+
+code {
+	color: var(--primary12);
+}
+
+.navbar-dark .navbar-nav .nav-link {
+	color: rgba(255,255,255,.7);
+}
 get-started {
 	display: block;
 }
