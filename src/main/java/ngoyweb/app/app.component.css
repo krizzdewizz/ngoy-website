@@ -72,7 +72,7 @@ h3 {
 }
 
 .logo {
-	background-image: url("images/logo.png");
+	background-image: url("/images/logo.png");
 	height: 128px;
     width: 128px;
     display: block;
