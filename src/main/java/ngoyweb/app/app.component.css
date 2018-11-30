@@ -53,7 +53,7 @@ ul {
 
 pre {
 	text-align: left;
-	padding: 1rem;
+	padding: 0.2rem;
 	background-color: lavender;
 }
 
@@ -88,6 +88,6 @@ code {
 	color: var(--primary12);
 }
 
-.navbar-dark .navbar-nav .nav-link {
-	color: rgba(255,255,255,.7);
+.hljs {
+	background-color: inherit;
 }

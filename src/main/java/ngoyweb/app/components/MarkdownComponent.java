@@ -10,8 +10,6 @@ import static ngoy.core.dom.XDom.removeContents;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.markdown4j.Markdown4jProcessor;
-
 import jodd.jerry.Jerry;
 import ngoy.core.Component;
 import ngoy.core.NgoyException;
@@ -21,19 +19,16 @@ import ngoy.core.Util;
 @Component(selector = "markdown")
 public class MarkdownComponent implements OnCompile {
 
-	private final Markdown4jProcessor markdown = new Markdown4jProcessor();
+	private MarkdownToHtml mdToHtml = new CommonMarkToHtml();
 
 	@Override
 	public void ngOnCompile(Jerry el, String componentClass) {
-		try {
-			String text = readResource(format("/ngoyweb/app/%s", el.attr("url")));
-			String html = markdown.process(text);
-			Jerry parsed = parseHtml(html, getPosition(el).getLine());
-			removeContents(el);
-			appendChild(el, parsed);
-		} catch (IOException e) {
-			throw wrap(e);
-		}
+		String text = readResource(format("/ngoyweb/app/%s", el.attr("url")));
+		String html = mdToHtml.convert(text);
+		Jerry parsed = parseHtml(html, getPosition(el).getLine());
+		removeContents(el);
+		appendChild(el, parsed);
+
 	}
 
 	private String readResource(String url) {
