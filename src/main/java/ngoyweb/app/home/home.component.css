@@ -1,5 +1,5 @@
 home .row {
-	margin: 4rem;
+	margin-top: 4rem;
 }
 
 home .col {
@@ -13,4 +13,9 @@ home .col .card {
 
 home .card-body {
 		box-shadow:0 5px 10px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
+}
+
+home .examples {
+	margin-top: 2rem;
+	text-align: left;
 }

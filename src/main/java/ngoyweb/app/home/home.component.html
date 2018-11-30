@@ -13,7 +13,6 @@ ngoy is a pure Java library with no JavaScript involved.
 <p class="lead ngoy-enjoy">enjoy ngoy!</p>
 
 <div class="row">
-
 	<div class="col">
 		<div class="card">
 		  <div class="card-body">
@@ -40,5 +39,79 @@ ngoy is a pure Java library with no JavaScript involved.
 		  </div>
 		</div>
 	</div>
-
+	
+	<div class="col">
+		<div class="card">
+		  <div class="card-body">
+			  <h5 class="card-title"><span class="nowrap">Highly compatible</span></h5>
+				<p class="card-text">Binding syntax.<br><br>[class.*], [style.*], [attr.*]<br><br>@HostElement<br><br>*ngFor, *ngIf...<br><br><span class="nowrap">&lt;ng-content&gt;</span>, <span class="nowrap">&lt;ng-container&gt;</span>...</p>
+		  </div>
+		</div>
+	</div>
 </div>
+
+<div class="row">
+	<div class="col">
+<markdown class="examples">
+<![CDATA[
+Render anything from simple text:
+
+```java
+Ngoy.renderString("hello {{ '{{ name }}' }}", Context.of("name", "world"), System.out);
+
+// hello world
+```
+
+to a full blown app with components, directives, pipes and services:
+```java
+public class Person {
+	public String name;
+	public int age;
+
+	public Person(String name, int age) {
+		this.name = name;
+		this.age = age;
+	}
+}
+
+@Component(selector = "person", template = "<h1>{{'{{person.name'}} | {{'uppercase}}'}}</h1>age: {{'{{person.age}}'}}")
+public class PersonCmp {
+	@Input
+	public Person person;
+}
+
+@Component(selector = "", template = "<html><person *ngFor=\"let person of persons\" [person]=\"person\"></person></html>")
+@NgModule(declarations = { PersonCmp.class })
+public class App {
+	public Person[] persons = new Person[] { new Person("Peter", 22), new Person("Paul", 26), new Person("Mary", 24) };
+}
+
+Ngoy.app(App.class)
+	.build()
+	.render(System.out);
+```
+produces:
+```html
+<html>
+	<person><h1>PETER</h1>age: 22</person>
+	<person><h1>PAUL</h1>age: 26</person>
+	<person><h1>MARY</h1>age: 24</person>
+</html>
+```
+
+]]>
+</markdown>
+
+	<div class="examples">
+		<p>
+		<h3>Next steps</h3>
+		<p>
+			<a routerLink="get-started">Get started</a> using noy.
+			<p>Checkout ngoy's <a href="https://github.com/krizzdewizz/ngoy-tour-of-heroes">"Tour of
+				Heroes"</a> tutorial rewrite.
+
+	</div>
+
+	</div>
+</div>
+

@@ -56,7 +56,6 @@
 <p class="lead ngoy-enjoy">enjoy ngoy!</p>
 
 <div class="row">
-
 	<div class="col">
 		<div class="card">
 		  <div class="card-body">
@@ -83,8 +82,74 @@
 		  </div>
 		</div>
 	</div>
+	
+	<div class="col">
+		<div class="card">
+		  <div class="card-body">
+			  <h5 class="card-title"><span class="nowrap">Highly compatible</span></h5>
+				<p class="card-text">Binding syntax.<br><br>[class.*], [style.*], [attr.*]<br><br>@HostElement<br><br>*ngFor, *ngIf...<br><br><span class="nowrap">&lt;ng-content&gt;</span>, <span class="nowrap">&lt;ng-container&gt;</span>...</p>
+		  </div>
+		</div>
+	</div>
+</div>
 
-</div></div></home>
+<div class="row">
+	<div class="col">
+<markdown class="examples"><p>Render anything from simple text:</p>
+<pre><code class="language-java">Ngoy.renderString(&quot;hello {{ name }}&quot;, Context.of(&quot;name&quot;, &quot;world&quot;), System.out);
+
+// hello world
+</code></pre>
+<p>to a full blown app with components, directives, pipes and services:</p>
+<pre><code class="language-java">public class Person {
+	public String name;
+	public int age;
+
+	public Person(String name, int age) {
+		this.name = name;
+		this.age = age;
+	}
+}
+
+@Component(selector = &quot;person&quot;, template = &quot;&lt;h1&gt;{{person.name | uppercase}}&lt;/h1&gt;age: {{person.age}}&quot;)
+public class PersonCmp {
+	@Input
+	public Person person;
+}
+
+@Component(selector = &quot;&quot;, template = &quot;&lt;html&gt;&lt;person *ngFor=\&quot;let person of persons\&quot; [person]=\&quot;person\&quot;&gt;&lt;/person&gt;&lt;/html&gt;&quot;)
+@NgModule(declarations = { PersonCmp.class })
+public class App {
+	public Person[] persons = new Person[] { new Person(&quot;Peter&quot;, 22), new Person(&quot;Paul&quot;, 26), new Person(&quot;Mary&quot;, 24) };
+}
+
+Ngoy.app(App.class)
+	.build()
+	.render(System.out);
+</code></pre>
+<p>produces:</p>
+<pre><code class="language-html">&lt;html&gt;
+	&lt;person&gt;&lt;h1&gt;PETER&lt;/h1&gt;age: 22&lt;/person&gt;
+	&lt;person&gt;&lt;h1&gt;PAUL&lt;/h1&gt;age: 26&lt;/person&gt;
+	&lt;person&gt;&lt;h1&gt;MARY&lt;/h1&gt;age: 24&lt;/person&gt;
+&lt;/html&gt;
+</code></pre>
+</markdown>
+
+	<div class="examples">
+		<p>
+		</p><h3>Next steps</h3>
+		<p>
+			<a routerLink="get-started" href="get-started">Get started</a> using noy.
+			</p><p>Checkout ngoy's <a href="https://github.com/krizzdewizz/ngoy-tour-of-heroes">&quot;Tour of
+				Heroes&quot;</a> tutorial rewrite.
+
+	</p></div>
+
+	</div>
+</div>
+
+</div></home>
 			</div>
 		</div>
 	</div>
