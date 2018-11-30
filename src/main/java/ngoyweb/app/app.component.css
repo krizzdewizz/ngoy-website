@@ -53,8 +53,9 @@ ul {
 
 pre {
 	text-align: left;
-	padding: 0.5rem;
+	padding: 1rem;
 	background-color: lavender;
+	border-radius: 4px;
 }
 
 h3 {
@@ -79,9 +80,10 @@ h3 {
 }
 
 home .logo {
-	margin-top: 4rem;
-	margin-left: auto;
+    margin-top: 2.5rem;
+    margin-left: auto;
     margin-right: auto;
+    margin-bottom: 1rem;
 }
 
 code {

@@ -48,9 +48,9 @@
 <p>Welcome to ngoy!
 </p><p>This guide shows you how to build and run a simple ngoy app.
 </p><p>
-</p><h3>Prerequisites</h3>
+</p><h3>Prerequisites</h3><ul>
 
-<ul>
+
 	<li>JRE &gt;= 8</li>
 </ul>
 
@@ -90,10 +90,11 @@ in the browser.
 	to
 	<code>&quot;My first ngoy app&quot;</code>
 	:
-</p><pre><code style="display:block;overflow-x:auto;padding:0.5em;color:#444"><span style="color:#1f7199">@Component</span>(selector = <span style="color:#880000">&quot;&quot;</span>, templateUrl = <span style="color:#880000">&quot;app.component.html&quot;</span>, styleUrls = { <span style="color:#880000">&quot;app.component.css&quot;</span> })
-<span style="font-weight:bold">public</span> <span class="hljs-class"><span style="font-weight:bold">class</span> <span style="color:#880000;font-weight:bold">AppComponent</span> </span>{
-	<span style="font-weight:bold">public</span> <span style="font-weight:bold">final</span> String title = <span style="color:#880000">&quot;My first ngoy app&quot;</span>;
-}</code></pre>
+</p><pre><code class="language-java">@Component(selector = &quot;&quot;, templateUrl = &quot;app.component.html&quot;, styleUrls = { &quot;app.component.css&quot; })
+public class AppComponent {
+	public final String title = &quot;My first ngoy app&quot;;
+}
+</code></pre>
 
 
 <p>
@@ -102,11 +103,12 @@ in the browser.
 	Open
 	<code>app.component.css</code>
 	and give it some style:
-</p><pre><code style="display:block;overflow-x:auto;padding:0.5em;color:#444"><span style="font-weight:bold">h1</span> {
-	<span style="font-weight:bold">color</span>: <span style="color:#880000">#369</span>;
-	<span style="font-weight:bold">font-family</span>: Arial, Helvetica, sans-serif;
-	<span style="font-weight:bold">font-size</span>: <span style="color:#880000">250%</span>;
-}</code></pre>
+</p><pre><code class="language-html">h1 {
+	color: #369;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 250%;
+}
+</code></pre>
 
 Looking nice:
 <br>
