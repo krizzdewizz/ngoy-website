@@ -65,9 +65,6 @@ public class Main implements InitializingBean {
 				.build();
 	}
 
-	/**
-	 * Renders the site to <code>../ngoy/docs</code>.
-	 */
 	public static void main(String[] args) {
 		Main main = new Main();
 		main.createApp();
