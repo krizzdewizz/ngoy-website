@@ -85,7 +85,7 @@ home .logo {
 }
 
 code {
-	color: var(--primary12);
+	color: var(--primary14);
 }
 
 .hljs {
@@ -93,6 +93,18 @@ code {
 	padding: 0;
 }
 
+.hljs-string {
+	color: var(--primary11);
+}
+
 .nowrap {
 	white-space: nowrap;
+}
+
+a {
+	color: var(--primary10);
+}
+
+a:hover {
+	color: var(--primary8);
 }
