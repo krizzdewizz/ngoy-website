@@ -1,5 +1,5 @@
 #!/bin/bash
-ngoyVersion=beta6
+ngoyVersion=beta7
 ngoyPath=build/tmp/ngoy-$ngoyVersion
 
 if [ ! -e $ngoyPath ]; then
