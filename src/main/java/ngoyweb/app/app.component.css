@@ -53,7 +53,7 @@ ul {
 
 pre {
 	text-align: left;
-	padding: 0.2rem;
+	padding: 0.5rem;
 	background-color: lavender;
 }
 
@@ -90,4 +90,5 @@ code {
 
 .hljs {
 	background-color: inherit;
+	padding: 0;
 }

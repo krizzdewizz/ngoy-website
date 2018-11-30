@@ -23,12 +23,17 @@ public class MarkdownComponent implements OnCompile {
 
 	@Override
 	public void ngOnCompile(Jerry el, String componentClass) {
-		String text = readResource(format("/ngoyweb/app/%s", el.attr("url")));
+		String url = el.attr("url");
+		String text;
+		if (url == null) {
+			text = el.text();
+		} else {
+			text = readResource(format("/ngoyweb/app/%s", url));
+		}
 		String html = mdToHtml.convert(text);
 		Jerry parsed = parseHtml(html, getPosition(el).getLine());
 		removeContents(el);
 		appendChild(el, parsed);
-
 	}
 
 	private String readResource(String url) {
