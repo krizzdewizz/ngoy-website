@@ -46,7 +46,8 @@
 			<div class="col">
 				<doc><ngoy-title><h1 class="mt-5 ngoy-title">Documentation</h1></ngoy-title>
 
-<markdown url="doc/doc.md"><h2>Components and Templates</h2>
+<markdown url="doc/doc.md"><p>All ngoy features and notable differences to Angular are documented here.</p>
+<h2>Components and Templates</h2>
 <p>A component is an ordinary Java class annotated with the <code>@Component</code> annotation:</p>
 <pre><code class="language-java">@Component(selector = &quot;person&quot;, templateUrl = &quot;person.component.html&quot;)
 public class PersonComponent {
@@ -82,7 +83,7 @@ public class PersonComponent {
 <pre><code class="language-html">&lt;h1&gt;Person details: {{ person.name }}&lt;/h1&gt;
 </code></pre>
 <p>At runtime, the expression is evaluated and it's return value is inserted instead.</p>
-<p>Note: ngoy uses the <a href="https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html">Spring EL</a> library for expression/evaluation. Please consult their docs for what's possible. It's syntax is almost conform with Angular's. Notable differences to Angular see later in this document.</p>
+<p>Note: ngoy uses the <a href="https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html">Spring EL</a> library for expression/evaluation. Please consult their docs for what's possible. It's syntax is almost conform to Angular's.</p>
 <p>The component designates the 'context' (aka <code>this</code>) of the evaluation. So <code>person</code> in <code>{{ person.name }}</code> designates the <code>person</code> field of the <code>PersonComponent</code> instance:</p>
 <pre><code class="language-java">public class Person {
 	public String name;

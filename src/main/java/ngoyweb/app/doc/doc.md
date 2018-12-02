@@ -1,3 +1,6 @@
+
+All ngoy features and notable differences to Angular are documented here.
+
 ## Components and Templates
 
 A component is an ordinary Java class annotated with the `@Component` annotation:
@@ -57,7 +60,7 @@ The text inside double curly braces is interpreted as an expression:
 ``` 
 At runtime, the expression is evaluated and it's return value is inserted instead.
 
-Note: ngoy uses the [Spring EL](https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html) library for expression/evaluation. Please consult their docs for what's possible. It's syntax is almost conform with Angular's. Notable differences to Angular see later in this document. 
+Note: ngoy uses the [Spring EL](https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html) library for expression/evaluation. Please consult their docs for what's possible. It's syntax is almost conform to Angular's. 
 
 The component designates the 'context' (aka `this`) of the evaluation. So `person` in `{{ '{{ person.name }}' }}` designates the `person` field of the `PersonComponent` instance:
 ```java
