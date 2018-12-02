@@ -52,7 +52,7 @@ public class MarkdownComponent implements OnCompile {
 
 	private Jerry createToc(Jerry parsed) {
 		Jerry toc = XDom.createElement("markdown-toc", 0);
-		toc.attr("toc", null);
+
 		StringBuilder expr = new StringBuilder();
 
 		XDom.accept(parsed, new NodeVisitor() {
@@ -88,13 +88,6 @@ public class MarkdownComponent implements OnCompile {
 
 		});
 
-		parsed.$("h1, h2, h3, h4, h5, h6, h7, h8, h9")
-				.forEach(heading -> {
-
-//					anchor.text(heading.text());
-//					Jerry anchor = XDom.appendChild(toc, XDom.createElement("a", 0));
-//					anchor.attr("href", format("#%s", id));
-				});
 		expr.append("}");
 		toc.attr("[entries]", expr.toString());
 		return toc;
