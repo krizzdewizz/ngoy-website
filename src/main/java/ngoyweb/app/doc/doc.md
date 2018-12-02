@@ -13,7 +13,7 @@ public class PersonComponent {
 
 Whenever ngoy encounters an element that matches the CSS selector `selector`, the component 'takes over' the element. The component then controls the element itself (aka host element) and it's content (including attributes).
 
-The components template becomes the matching element's content.
+The component's template becomes the matching element's content.
 
 Given this `person.component.html`:
 
@@ -286,7 +286,7 @@ public class PersonComponent implements OnInit, OnDestroy {
 
 Typically, a component computes 'expensive' field values in `ngOnInit()`, which are used several times in the template.
 
-Note: A new component instance is created each time it is entered. Initialization can happen in the constructor, as long as no injected dependecies are used. At construction time, fields are not injected yet, but in `ngOnInit()`, they are.
+Note: A new component instance is created each time it is entered. Initialization can happen in the constructor as long as no injected dependecies are used. At construction time, fields are not injected yet, but in `ngOnInit()`, they are.
 
 `ngOnDestroy()` is called in the rendering phase each time the component is leaved (when it's host element ends).
 
@@ -398,7 +398,7 @@ public class HighlightDirective {
 }
 ```
 
-A directive is aka a 'components without a template'. All rules of a component apply to a directive, except that the host element's content is not replaced by any template. So a directive serves merely to change the attributes of the host element with the use of `@HostBinding`s, or as a compile-time hook (see below). 
+A directive is aka a 'component without a template'. All rules of a component apply also to a directive, except that the host element's content is not replaced by any template. So a directive serves merely to change the attributes of the host element with the use of `@HostBinding`s, or as a compile-time hook (see below). 
 
 ### Compile-time hook
 
@@ -417,7 +417,7 @@ public class PersonComponent implements OnCompile {
 
 `ngOnCompile()` is called only *once* in the compile phase and not in the rendering phase.
 
-See the [MarkdownComponent](https://github.com/krizzdewizz/ngoy-website/blob/master/src/main/java/ngoyweb/app/components/MarkdownComponent.java) for an example. It appends the HTML converted from CommonMark. You can write markdown inside the component or reference a `.md` resource.  
+See the [MarkdownComponent](https://github.com/krizzdewizz/ngoy-website/blob/master/src/main/java/ngoyweb/app/components/markdown/MarkdownComponent.java) for an example. It appends the HTML converted from CommonMark. You can write markdown inside the component or reference a `.md` resource.  
 
 ### Pipes
 
@@ -458,7 +458,7 @@ public class UpperCasePipe implements PipeTransform {
 }
 ```
 
-Note: The pipe syntax `|` is not part of the Spring EL grammar. ngoy parses it manually with regex. It should be fine in most cases, but in complex expressions (which should be avoided anyway) it could lead to a parse error. In such a situation, you can always ressort to the function call syntax, prefixing the pipe with `$`:
+Note: The pipe syntax `|` is not part of the Spring EL grammar. ngoy parses it 'manually' with regex. It should be fine in most cases, but in complex expressions (which should be avoided anyway) it could lead to a parse error. In such a situation, you can always resort to the function call syntax, prefixing the pipe with `$`:
 
 ```java
 'hello' | uppercase
@@ -509,6 +509,8 @@ public class PersonComponent {
 
 Component providers are **never** local to a component but **always** global.
 
+A `@Component` can also be a `NgModule`.
+
 ### Dynamic Modules
 
 A dynamic module's declarations/providers are computed at runtime instead of 'declaration time' with annotations.
@@ -554,8 +556,8 @@ public class PersonComponent implements OnInit {
 
 There are 3 kinds of providers:
 - `class A` -> `class A`: Wherever `class A` is requested, inject an instance of `class A` (example above)
--  `class A` -> `useClass B`: Wherever `class A` is requested, inject an instance of `class B`. Used to override default behaviour, see below.
--  `class A` -> `useValue B`: Wherever `class A` is requested, inject the instance `B`. Only available at runtime, not with annotations.
+-  `class A` -> `useClass B`: Wherever `class A` is requested (could be an interface), inject an instance of `class B`, which must be assignable to `class A`. Used to override default behaviour.
+-  `class A` -> `useValue B`: Wherever `class A` is requested, inject the instance `B`, which must be an instance of `class A`. Only available at runtime, not with annotations.
 
 ### Providers at runtime
 

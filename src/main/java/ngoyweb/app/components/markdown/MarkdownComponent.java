@@ -80,7 +80,6 @@ public class MarkdownComponent implements OnCompile {
 					expr.append(level);
 					expr.append("}");
 				}
-//					
 			}
 
 			@Override
