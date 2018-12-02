@@ -17,7 +17,7 @@ apply plugin:'application'
 
 mainClassName = "ngoyweb.NgoyWebApplication"
 
-def ngoyVersion = 'beta7';
+def ngoyVersion = 'beta8';
 
 group = 'ngoy'
 version = '0.0.1'

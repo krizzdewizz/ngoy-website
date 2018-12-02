@@ -1,6 +1,6 @@
 @echo off
 setlocal
-set ngoyVersion=beta7
+set ngoyVersion=beta8
 set ngoyPath=build\tmp\ngoy-%ngoyVersion%
 
 if not exist %ngoyPath% (
