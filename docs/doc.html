@@ -46,8 +46,8 @@
 			<div class="col">
 				<doc><ngoy-title><h1 class="mt-5 ngoy-title">Documentation</h1></ngoy-title>
 
-<markdown url="doc/doc.md"><p>All ngoy features and notable differences to Angular are documented here.</p>
-<h2>Components and Templates</h2>
+<markdown url="doc/doc.md" toc><p>All ngoy features and notable differences to Angular are documented here.</p>
+<h2 id="components--templates">Components &amp; Templates</h2>
 <p>A component is an ordinary Java class annotated with the <code>@Component</code> annotation:</p>
 <pre><code class="language-java">@Component(selector = &quot;person&quot;, templateUrl = &quot;person.component.html&quot;)
 public class PersonComponent {
@@ -76,9 +76,9 @@ public class PersonComponent {
 public class PersonComponent {
 }
 </code></pre>
-<h3>Template Syntax &amp; Data Binding</h3>
+<h3 id="template-syntax--data-binding">Template Syntax &amp; Data Binding</h3>
 <p>A component has full control over the HTML by the use of data binding. There exists several possibilities:</p>
-<h4>Interpolation</h4>
+<h4 id="interpolation">Interpolation</h4>
 <p>The text inside double curly braces is interpreted as an expression:</p>
 <pre><code class="language-html">&lt;h1&gt;Person details: {{ person.name }}&lt;/h1&gt;
 </code></pre>
@@ -98,7 +98,7 @@ public class PersonComponent {
 <p>Interpolation can occur also inside of attribute values:</p>
 <pre><code class="language-html">&lt;h1 title=&quot;hello {{person.name}}&quot;&gt;&lt;/h1&gt;
 </code></pre>
-<h4>Attribute Binding</h4>
+<h4 id="attribute-binding">Attribute Binding</h4>
 <p>Beside interpolation, an attribute's value can also be evaluated at runtime with the use of attribute bindings; the preferred way.</p>
 <p>Regular (<code>String</code>) attribute:</p>
 <pre><code class="language-html">&lt;h1 title=&quot;hello&quot;&gt;&lt;/h1&gt;
@@ -111,7 +111,7 @@ public class PersonComponent {
 <pre><code class="language-html">&lt;h1 [attr.title]=&quot;person.name&quot;&gt;&lt;/h1&gt;
 </code></pre>
 <p>The <code>[attr.]</code> syntax is relevant when using the <code>@HostBinding</code> annotation, see later in this document.</p>
-<h5><code>class</code> attribute</h5>
+<h5 id="class-attribute"><code>class</code> attribute</h5>
 <p>The <code>class</code> attribute receives special treatment because it's value is effectively a class <em>list</em>.</p>
 <p>A class can be added to the list by the use of the <code>[class.]</code> syntax:</p>
 <pre><code class="language-html">&lt;h1 [class.vip]=&quot;isVip(person)&quot;&gt;&lt;/h1&gt;
@@ -129,7 +129,7 @@ public class PersonComponent {
 <p>If both evaluate to <code>true</code>:</p>
 <pre><code class="language-html">&lt;h1 class=&quot;person-title col-xs vip cool&quot;&gt;&lt;/h1&gt;
 </code></pre>
-<h5><code>ngClass</code> attribute</h5>
+<h5 id="ngclass-attribute"><code>ngClass</code> attribute</h5>
 <p>If several classes must be computed at once, it can be tedious to write them all with <code>[class.]</code> bindings. With the help of the <code>ngClass</code> attribute, you can add them all at once.</p>
 <p>It expects a <code>java.util.Map&lt;String, Boolean&gt;</code> as the expression result:</p>
 <pre><code class="language-html">&lt;h1 [ngClass]=&quot;personClasses&quot;&gt;&lt;/h1&gt;
@@ -148,7 +148,7 @@ public class PersonComponent implements OnInit {
 <p>Or as an expression using Spring EL map literals:</p>
 <pre><code class="language-html">&lt;h1 [ngClass]=&quot;{vip: isVip(person), cool: isCool(person)}&quot;&gt;&lt;/h1&gt;
 </code></pre>
-<h5><code>style</code> attribute</h5>
+<h5 id="style-attribute"><code>style</code> attribute</h5>
 <p>The <code>style</code> attribute receives special treatment because it's value is effectively a <em>map</em> from the style's name to it's value.</p>
 <p>A style entry can be added by the use of the <code>[style.]</code> syntax:</p>
 <pre><code class="language-html">&lt;h1 [style.background-color]=&quot;isVip(person) ? 'red' : 'inherit'&quot;&gt;&lt;/h1&gt;
@@ -171,7 +171,7 @@ public class PersonComponent implements OnInit {
 <p>ngoy:</p>
 <pre><code>[style.background-color]=&quot;'red'&quot;
 </code></pre>
-<h5><code>ngStyle</code> attribute</h5>
+<h5 id="ngstyle-attribute"><code>ngStyle</code> attribute</h5>
 <p>If several styles must be computed at once, it can be tedious to write them all with <code>[style.]</code> bindings. With the help of the <code>ngStyle</code> attribute, you can add them all at once.</p>
 <p>It expects a <code>java.util.Map&lt;String, String&gt;</code> as the expression result:</p>
 <pre><code class="language-html">&lt;h1 [ngStyle]=&quot;personStyles&quot;&gt;&lt;/h1&gt;
@@ -190,7 +190,7 @@ public class PersonComponent implements OnInit {
 <p>Or as an expression using Spring EL map literals:</p>
 <pre><code class="language-html">&lt;h1 [ngStyle]=&quot;{'background-color': isVip(person) ? 'red' : 'inherit'}&quot;&gt;&lt;/h1&gt;
 </code></pre>
-<h4>@HostBinding</h4>
+<h4 id="hostbinding">@HostBinding</h4>
 <p>The attributes of a component's host element can be dynamically set using the <code>@HostBinding</code> annotation. It is set on a component's field (or getter).</p>
 <pre><code class="language-html">&lt;html&gt;
 	&lt;person&gt;&lt;/person&gt; &lt;!-- host element --&gt;
@@ -213,7 +213,7 @@ public class PersonComponent implements OnInit {
 <li><code>&quot;style.background-color&quot;</code> -&gt; <code>String</code>. Value for the style.</li>
 <li><code>&quot;text&quot;</code> -&gt; <code>String</code>. Value for the element's text content. This is an extension to Angular.</li>
 </ul>
-<h3>Lifecycle hooks</h3>
+<h3 id="lifecycle-hooks">Lifecycle hooks</h3>
 <p>Ngoy supports two lifecycle hooks. <code>OnInit</code> and <code>OnDestroy</code>:</p>
 <pre><code class="language-java">...
 public class PersonComponent implements OnInit, OnDestroy {
@@ -229,7 +229,7 @@ public class PersonComponent implements OnInit, OnDestroy {
 <p>Typically, a component computes 'expensive' field values in <code>ngOnInit()</code>, which are used several times in the template.</p>
 <p>Note: A new component instance is created each time it is entered. Initialization can happen in the constructor, as long as no injected dependecies are used. At construction time, fields are not injected yet, but in <code>ngOnInit()</code>, they are.</p>
 <p><code>ngOnDestroy()</code> is called in the rendering phase each time the component is leaved (when it's host element ends).</p>
-<h3>Component interaction</h3>
+<h3 id="component-interaction">Component interaction</h3>
 <p>You can pass data from a parent component to a child component with an input binding:</p>
 <pre><code class="language-java">@Component(...)
 public class PersonComponent {
@@ -268,14 +268,14 @@ public class PersonComponent {
 	}
 }
 </code></pre>
-<h3>Component styles</h3>
+<h3 id="component-styles">Component styles</h3>
 <p>A component can specify inline <code>style</code>s or resources identified by <code>styleUrls</code>:</p>
 <pre><code class="language-java">@Component(selector = &quot;person&quot;, styles = { &quot;h1 { font-weight: normal; }&quot; }, styleUrls = {&quot;person.component.css&quot;} )
 public class PersonComponent {
 }
 </code></pre>
 <p>Upon compilation of the template, all styles from all declared components are copied into a single <code>&lt;style&gt;</code> element in the app's HTML.</p>
-<h4>Auto Prefixer</h4>
+<h4 id="auto-prefixer">Auto Prefixer</h4>
 <p>By default, styles are copied 'as-is'; they are global and not scoped to the component (no shadow DOM).</p>
 <p>You can, however, opt-in to auto-prefixing:</p>
 <pre><code class="language-java">Ngoy.app(AppComponent.class)
@@ -289,7 +289,7 @@ public class PersonComponent {
 <p>would be translated to:</p>
 <pre><code class="language-css">person h1 { font-weight: normal; }
 </code></pre>
-<h3>Attribute directives</h3>
+<h3 id="attribute-directives">Attribute directives</h3>
 <p>Directives are annotated with the <code>@Directive</code> annotation:</p>
 <pre><code class="language-java">@Directive(selector = &quot;[appHighlight]&quot;)
 public class HighlightDirective {
@@ -301,7 +301,7 @@ public class HighlightDirective {
 }
 </code></pre>
 <p>A directive is aka a 'components without a template'. All rules of a component apply to a directive, except that the host element's content is not replaced by any template. So a directive serves merely to change the attributes of the host element with the use of <code>@HostBinding</code>s, or as a compile-time hook (see below).</p>
-<h3>Components/directives compile-time hook</h3>
+<h3 id="compile-time-hook">Compile-time hook</h3>
 <p>When the template is compiled, a component/directive has the chance to alter the template's subtree before the compiler sees it. At this point, you can i.e. insert static content, re-write or expand a template based on some attributes etc.</p>
 <p>A component/directive may implement the <code>OnCompile</code> interface:</p>
 <pre><code class="language-java">@Component(...)
@@ -313,7 +313,7 @@ public class PersonComponent implements OnCompile {
 </code></pre>
 <p><code>ngOnCompile()</code> is called only <em>once</em> in the compile phase and not in the rendering phase.</p>
 <p>See the <a href="https://github.com/krizzdewizz/ngoy-website/blob/master/src/main/java/ngoyweb/app/components/MarkdownComponent.java">MarkdownComponent</a> for an example. It appends the HTML converted from CommonMark. You can write markdown inside the component or reference a <code>.md</code> resource.</p>
-<h3>Pipes</h3>
+<h3 id="pipes">Pipes</h3>
 <p>A pipe takes in data as input and transforms it to a desired output. You can pipe the result of an expression to the desired pipe:</p>
 <pre><code class="language-html">&lt;h1&gt;hello:  {{ person.name | uppercase }}&lt;/h1&gt;
 </code></pre>
@@ -350,7 +350,7 @@ public class UpperCasePipe implements PipeTransform {
 <p>is the same as:</p>
 <pre><code class="language-java">$uppercase('hello')
 </code></pre>
-<h2>Modules</h2>
+<h2 id="modules">Modules</h2>
 <p>All components, directives, pipes (declarations) and providers/services must be registered within ngoy.</p>
 <p>Given the person example from above:</p>
 <pre><code class="language-java">@Component(...)
@@ -379,11 +379,11 @@ public class PersonComponent {
 }
 </code></pre>
 <p>Component providers are <strong>never</strong> local to a component but <strong>always</strong> global.</p>
-<h3>Dynamic Modules</h3>
+<h3 id="dynamic-modules">Dynamic Modules</h3>
 <p>A dynamic module's declarations/providers are computed at runtime instead of 'declaration time' with annotations.</p>
 <p>See <a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/core/ModuleWithProviders.java">ModuleWithProviders.java</a> and
 <a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/router/RouterModule.java">RouterModule.java</a> for an example usage.</p>
-<h3>Package Modules</h3>
+<h3 id="package-modules">Package Modules</h3>
 <p>It can be tedious to add every single thing to a module. And in an isolated app, there's no risk that there would be collisions.</p>
 <p>In addition to organize declarations with modules, ngoy can scan the class path for them:</p>
 <pre><code class="language-java">ngoy.app(AppComponent.class)
@@ -391,7 +391,7 @@ public class PersonComponent {
 	.modules(AppComponent.class.getPackage()) // load all declarations/providers inside the app's package
 	.build();
 </code></pre>
-<h2>Dependency Injection</h2>
+<h2 id="dependency-injection">Dependency Injection</h2>
 <p>Any class can be registered as a service/provider within ngoy and be injected into declarations and other services.</p>
 <pre><code class="language-java">public class PersonService {
 	public Person[] getPersons() {
@@ -415,14 +415,14 @@ public class PersonComponent implements OnInit {
 <li><code>class A</code> -&gt; <code>useClass B</code>: Wherever <code>class A</code> is requested, inject an instance of <code>class B</code>. Used to override default behaviour, see below.</li>
 <li><code>class A</code> -&gt; <code>useValue B</code>: Wherever <code>class A</code> is requested, inject the instance <code>B</code>. Only available at runtime, not with annotations.</li>
 </ul>
-<h3>Providers at runtime</h3>
+<h3 id="providers-at-runtime">Providers at runtime</h3>
 <p>Providers can be specified at runtime, especially the <code>useValue</code> variant, which is used to inject external dependencies into ngoy.</p>
 <pre><code class="language-java">ngoy.app(AppComponent.class)
 	.providers(Provider.useValue(MyService.class, service)
 	.build();
 </code></pre>
 <p>See also <a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/core/Provider.java">Provider.java</a></p>
-<h3>External DI Systems</h3>
+<h3 id="external-di-systems">External DI Systems</h3>
 <p>By implementing the <code>Injector</code> interface, one can provide dependencies from other DI systems such as Spring Boot to ngoy.</p>
 <p>See the <a href="https://github.com/krizzdewizz/ngoy-tour-of-heroes/blob/master/src/main/java/toh/app/BeanInjector.java">BeanInjector.java</a> for an example.</p>
 <pre><code class="language-java">@Controller
@@ -443,11 +443,12 @@ public class Main implements InitializingBean {
 	}
 }
 </code></pre>
-<h2>Routing</h2>
+<h2 id="routing">Routing</h2>
 <p>Basic routing functionality can be found in the <code>RouterModule</code>. See the <a href="https://github.com/krizzdewizz/ngoy-examples/tree/master/src/main/java/ngoyexamples/routing">router</a> example in the <a href="https://github.com/krizzdewizz/ngoy-examples">ngoy-examples</a> collection.</p>
-<h2>Forms</h2>
+<h2 id="forms">Forms</h2>
 <p>to be done</p>
-</markdown></doc>
+<markdown-toc toc>
+<a href="#components--templates" style="margin-left:40px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:60px">Template Syntax &amp; Data Binding</a><a href="#interpolation" style="margin-left:80px">Interpolation</a><a href="#attribute-binding" style="margin-left:80px">Attribute Binding</a><a href="#class-attribute" style="margin-left:100px">class attribute</a><a href="#ngclass-attribute" style="margin-left:100px">ngClass attribute</a><a href="#style-attribute" style="margin-left:100px">style attribute</a><a href="#ngstyle-attribute" style="margin-left:100px">ngStyle attribute</a><a href="#hostbinding" style="margin-left:80px">@HostBinding</a><a href="#lifecycle-hooks" style="margin-left:60px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:60px">Component interaction</a><a href="#component-styles" style="margin-left:60px">Component styles</a><a href="#auto-prefixer" style="margin-left:80px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:60px">Attribute directives</a><a href="#compile-time-hook" style="margin-left:60px">Compile-time hook</a><a href="#pipes" style="margin-left:60px">Pipes</a><a href="#modules" style="margin-left:40px">Modules</a><a href="#dynamic-modules" style="margin-left:60px">Dynamic Modules</a><a href="#package-modules" style="margin-left:60px">Package Modules</a><a href="#dependency-injection" style="margin-left:40px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:60px">Providers at runtime</a><a href="#external-di-systems" style="margin-left:60px">External DI Systems</a><a href="#routing" style="margin-left:40px">Routing</a><a href="#forms" style="margin-left:40px">Forms</a></markdown-toc></markdown></doc>
 			</div>
 		</div>
 	</div>
