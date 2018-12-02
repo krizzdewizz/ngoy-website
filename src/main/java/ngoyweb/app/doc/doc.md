@@ -1,7 +1,7 @@
 
 All ngoy features and notable differences to Angular are documented here.
 
-## Components and Templates
+## Components & Templates
 
 A component is an ordinary Java class annotated with the `@Component` annotation:
 
@@ -400,7 +400,7 @@ public class HighlightDirective {
 
 A directive is aka a 'components without a template'. All rules of a component apply to a directive, except that the host element's content is not replaced by any template. So a directive serves merely to change the attributes of the host element with the use of `@HostBinding`s, or as a compile-time hook (see below). 
 
-### Components/directives compile-time hook
+### Compile-time hook
 
 When the template is compiled, a component/directive has the chance to alter the template's subtree before the compiler sees it. At this point, you can i.e. insert static content, re-write or expand a template based on some attributes etc.
 
