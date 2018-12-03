@@ -39,7 +39,7 @@ body {
 }
 
 body {
-	letter-spacing: 0.05rem;
+	letter-spacing: 0.03rem;
 }
 
 p {
@@ -54,7 +54,7 @@ ul {
 pre {
 	text-align: left;
 	padding: 1rem;
-	background-color: lavender;
+	background-color: #f6f8fa;
 	border-radius: 4px;
 }
 
@@ -93,6 +93,10 @@ code {
 .hljs {
 	background-color: inherit;
 	padding: 0;
+}
+
+.hljs-meta {
+	font-weight: normal;
 }
 
 .hljs-string {

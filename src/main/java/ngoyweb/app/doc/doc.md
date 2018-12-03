@@ -1,6 +1,59 @@
 
 All ngoy features and notable differences to Angular are documented here.
 
+# Running ngoy
+
+
+The simplest way to use ngoy's template engine is via the static `renderString()` or `renderTemplate()` methods:
+
+```java
+Ngoy.renderString("hello {{ '{{ name }}' }}", Context.of("name", "world"), System.out);
+
+// hello world
+```
+
+The first parameter is the template. Text inside the double curly braces is treated as an expression (see <a href="#template-syntax--data-binding">Template Syntax & Data Binding</a>).
+
+The second parameter is the evaluation 'context' or `this` inside the template, which can be an object and/or a bunch of variables.
+In the example the variable `"name"` is assigned the value `"world"`.
+
+The third parameter is the `OutputStream` to write to.
+
+`renderTemplate()` works exactly the same, except that the template is read from a resource via `Class#getResourceAsStream()`.  
+
+For a simple template this might be already enough.
+
+If you want more like reusable components, custom functions (pipes), services... maybe a router... you'd start from ngoy's static `app()` method.
+
+It expects the root component class as the first parameter:
+
+```java
+@Component(selector = "app", template = "hello {{ '{{ name '}} | {{ 'uppercase }}' }}")
+public class AppComponent {
+    public String name = "world";
+}
+
+public static void main(String[] args) {
+	// build once
+    Ngoy<App> ngoy = Ngoy.app(AppComponent.class)
+            .build();
+
+	// render many times
+	ngoy.render(System.out);
+	// ngoy.render(System.out);
+	// ngoy.render(System.out);
+	// ngoy.render(System.out);
+}
+
+// hello WORLD
+```
+
+`build()` compiles the template to Java byte code on the fly and returns an Ngoy instance which then renders the content to the given `OutputStream`. 
+
+It's supposed to build once, render many times. 
+
+Note: In Angular, you normally have an `index.html` which 'bootstraps' the root app. In ngoy, the root app *is* the page. 
+
 # Components & Templates
 
 A component is an ordinary Java class annotated with the `@Component` annotation:
@@ -11,7 +64,7 @@ public class PersonComponent {
 }
 ```
 
-Whenever ngoy encounters an element that matches the CSS selector `selector`, the component 'takes over' the element. The component then controls the element itself (aka host element) and it's content (including attributes).
+Whenever ngoy encounters an (HTML/XML) element that matches the CSS selector `selector`, the component 'takes over' the element. The component then controls the element itself (aka host element) and it's content (including attributes).
 
 The component's template becomes the matching element's content.
 
@@ -58,7 +111,7 @@ The text inside double curly braces is interpreted as an expression:
 ```html
 <h1>Person details: {{ '{{ person.name }}' }}</h1>
 ``` 
-At runtime, the expression is evaluated and it's return value is printed instead.
+At runtime, the expression is evaluated and it's return value is printed.
 
 Note: ngoy uses the [Spring EL](https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html) library for expression/evaluation. Please consult their docs for what's possible. It's syntax is almost conform to Angular's. 
 
@@ -351,7 +404,10 @@ public class PersonComponent {
 A component can specify inline `style`s or resources identified by `styleUrls`:
 
 ```java
-@Component(selector = "person", styles = { "h1 { font-weight: normal; }" }, styleUrls = {"person.component.css"} )
+@Component(
+	selector = "person", 
+	styleUrls = { "person.component.css" },
+	styles = { "h1 { font-weight: normal; }" })
 public class PersonComponent {
 }
 ```
@@ -440,9 +496,11 @@ The first `*ngSwitchCase` matching the expression `emotion` will be printed. If 
 
 A `[ngSwitch]` must have at least one `*ngSwitchCase`.
 
+[ngSwitch] can switch on any type of value.
+
 ### *ngFor
 
-`*ngFor` allows you to repeat an element for every item in an `Iterator`.
+`*ngFor` allows you to repeat an element for every item in an `Iterator` or array.
 
 ```html
 <div *ngFor="let person of persons">{{ '{{ person.name }}' }}</div>
@@ -460,7 +518,7 @@ for (Person person : persons) {
 Optionally, you can declare local aliases for the built-in iteration variables, delimited with `;`
 
 ```html
-<div *ngFor="let person of persons; index as i; first  as f">
+<div *ngFor="let person of persons; index as i; first as f">
 	{{ '{{ person.name }}' }}, person index: {{ '{{ i }}' }}
 </div>
 ```
@@ -648,13 +706,66 @@ public class UpperCasePipe implements PipeTransform {
 Note: The pipe syntax `|` is not part of the Spring EL grammar. ngoy parses it 'manually' with regex. It should be fine in most cases, but in complex expressions (which should be avoided anyway) it could lead to a parse error. In such a situation, you can always resort to the function call syntax, prefixing the pipe with `$`:
 
 ```java
-'hello' | uppercase
+'hello' | uppercase | greet
 ```
 
 is the same as:
 ```java
-$uppercase('hello')
+$greet($uppercase('hello'))
 ```
+
+## Plain Text Templates
+
+ngoy renders plain text formats (no markup) and you can nevertheless use components the same way as with regular templates.
+
+A complete example:
+
+```java
+@Component(selector = "header", template = "Welcome, {{' {{ name }} '}}\n")
+public class HeaderCmp {
+	@Input
+	public String name;
+}
+
+@Component(selector = "footer", template = "sincerely")
+public class FooterCmp {
+}
+
+// lines are wrapped for better readability
+@Component(
+	selector = "", 
+	contentType = "text/plain",		// set content type to text/plain 
+	template = "
+		<header [name]=\"person.name\"></header>\n
+		age: {{'{{ person.age }}'}}\n
+		hobbies:\n
+		<span *ngFor=\"let h of hobbies\">{{'\t{{ h }}'}}\n</span>
+		<footer></footer>")
+@NgModule(declarations = { HeaderCmp.class, FooterCmp.class })
+public class AppComponent {
+	public Person person = new Person("peter", 22);
+	public String[] hobbies = new String[] { "music", "surfing", "dancing" };
+}
+```
+
+Produces:
+
+```
+Welcome, peter
+
+age: 22
+hobbies:
+	music
+	surfing
+	dancing
+sincerely
+```
+
+Just set the root component's `contentType` to `text/plain`.
+
+`text/plain` characteristics:
+- no output escaping takes place
+- all components/elements are inlined, just like <a href="#ng-container">&lt;ng-container&gt;</a>
 
 # Modules
 
@@ -675,7 +786,8 @@ public class AppComponent {
 
 Without the `NgModule` annotation, the `PersonComponent` would be unknown to ngoy and the `<person>` element would not match any selector and it would just stay there as it is. 
 
-A class annotated with `NgModule` serves as a container for declarations and providers. A logical unit to group a feature together. May a component needs a provider to work correctly. So you would group the two into a module, so that client of your component can import just the module instead of all parts separately. And you could add more stuff to the module afterwards without breaking the clients. 
+A class annotated with `NgModule` serves as a container for declarations and providers. A logical unit to group a feature together. 
+May a component needs a provider or other components to work correctly. So you would group them into a module, so that client of your component can import just the module instead of all parts separately. And you could add more stuff to the module afterwards without breaking the clients. 
 
  A `NgModule` has three attributes:
 
@@ -696,7 +808,7 @@ public class PersonComponent {
 
 Component providers are **never** local to a component but **always** global.
 
-A `@Component` can also be a `NgModule`.
+A `@Component` can also be a `@NgModule`.
 
 ## Dynamic Modules
 

@@ -15,7 +15,7 @@
 
 <link rel="icon" type="image/png" href="favicon/favicon.png?v=2">
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/vs.min.css">
 
 <link rel="stylesheet" type="text/css" href="styles/main.css"></head>
 
@@ -47,13 +47,49 @@
 				<doc><ngoy-title><h1 class="mt-5 ngoy-title">Documentation</h1></ngoy-title>
 
 <markdown url="doc/doc.md" toc><p>All ngoy features and notable differences to Angular are documented here.</p>
+<h1 id="running-ngoy">Running ngoy</h1>
+<p>The simplest way to use ngoy's template engine is via the static <code>renderString()</code> or <code>renderTemplate()</code> methods:</p>
+<pre><code class="language-java">Ngoy.renderString(&quot;hello {{ name }}&quot;, Context.of(&quot;name&quot;, &quot;world&quot;), System.out);
+
+// hello world
+</code></pre>
+<p>The first parameter is the template. Text inside the double curly braces is treated as an expression (see <a href="#template-syntax--data-binding">Template Syntax &amp; Data Binding</a>).</p>
+<p>The second parameter is the evaluation 'context' or <code>this</code> inside the template, which can be an object and/or a bunch of variables.
+In the example the variable <code>&quot;name&quot;</code> is assigned the value <code>&quot;world&quot;</code>.</p>
+<p>The third parameter is the <code>OutputStream</code> to write to.</p>
+<p><code>renderTemplate()</code> works exactly the same, except that the template is read from a resource via <code>Class#getResourceAsStream()</code>.</p>
+<p>For a simple template this might be already enough.</p>
+<p>If you want more like reusable components, custom functions (pipes), services... maybe a router... you'd start from ngoy's static <code>app()</code> method.</p>
+<p>It expects the root component class as the first parameter:</p>
+<pre><code class="language-java">@Component(selector = &quot;app&quot;, template = &quot;hello {{ name  | uppercase }}&quot;)
+public class AppComponent {
+    public String name = &quot;world&quot;;
+}
+
+public static void main(String[] args) {
+	// build once
+    Ngoy&lt;App&gt; ngoy = Ngoy.app(AppComponent.class)
+            .build();
+
+	// render many times
+	ngoy.render(System.out);
+	// ngoy.render(System.out);
+	// ngoy.render(System.out);
+	// ngoy.render(System.out);
+}
+
+// hello WORLD
+</code></pre>
+<p><code>build()</code> compiles the template to Java byte code on the fly and returns an Ngoy instance which then renders the content to the given <code>OutputStream</code>.</p>
+<p>It's supposed to build once, render many times.</p>
+<p>Note: In Angular, you normally have an <code>index.html</code> which 'bootstraps' the root app. In ngoy, the root app <em>is</em> the page.</p>
 <h1 id="components--templates">Components &amp; Templates</h1>
 <p>A component is an ordinary Java class annotated with the <code>@Component</code> annotation:</p>
 <pre><code class="language-java">@Component(selector = &quot;person&quot;, templateUrl = &quot;person.component.html&quot;)
 public class PersonComponent {
 }
 </code></pre>
-<p>Whenever ngoy encounters an element that matches the CSS selector <code>selector</code>, the component 'takes over' the element. The component then controls the element itself (aka host element) and it's content (including attributes).</p>
+<p>Whenever ngoy encounters an (HTML/XML) element that matches the CSS selector <code>selector</code>, the component 'takes over' the element. The component then controls the element itself (aka host element) and it's content (including attributes).</p>
 <p>The component's template becomes the matching element's content.</p>
 <p>Given this <code>person.component.html</code>:</p>
 <pre><code class="language-html">&lt;h1&gt;Person details&lt;/h1&gt;
@@ -82,7 +118,7 @@ public class PersonComponent {
 <p>The text inside double curly braces is interpreted as an expression:</p>
 <pre><code class="language-html">&lt;h1&gt;Person details: {{ person.name }}&lt;/h1&gt;
 </code></pre>
-<p>At runtime, the expression is evaluated and it's return value is printed instead.</p>
+<p>At runtime, the expression is evaluated and it's return value is printed.</p>
 <p>Note: ngoy uses the <a href="https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html">Spring EL</a> library for expression/evaluation. Please consult their docs for what's possible. It's syntax is almost conform to Angular's.</p>
 <p>The component designates the 'context' (aka <code>this</code>) of the evaluation. So <code>person</code> in <code>{{ person.name }}</code> designates the <code>person</code> field of the <code>PersonComponent</code> instance:</p>
 <pre><code class="language-java">public class Person {
@@ -270,7 +306,10 @@ public class PersonComponent {
 </code></pre>
 <h2 id="component-styles">Component styles</h2>
 <p>A component can specify inline <code>style</code>s or resources identified by <code>styleUrls</code>:</p>
-<pre><code class="language-java">@Component(selector = &quot;person&quot;, styles = { &quot;h1 { font-weight: normal; }&quot; }, styleUrls = {&quot;person.component.css&quot;} )
+<pre><code class="language-java">@Component(
+	selector = &quot;person&quot;, 
+	styleUrls = { &quot;person.component.css&quot; },
+	styles = { &quot;h1 { font-weight: normal; }&quot; })
 public class PersonComponent {
 }
 </code></pre>
@@ -325,8 +364,9 @@ public class HighlightDirective {
 </code></pre>
 <p>The first <code>*ngSwitchCase</code> matching the expression <code>emotion</code> will be printed. If none of the cases match, <code>*ngSwitchDefault</code> is printed.</p>
 <p>A <code>[ngSwitch]</code> must have at least one <code>*ngSwitchCase</code>.</p>
+<p>[ngSwitch] can switch on any type of value.</p>
 <h3 id="ngfor">*ngFor</h3>
-<p><code>*ngFor</code> allows you to repeat an element for every item in an <code>Iterator</code>.</p>
+<p><code>*ngFor</code> allows you to repeat an element for every item in an <code>Iterator</code> or array.</p>
 <pre><code class="language-html">&lt;div *ngFor=&quot;let person of persons&quot;&gt;{{ person.name }}&lt;/div&gt;
 </code></pre>
 <p><code>persons</code> may be an instance of <code>Iterable</code> or an array. <code>person</code> designates the current item of the iteration,
@@ -336,7 +376,7 @@ which is available as a local variable inside the <code>&lt;div&gt;</code>.</p>
 }
 </code></pre>
 <p>Optionally, you can declare local aliases for the built-in iteration variables, delimited with <code>;</code></p>
-<pre><code class="language-html">&lt;div *ngFor=&quot;let person of persons; index as i; first  as f&quot;&gt;
+<pre><code class="language-html">&lt;div *ngFor=&quot;let person of persons; index as i; first as f&quot;&gt;
 	{{ person.name }}, person index: {{ i }}
 &lt;/div&gt;
 </code></pre>
@@ -477,11 +517,56 @@ public class UpperCasePipe implements PipeTransform {
 }
 </code></pre>
 <p>Note: The pipe syntax <code>|</code> is not part of the Spring EL grammar. ngoy parses it 'manually' with regex. It should be fine in most cases, but in complex expressions (which should be avoided anyway) it could lead to a parse error. In such a situation, you can always resort to the function call syntax, prefixing the pipe with <code>$</code>:</p>
-<pre><code class="language-java">'hello' | uppercase
+<pre><code class="language-java">'hello' | uppercase | greet
 </code></pre>
 <p>is the same as:</p>
-<pre><code class="language-java">$uppercase('hello')
+<pre><code class="language-java">$greet($uppercase('hello'))
 </code></pre>
+<h2 id="plain-text-templates">Plain Text Templates</h2>
+<p>ngoy renders plain text formats (no markup) and you can nevertheless use components the same way as with regular templates.</p>
+<p>A complete example:</p>
+<pre><code class="language-java">@Component(selector = &quot;header&quot;, template = &quot;Welcome,  {{ name }} \n&quot;)
+public class HeaderCmp {
+	@Input
+	public String name;
+}
+
+@Component(selector = &quot;footer&quot;, template = &quot;sincerely&quot;)
+public class FooterCmp {
+}
+
+// lines are wrapped for better readability
+@Component(
+	selector = &quot;&quot;, 
+	contentType = &quot;text/plain&quot;,		// set content type to text/plain 
+	template = &quot;
+		&lt;header [name]=\&quot;person.name\&quot;&gt;&lt;/header&gt;\n
+		age: {{ person.age }}\n
+		hobbies:\n
+		&lt;span *ngFor=\&quot;let h of hobbies\&quot;&gt;\t{{ h }}\n&lt;/span&gt;
+		&lt;footer&gt;&lt;/footer&gt;&quot;)
+@NgModule(declarations = { HeaderCmp.class, FooterCmp.class })
+public class AppComponent {
+	public Person person = new Person(&quot;peter&quot;, 22);
+	public String[] hobbies = new String[] { &quot;music&quot;, &quot;surfing&quot;, &quot;dancing&quot; };
+}
+</code></pre>
+<p>Produces:</p>
+<pre><code>Welcome, peter
+
+age: 22
+hobbies:
+	music
+	surfing
+	dancing
+sincerely
+</code></pre>
+<p>Just set the root component's <code>contentType</code> to <code>text/plain</code>.</p>
+<p><code>text/plain</code> characteristics:</p>
+<ul>
+<li>no output escaping takes place</li>
+<li>all components/elements are inlined, just like <a href="#ng-container">&lt;ng-container&gt;</a></li>
+</ul>
 <h1 id="modules">Modules</h1>
 <p>All components, directives, pipes (declarations) and providers/services must be registered within ngoy.</p>
 <p>Given the person example from above:</p>
@@ -496,7 +581,8 @@ public class AppComponent {
 }
 </code></pre>
 <p>Without the <code>NgModule</code> annotation, the <code>PersonComponent</code> would be unknown to ngoy and the <code>&lt;person&gt;</code> element would not match any selector and it would just stay there as it is.</p>
-<p>A class annotated with <code>NgModule</code> serves as a container for declarations and providers. A logical unit to group a feature together. May a component needs a provider to work correctly. So you would group the two into a module, so that client of your component can import just the module instead of all parts separately. And you could add more stuff to the module afterwards without breaking the clients.</p>
+<p>A class annotated with <code>NgModule</code> serves as a container for declarations and providers. A logical unit to group a feature together.
+May a component needs a provider or other components to work correctly. So you would group them into a module, so that client of your component can import just the module instead of all parts separately. And you could add more stuff to the module afterwards without breaking the clients.</p>
 <p>A <code>NgModule</code> has three attributes:</p>
 <ul>
 <li><code>declarations</code>: make components, directives and pipes known to ngoy</li>
@@ -511,7 +597,7 @@ public class PersonComponent {
 }
 </code></pre>
 <p>Component providers are <strong>never</strong> local to a component but <strong>always</strong> global.</p>
-<p>A <code>@Component</code> can also be a <code>NgModule</code>.</p>
+<p>A <code>@Component</code> can also be a <code>@NgModule</code>.</p>
 <h2 id="dynamic-modules">Dynamic Modules</h2>
 <p>A dynamic module's declarations/providers are computed at runtime instead of 'declaration time' with annotations.</p>
 <p>See <a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/core/ModuleWithProviders.java">ModuleWithProviders.java</a> and
@@ -701,7 +787,7 @@ generating artifact '.\src\main\java\ngoygen\person\person.component.css'...
 <pre><code>123
 </code></pre>
 <markdown-toc class="d-none d-md-block">
-<a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#interpolation" style="margin-left:60px">Interpolation</a><a href="#attribute-binding" style="margin-left:60px">Attribute Binding</a><a href="#hostbinding" style="margin-left:60px">@HostBinding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component interaction</a><a href="#component-styles" style="margin-left:40px">Component styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time hook</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#routing" style="margin-left:20px">Routing</a><a href="#forms" style="margin-left:20px">Forms</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#spring-el" style="margin-left:20px">Spring EL</a></markdown-toc></markdown></doc>
+<a href="#running-ngoy" style="margin-left:20px">Running ngoy</a><a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#interpolation" style="margin-left:60px">Interpolation</a><a href="#attribute-binding" style="margin-left:60px">Attribute Binding</a><a href="#hostbinding" style="margin-left:60px">@HostBinding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component interaction</a><a href="#component-styles" style="margin-left:40px">Component styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time hook</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#plain-text-templates" style="margin-left:40px">Plain Text Templates</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#routing" style="margin-left:20px">Routing</a><a href="#forms" style="margin-left:20px">Forms</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#spring-el" style="margin-left:20px">Spring EL</a></markdown-toc></markdown></doc>
 			</div>
 		</div>
 	</div>
