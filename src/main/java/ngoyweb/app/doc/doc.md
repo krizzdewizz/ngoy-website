@@ -767,6 +767,10 @@ Just set the root component's `contentType` to `text/plain`.
 - no output escaping takes place
 - all components/elements are inlined, just like <a href="#ng-container">&lt;ng-container&gt;</a>
 
+## XML Templates
+
+ngoy makes no distinction between XML and HTML. It's totally the same.
+
 # Modules
 
 All components, directives, pipes (declarations) and providers/services must be registered within ngoy.
@@ -1022,7 +1026,7 @@ ngoy uses the [Spring EL](https://docs.spring.io/spring/docs/4.3.10.RELEASE/spri
 
 Here are some notable differences to the Angular syntax:
 
-Truthy/falsy values do not exists. Expressions like this won't work:
+Truthy/falsy values do not exist. Expressions like this won't work:
 
 ```html
 <!-- runtime error: person is not a boolean -->
