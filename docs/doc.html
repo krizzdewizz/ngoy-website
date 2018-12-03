@@ -595,7 +595,7 @@ May a component needs a provider or other components to work correctly. So you w
 </ul>
 <p>Note: Unlike other module systems, there exists no enforced boundaries between modules. At the end, everything is stuffed into a single map. Everything can be reached from anywhere.</p>
 <p>A runtime exception is thrown whenever more than one component matches an element.</p>
-<p>A provider can also be specified on a <code>@Component</code>:</p>
+<p>A provider can also be specified on a <code>@Component</code> to spare a <code>NgModule</code>:</p>
 <pre><code class="language-java">@Component(selector = &quot;person&quot;, providers = { PersonService.class }) 
 public class PersonComponent {
 }
@@ -639,7 +639,7 @@ public class PersonService {
 public class WeatherService {
 }
 
-@Component(selector = &quot;person&quot;, providers = { PersonService.class }) 
+@Component(selector = &quot;person&quot;, providers = { PersonService.class, WeatherService.class }) 
 public class PersonComponent implements OnInit {
 
 	// constructor injection
@@ -657,9 +657,8 @@ public class PersonComponent implements OnInit {
 }
 </code></pre>
 <p>Fields must be annotated with <code>@Inject</code>. Constructor parameters must not be annotated.</p>
-<p>A runtime exception is thrown when there's no provider for a service.</p>
-<p>A dependency may be declared <code>@Optional</code> in which case no exception is thrown.</p>
-<p>Note: a service must be annotated with <code>@Injectable</code> when it should be picked up by 'Package Modules', see above.</p>
+<p>A runtime exception is thrown if there's no provider for a service. A dependency may be declared <code>@Optional</code> in which case no exception is thrown.</p>
+<p>Note: a service must be annotated with <code>@Injectable</code> when it should be picked up by <a href="#package-modules">Package Modules</a>.</p>
 <p>There are 3 kinds of providers:</p>
 <ul>
 <li><code>class A</code> -&gt; <code>class A</code>: Wherever <code>class A</code> is requested, inject an instance of <code>class A</code> (example above)</li>
@@ -675,7 +674,7 @@ public class PersonComponent implements OnInit {
 <p>See also <a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/core/Provider.java">Provider.java</a></p>
 <h2 id="external-di-systems">External DI Systems</h2>
 <p>By implementing the <code>Injector</code> interface, one can provide dependencies from other DI systems such as Spring Boot to ngoy.</p>
-<p>See the <a href="https://github.com/krizzdewizz/ngoy-tour-of-heroes/blob/master/src/main/java/toh/app/BeanInjector.java">BeanInjector.java</a> for an example.</p>
+<p>See <a href="https://github.com/krizzdewizz/ngoy-tour-of-heroes/blob/master/src/main/java/toh/app/BeanInjector.java">BeanInjector.java</a> for an example.</p>
 <pre><code class="language-java">@Controller
 @RequestMapping(&quot;/**&quot;)
 public class Main implements InitializingBean {
@@ -686,17 +685,16 @@ public class Main implements InitializingBean {
 	private BeanInjector beanInjector;
 
 	private void createApp() {
-
 		ngoy = Ngoy.app(AppComponent.class)
-				...
-				.injectors(beanInjector) // make Spring beans known to ngoy
-				.build();
+			...
+			.injectors(beanInjector) // make Spring beans known to ngoy
+			.build();
 	}
 }
 </code></pre>
 <h1 id="built-in-modules">Built-in Modules</h1>
-<p>These modules are contained in the ngoy binaries.</p>
-<p>See the module's documentation below on how they must be imported into your app.</p>
+<p>The following modules are contained in the ngoy binaries.
+See the module's documentation below on how they must be imported into your app.</p>
 <h2 id="router">Router</h2>
 <p>Basic routing functionality can be found in the <code>RouterModule</code>. See the <a href="https://github.com/krizzdewizz/ngoy-examples/tree/master/src/main/java/ngoyexamples/routing">router</a> example in the <a href="https://github.com/krizzdewizz/ngoy-examples">ngoy-examples</a> collection.</p>
 <h2 id="translate">Translate</h2>

@@ -805,7 +805,7 @@ Note: Unlike other module systems, there exists no enforced boundaries between m
 
 A runtime exception is thrown whenever more than one component matches an element.
 
-A provider can also be specified on a `@Component`:
+A provider can also be specified on a `@Component` to spare a `NgModule`:
 ```java
 @Component(selector = "person", providers = { PersonService.class }) 
 public class PersonComponent {
@@ -869,7 +869,7 @@ public class PersonService {
 public class WeatherService {
 }
 
-@Component(selector = "person", providers = { PersonService.class }) 
+@Component(selector = "person", providers = { PersonService.class, WeatherService.class }) 
 public class PersonComponent implements OnInit {
 
 	// constructor injection
@@ -889,11 +889,9 @@ public class PersonComponent implements OnInit {
 
 Fields must be annotated with `@Inject`. Constructor parameters must not be annotated.
 
-A runtime exception is thrown when there's no provider for a service.
+A runtime exception is thrown if there's no provider for a service. A dependency may be declared `@Optional` in which case no exception is thrown.
 
-A dependency may be declared `@Optional` in which case no exception is thrown.
-
-Note: a service must be annotated with `@Injectable` when it should be picked up by 'Package Modules', see above.
+Note: a service must be annotated with `@Injectable` when it should be picked up by <a href="#package-modules">Package Modules</a>.
 
 There are 3 kinds of providers:
 - `class A` -> `class A`: Wherever `class A` is requested, inject an instance of `class A` (example above)
@@ -916,7 +914,7 @@ See also [Provider.java](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/sr
 
 By implementing the `Injector` interface, one can provide dependencies from other DI systems such as Spring Boot to ngoy.
 
-See the [BeanInjector.java](https://github.com/krizzdewizz/ngoy-tour-of-heroes/blob/master/src/main/java/toh/app/BeanInjector.java) for an example.
+See [BeanInjector.java](https://github.com/krizzdewizz/ngoy-tour-of-heroes/blob/master/src/main/java/toh/app/BeanInjector.java) for an example.
 
 ```java
 @Controller
@@ -929,19 +927,17 @@ public class Main implements InitializingBean {
 	private BeanInjector beanInjector;
 
 	private void createApp() {
-
 		ngoy = Ngoy.app(AppComponent.class)
-				...
-				.injectors(beanInjector) // make Spring beans known to ngoy
-				.build();
+			...
+			.injectors(beanInjector) // make Spring beans known to ngoy
+			.build();
 	}
 }
 ```
 
 # Built-in Modules
 
-These modules are contained in the ngoy binaries.
-
+The following modules are contained in the ngoy binaries. 
 See the module's documentation below on how they must be imported into your app.
 
 ## Router
