@@ -14,7 +14,7 @@ Ngoy.renderString("hello {{ '{{ name }}' }}", Context.of("name", "world"), Syste
 
 The first parameter is the template. Text inside the double curly braces is treated as an expression (see <a href="#template-syntax--data-binding">Template Syntax & Data Binding</a>).
 
-The second parameter is the evaluation 'context' or `this` inside the template, which can be an object and/or a bunch of variables.
+The second parameter is the evaluation 'context' or `this` inside the template. Context can be an object and/or a bunch of variables.
 In the example the variable `"name"` is assigned the value `"world"`.
 
 The third parameter is the `OutputStream` to write to.
@@ -35,7 +35,7 @@ public class AppComponent {
 
 public static void main(String[] args) {
 	// build once
-    Ngoy<App> ngoy = Ngoy.app(AppComponent.class)
+    Ngoy<AppComponent> ngoy = Ngoy.app(AppComponent.class)
             .build();
 
 	// render many times
@@ -64,7 +64,7 @@ public class PersonComponent {
 }
 ```
 
-Whenever ngoy encounters an (HTML/XML) element that matches the CSS selector `selector`, the component 'takes over' the element. The component then controls the element itself (aka host element) and it's content (including attributes).
+Whenever ngoy encounters an HTML element that matches the CSS selector `selector`, the component 'takes over' the element. The component then controls the element itself (aka host element) and it's content (including attributes).
 
 The component's template becomes the matching element's content.
 
@@ -111,9 +111,9 @@ The text inside double curly braces is interpreted as an expression:
 ```html
 <h1>Person details: {{ '{{ person.name }}' }}</h1>
 ``` 
-At runtime, the expression is evaluated and it's return value is printed.
+At runtime, the expression is evaluated and it's return value is rendered.
 
-Note: ngoy uses the [Spring EL](https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html) library for expression/evaluation. Please consult their docs for what's possible. It's syntax is almost conform to Angular's. 
+Note: ngoy uses the [Spring EL](https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html) library for expression/evaluation. Please consult their docs for what is possible. It's syntax is almost conform to Angular. 
 
 The component designates the 'context' (aka `this`) of the evaluation. So `person` in `{{ '{{ person.name }}' }}` designates the `person` field of the `PersonComponent` instance:
 ```java
@@ -130,14 +130,14 @@ public class PersonComponent {
 
 Interpolation can occur also inside of attribute values:
 ```html
-<h1 title="hello {{'{{person.name}}'}}"></h1>
+<h1 title="hello {{'{{ person.name }}'}}"></h1>
 ```
 
 ### Attribute Binding
 
 Beside interpolation, an attribute's value can also be evaluated at runtime with the use of attribute bindings; the preferred way.
 
-Regular (`String`) attribute:
+Regular attribute:
 
 ```html
 <h1 title="hello"></h1>
@@ -470,7 +470,7 @@ Control structures allows you to alter a host element's subtree by adding, remov
 <h1>Person details <span *ngIf="isVip(person)">VIP!</span></h1>
 ```
 
-The value of the `*ngIf` attribute designates an expression. The element is printed only when the expression evaluates to `true`. 
+The value of the `*ngIf` attribute designates an expression. The element is rendered only when the expression evaluates to `true`. 
 
 You can optionally add an `else` clause:
 
@@ -494,7 +494,7 @@ You can optionally add an `else` clause:
 </h1>
 ```
 
-The first `*ngSwitchCase` matching the expression `emotion` will be printed. If none of the cases match, `*ngSwitchDefault` is printed.
+The first `*ngSwitchCase` matching the expression `emotion` will be rendered. If none of the cases match, `*ngSwitchDefault` is rendered.
 
 A `[ngSwitch]` must have at least one `*ngSwitchCase`.
 
@@ -605,7 +605,7 @@ will finally become:
 
 ## &lt;ng-container&gt;
 
-&lt;ng-container&gt; behaves like any other element except that it is never printed but only it's content.
+&lt;ng-container&gt; behaves like any other element except that it is never rendered but only it's content.
 
 Using &lt;ng-container&gt;, you can often spare an element that would otherwise be used only for grouping:
 
@@ -720,6 +720,8 @@ $greet($uppercase('hello'))
 
 ngoy renders plain text formats (no markup) and you can nevertheless use components the same way as with regular templates.
 
+Just set the root component's `contentType` to `text/plain`.
+
 A complete example:
 
 ```java
@@ -733,21 +735,23 @@ public class HeaderCmp {
 public class FooterCmp {
 }
 
-// lines are wrapped for better readability
-@Component(
-	selector = "", 
-	contentType = "text/plain",		// set content type to text/plain 
-	template = "
-		<header [name]=\"person.name\"></header>\n
-		age: {{'{{ person.age }}'}}\n
-		hobbies:\n
-		<span *ngFor=\"let h of hobbies\">{{'\t{{ h }}'}}\n</span>
-		<footer></footer>")
+// set contentType to text/plain
+@Component(selector = "", contentType = "text/plain", templateUrl = "mail.txt")
 @NgModule(declarations = { HeaderCmp.class, FooterCmp.class })
 public class AppComponent {
 	public Person person = new Person("peter", 22);
 	public String[] hobbies = new String[] { "music", "surfing", "dancing" };
 }
+```
+
+`mail.txt`:
+```
+<header [name]="person.name"></header>
+age: {{'{{ person.age }}'}}
+hobbies:
+<span *ngFor="let h of hobbies">	{{'{{ h }}'}}
+</span>
+<footer></footer>
 ```
 
 Produces:
@@ -760,10 +764,9 @@ hobbies:
 	music
 	surfing
 	dancing
+
 sincerely
 ```
-
-Just set the root component's `contentType` to `text/plain`.
 
 `text/plain` characteristics:
 - no output escaping takes place
@@ -951,7 +954,7 @@ Using the `TranslateModule`, you can easily translate text in your templates usi
 The easiest way to include translation support is to build the ngoy instance with a call to `translateBundle()`:
 
 ```java
-Ngoy<App> ngoy = Ngoy.app(AppComponent.class)
+Ngoy<AppComponent> ngoy = Ngoy.app(AppComponent.class)
 	.translateBundle("messages") // PropertyResourceBundle 'baseName'
 	.build();
 ```
@@ -989,7 +992,7 @@ Given a german locale, both will render:
 You can override the locale by providing another `LocaleProvider`:
 
 ```java
-Ngoy<App> ngoy = Ngoy.app(AppComponent.class)
+Ngoy<AppComponent> ngoy = Ngoy.app(AppComponent.class)
 	.translateBundle("messages")
 	.providers(
 		Provider.useValue(LocaleProvider.class, new LocaleProvider.Default(Locale.ENGLISH)))
@@ -998,7 +1001,7 @@ Ngoy<App> ngoy = Ngoy.app(AppComponent.class)
 
 or use the session's locale (Spring Boot):
 ```java
-Ngoy<App> ngoy = Ngoy.app(AppComponent.class)
+Ngoy<AppComponent> ngoy = Ngoy.app(AppComponent.class)
 	.translateBundle("messages")
 	.providers(
 		Provider.useValue(LocaleProvider.class, LocaleContextHolder::getLocale))

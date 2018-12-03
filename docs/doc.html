@@ -54,7 +54,7 @@
 // hello world
 </code></pre>
 <p>The first parameter is the template. Text inside the double curly braces is treated as an expression (see <a href="#template-syntax--data-binding">Template Syntax &amp; Data Binding</a>).</p>
-<p>The second parameter is the evaluation 'context' or <code>this</code> inside the template, which can be an object and/or a bunch of variables.
+<p>The second parameter is the evaluation 'context' or <code>this</code> inside the template. Context can be an object and/or a bunch of variables.
 In the example the variable <code>&quot;name&quot;</code> is assigned the value <code>&quot;world&quot;</code>.</p>
 <p>The third parameter is the <code>OutputStream</code> to write to.</p>
 <p><code>renderTemplate()</code> works exactly the same, except that the template is read from a resource via <code>Class#getResourceAsStream()</code>.</p>
@@ -68,7 +68,7 @@ public class AppComponent {
 
 public static void main(String[] args) {
 	// build once
-    Ngoy&lt;App&gt; ngoy = Ngoy.app(AppComponent.class)
+    Ngoy&lt;AppComponent&gt; ngoy = Ngoy.app(AppComponent.class)
             .build();
 
 	// render many times
@@ -89,7 +89,7 @@ public static void main(String[] args) {
 public class PersonComponent {
 }
 </code></pre>
-<p>Whenever ngoy encounters an (HTML/XML) element that matches the CSS selector <code>selector</code>, the component 'takes over' the element. The component then controls the element itself (aka host element) and it's content (including attributes).</p>
+<p>Whenever ngoy encounters an HTML element that matches the CSS selector <code>selector</code>, the component 'takes over' the element. The component then controls the element itself (aka host element) and it's content (including attributes).</p>
 <p>The component's template becomes the matching element's content.</p>
 <p>Given this <code>person.component.html</code>:</p>
 <pre><code class="language-html">&lt;h1&gt;Person details&lt;/h1&gt;
@@ -118,8 +118,8 @@ public class PersonComponent {
 <p>The text inside double curly braces is interpreted as an expression:</p>
 <pre><code class="language-html">&lt;h1&gt;Person details: {{ person.name }}&lt;/h1&gt;
 </code></pre>
-<p>At runtime, the expression is evaluated and it's return value is printed.</p>
-<p>Note: ngoy uses the <a href="https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html">Spring EL</a> library for expression/evaluation. Please consult their docs for what's possible. It's syntax is almost conform to Angular's.</p>
+<p>At runtime, the expression is evaluated and it's return value is rendered.</p>
+<p>Note: ngoy uses the <a href="https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html">Spring EL</a> library for expression/evaluation. Please consult their docs for what is possible. It's syntax is almost conform to Angular.</p>
 <p>The component designates the 'context' (aka <code>this</code>) of the evaluation. So <code>person</code> in <code>{{ person.name }}</code> designates the <code>person</code> field of the <code>PersonComponent</code> instance:</p>
 <pre><code class="language-java">public class Person {
 	public String name;
@@ -132,11 +132,11 @@ public class PersonComponent {
 }
 </code></pre>
 <p>Interpolation can occur also inside of attribute values:</p>
-<pre><code class="language-html">&lt;h1 title=&quot;hello {{person.name}}&quot;&gt;&lt;/h1&gt;
+<pre><code class="language-html">&lt;h1 title=&quot;hello {{ person.name }}&quot;&gt;&lt;/h1&gt;
 </code></pre>
 <h3 id="attribute-binding">Attribute Binding</h3>
 <p>Beside interpolation, an attribute's value can also be evaluated at runtime with the use of attribute bindings; the preferred way.</p>
-<p>Regular (<code>String</code>) attribute:</p>
+<p>Regular attribute:</p>
 <pre><code class="language-html">&lt;h1 title=&quot;hello&quot;&gt;&lt;/h1&gt;
 </code></pre>
 <p>The same with an attribute binding:</p>
@@ -348,7 +348,7 @@ public class HighlightDirective {
 <p><code>*ngIf</code> allows you to conditionally include an element in the subtree.</p>
 <pre><code class="language-html">&lt;h1&gt;Person details &lt;span *ngIf=&quot;isVip(person)&quot;&gt;VIP!&lt;/span&gt;&lt;/h1&gt;
 </code></pre>
-<p>The value of the <code>*ngIf</code> attribute designates an expression. The element is printed only when the expression evaluates to <code>true</code>.</p>
+<p>The value of the <code>*ngIf</code> attribute designates an expression. The element is rendered only when the expression evaluates to <code>true</code>.</p>
 <p>You can optionally add an <code>else</code> clause:</p>
 <pre><code class="language-html">&lt;h1&gt;Person details &lt;span *ngIf=&quot;isVip(person); else regularPerson&quot;&gt;VIP!&lt;/span&gt;&lt;/h1&gt;
 
@@ -364,7 +364,7 @@ public class HighlightDirective {
     &lt;div *ngSwitchDefault&gt;😐&lt;/div&gt;
 &lt;/h1&gt;
 </code></pre>
-<p>The first <code>*ngSwitchCase</code> matching the expression <code>emotion</code> will be printed. If none of the cases match, <code>*ngSwitchDefault</code> is printed.</p>
+<p>The first <code>*ngSwitchCase</code> matching the expression <code>emotion</code> will be rendered. If none of the cases match, <code>*ngSwitchDefault</code> is rendered.</p>
 <p>A <code>[ngSwitch]</code> must have at least one <code>*ngSwitchCase</code>.</p>
 <p>[ngSwitch] can switch on any type of value.</p>
 <h3 id="ngfor">*ngFor</h3>
@@ -446,7 +446,7 @@ the first element inside the host element matching the selector will be projecte
 &lt;/html&gt;
 </code></pre>
 <h2 id="ng-container">&lt;ng-container&gt;</h2>
-<p>&lt;ng-container&gt; behaves like any other element except that it is never printed but only it's content.</p>
+<p>&lt;ng-container&gt; behaves like any other element except that it is never rendered but only it's content.</p>
 <p>Using &lt;ng-container&gt;, you can often spare an element that would otherwise be used only for grouping:</p>
 <p>Instead of:</p>
 <pre><code class="language-html">&lt;div *ngFor=&quot;let person of persons; index as i&quot;&gt;    &lt;!-- we don't need that div --&gt;  
@@ -526,6 +526,7 @@ public class UpperCasePipe implements PipeTransform {
 </code></pre>
 <h2 id="plain-text-templates">Plain Text Templates</h2>
 <p>ngoy renders plain text formats (no markup) and you can nevertheless use components the same way as with regular templates.</p>
+<p>Just set the root component's <code>contentType</code> to <code>text/plain</code>.</p>
 <p>A complete example:</p>
 <pre><code class="language-java">@Component(selector = &quot;header&quot;, template = &quot;Welcome,  {{ name }} \n&quot;)
 public class HeaderCmp {
@@ -537,21 +538,21 @@ public class HeaderCmp {
 public class FooterCmp {
 }
 
-// lines are wrapped for better readability
-@Component(
-	selector = &quot;&quot;, 
-	contentType = &quot;text/plain&quot;,		// set content type to text/plain 
-	template = &quot;
-		&lt;header [name]=\&quot;person.name\&quot;&gt;&lt;/header&gt;\n
-		age: {{ person.age }}\n
-		hobbies:\n
-		&lt;span *ngFor=\&quot;let h of hobbies\&quot;&gt;\t{{ h }}\n&lt;/span&gt;
-		&lt;footer&gt;&lt;/footer&gt;&quot;)
+// set contentType to text/plain
+@Component(selector = &quot;&quot;, contentType = &quot;text/plain&quot;, templateUrl = &quot;mail.txt&quot;)
 @NgModule(declarations = { HeaderCmp.class, FooterCmp.class })
 public class AppComponent {
 	public Person person = new Person(&quot;peter&quot;, 22);
 	public String[] hobbies = new String[] { &quot;music&quot;, &quot;surfing&quot;, &quot;dancing&quot; };
 }
+</code></pre>
+<p><code>mail.txt</code>:</p>
+<pre><code>&lt;header [name]=&quot;person.name&quot;&gt;&lt;/header&gt;
+age: {{ person.age }}
+hobbies:
+&lt;span *ngFor=&quot;let h of hobbies&quot;&gt;	{{ h }}
+&lt;/span&gt;
+&lt;footer&gt;&lt;/footer&gt;
 </code></pre>
 <p>Produces:</p>
 <pre><code>Welcome, peter
@@ -561,9 +562,9 @@ hobbies:
 	music
 	surfing
 	dancing
+
 sincerely
 </code></pre>
-<p>Just set the root component's <code>contentType</code> to <code>text/plain</code>.</p>
 <p><code>text/plain</code> characteristics:</p>
 <ul>
 <li>no output escaping takes place</li>
@@ -700,7 +701,7 @@ See the module's documentation below on how they must be imported into your app.
 <h2 id="translate">Translate</h2>
 <p>Using the <code>TranslateModule</code>, you can easily translate text in your templates using the standard Java way with message bundles.</p>
 <p>The easiest way to include translation support is to build the ngoy instance with a call to <code>translateBundle()</code>:</p>
-<pre><code class="language-java">Ngoy&lt;App&gt; ngoy = Ngoy.app(AppComponent.class)
+<pre><code class="language-java">Ngoy&lt;AppComponent&gt; ngoy = Ngoy.app(AppComponent.class)
 	.translateBundle(&quot;messages&quot;) // PropertyResourceBundle 'baseName'
 	.build();
 </code></pre>
@@ -723,14 +724,14 @@ See the module's documentation below on how they must be imported into your app.
 <pre><code class="language-html">&lt;h1&gt;hallo welt&lt;/h1&gt;
 </code></pre>
 <p>You can override the locale by providing another <code>LocaleProvider</code>:</p>
-<pre><code class="language-java">Ngoy&lt;App&gt; ngoy = Ngoy.app(AppComponent.class)
+<pre><code class="language-java">Ngoy&lt;AppComponent&gt; ngoy = Ngoy.app(AppComponent.class)
 	.translateBundle(&quot;messages&quot;)
 	.providers(
 		Provider.useValue(LocaleProvider.class, new LocaleProvider.Default(Locale.ENGLISH)))
 	.build();
 </code></pre>
 <p>or use the session's locale (Spring Boot):</p>
-<pre><code class="language-java">Ngoy&lt;App&gt; ngoy = Ngoy.app(AppComponent.class)
+<pre><code class="language-java">Ngoy&lt;AppComponent&gt; ngoy = Ngoy.app(AppComponent.class)
 	.translateBundle(&quot;messages&quot;)
 	.providers(
 		Provider.useValue(LocaleProvider.class, LocaleContextHolder::getLocale))

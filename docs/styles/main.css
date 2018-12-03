@@ -30,10 +30,6 @@ body {
 	margin-bottom: 50px;
 }
 
-.ngoy-enjoy {
-	font-size: 4rem;
-}
-
 .ngoy-title {
 	font-weight: normal;
 }
@@ -135,6 +131,15 @@ home .card-body {
 home .examples {
 	margin-top: 2rem;
 	text-align: left;
+}
+
+home .ngoy-enjoy {
+	margin-top: 2rem;
+	font-size: 4rem;
+}
+
+home .ngoy-enjoy2 {
+	font-size: 2rem;
 }
 get-started {
 	display: block;

@@ -27,7 +27,7 @@ public class MarkdownTocComponent {
 	public final boolean dNone = true;
 
 	@HostBinding("class.d-md-block")
-	public final boolean dMdBlockNone = true;
+	public final boolean dMdBlock = true;
 
 	public List<List<String>> entries;
 
