@@ -146,7 +146,7 @@ public class PersonComponent {
 <p>Alternatively you can write also:</p>
 <pre><code class="language-html">&lt;h1 [attr.title]=&quot;person.name&quot;&gt;&lt;/h1&gt;
 </code></pre>
-<p>The <code>[attr.]</code> syntax is relevant when using the <code>@HostBinding</code> annotation, see later in this document.</p>
+<p>The <code>[attr.]</code> syntax is relevant when using the <a href="#hostbinding"><code>@HostBinding</code></a> annotation.</p>
 <h4 id="class-attribute"><code>class</code> attribute</h4>
 <p>The <code>class</code> attribute receives special treatment because it's value is effectively a class <em>list</em>.</p>
 <p>A class can be added to the list by the use of the <code>[class.]</code> syntax:</p>
@@ -238,7 +238,7 @@ public class PersonComponent implements OnInit {
 	public boolean isVip;
 	
 	public void ngOnInit() {
-		isVip = isVip(person);
+		isVip = calculateVipStatus(person);
 	}
 }
 </code></pre>
@@ -261,10 +261,12 @@ public class PersonComponent implements OnInit, OnDestroy {
 	}
 }
 </code></pre>
-<p><code>ngOnInit()</code> is called in the rendering phase each time the component is entered (when it's host element starts).</p>
-<p>Typically, a component computes 'expensive' field values in <code>ngOnInit()</code>, which are used several times in the template.</p>
-<p>Note: A new component instance is created each time it is entered. Initialization can happen in the constructor as long as no injected dependecies are used. At construction time, fields are not injected yet, but in <code>ngOnInit()</code>, they are.</p>
-<p><code>ngOnDestroy()</code> is called in the rendering phase each time the component is leaved (when it's host element ends).</p>
+<p><code>ngOnInit()</code> is called in the rendering phase each time the component, resp. it's host element starts.</p>
+<p>Typically, a component computes field values in <code>ngOnInit()</code>, may using an injected service.</p>
+<p>Note: A new component instance is created each time it is entered.
+Initialization can happen in the constructor as long as no injected dependecies are used.
+At construction time, fields are not injected yet, but in <code>ngOnInit()</code>, they are.</p>
+<p><code>ngOnDestroy()</code> is called in the rendering phase each time the component, resp. it's host element ends.</p>
 <h2 id="component-interaction">Component interaction</h2>
 <p>You can pass data from a parent component to a child component with an input binding:</p>
 <pre><code class="language-java">@Component(...)
@@ -339,7 +341,7 @@ public class HighlightDirective {
 	}
 }
 </code></pre>
-<p>A directive is aka a 'component without a template'. All rules of a component apply also to a directive, except that the host element's content is not replaced by any template. So a directive serves merely to change the attributes of the host element with the use of <code>@HostBinding</code>s, or as a compile-time hook (see below).</p>
+<p>A directive is aka a 'component without a template'. All rules of a component apply also to a directive, except that the host element's content is not replaced by any template. So a directive serves merely to change the attributes of the host element with the use of <code>@HostBinding</code>s, or as a <a href="#compile-time-hook">compile-time hook</a>.</p>
 <h2 id="control-structures">Control Structures</h2>
 <p>Control structures allows you to alter a host element's subtree by adding, removing or manipulating elements.</p>
 <h3 id="ngif">*ngIf</h3>
@@ -495,7 +497,7 @@ public class PersonComponent implements OnCompile {
 <li><a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/LowerCasePipe.java">lowercase</a></li>
 <li><a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/CapitalizePipe.java">capitalize</a></li>
 <li><a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/DatePipe.java">date</a></li>
-<li><a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/translate/TranslatePipe.java">translate</a> (see TranslateModule later in this document)</li>
+<li><a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/translate/TranslatePipe.java">translate</a> (see <a href="#translate">Translate Module</a>)</li>
 </ul>
 <p>Of course you can write your own:</p>
 <p>Annotate a Java class with <code>@Pipe</code> and implement the <code>PipeTransform</code> interface.</p>
@@ -692,9 +694,69 @@ public class Main implements InitializingBean {
 	}
 }
 </code></pre>
-<h1 id="routing">Routing</h1>
+<h1 id="built-in-modules">Built-in Modules</h1>
+<p>These modules are contained in the ngoy binaries.</p>
+<p>See the module's documentation below on how they must be imported into your app.</p>
+<h2 id="router">Router</h2>
 <p>Basic routing functionality can be found in the <code>RouterModule</code>. See the <a href="https://github.com/krizzdewizz/ngoy-examples/tree/master/src/main/java/ngoyexamples/routing">router</a> example in the <a href="https://github.com/krizzdewizz/ngoy-examples">ngoy-examples</a> collection.</p>
-<h1 id="forms">Forms</h1>
+<h2 id="translate">Translate</h2>
+<p>Using the <code>TranslateModule</code>, you can easily translate text in your templates using the standard Java way with message bundles.</p>
+<p>The easiest way to include translation support is to build the ngoy instance with a call to <code>translateBundle()</code>:</p>
+<pre><code class="language-java">Ngoy&lt;App&gt; ngoy = Ngoy.app(AppComponent.class)
+	.translateBundle(&quot;messages&quot;) // PropertyResourceBundle 'baseName'
+	.build();
+</code></pre>
+<p><code>translateBundle()</code> adds the <code>TranslateModule</code> to ngoy and configures the <code>TranslateService</code> to load the <code>PropertyResourceBundle</code> named <code>&quot;messages&quot;</code>.</p>
+<p>Given these message bundles:</p>
+<p><code>messages_en.properties</code>:</p>
+<pre><code>MSG_GREETING=hello world
+</code></pre>
+<p>and <code>messages_de.properties</code>:</p>
+<pre><code>MSG_GREETING=hallo welt
+</code></pre>
+<p>then in your template, you can obtain the translation/message for a given key using either the <code>translate</code> pipe:</p>
+<pre><code class="language-html">&lt;h1&gt;{{ 'MSG_GREETING' | translate  }}&lt;/h1&gt;
+</code></pre>
+<p>or the <code>translate</code> directive:</p>
+<pre><code class="language-html">&lt;h1 translate=&quot;MSG_GREETING&quot;&gt;&lt;/h1&gt;
+</code></pre>
+<p>The current locale for the translation is held by the <code>LocaleProvider</code>. Default is <code>Locale#getDefault()</code>.</p>
+<p>Given a german locale, both will render:</p>
+<pre><code class="language-html">&lt;h1&gt;hallo welt&lt;/h1&gt;
+</code></pre>
+<p>You can override the locale by providing another <code>LocaleProvider</code>:</p>
+<pre><code class="language-java">Ngoy&lt;App&gt; ngoy = Ngoy.app(AppComponent.class)
+	.translateBundle(&quot;messages&quot;)
+	.providers(
+		Provider.useValue(LocaleProvider.class, new LocaleProvider.Default(Locale.ENGLISH)))
+	.build();
+</code></pre>
+<p>or use the session's locale (Spring Boot):</p>
+<pre><code class="language-java">Ngoy&lt;App&gt; ngoy = Ngoy.app(AppComponent.class)
+	.translateBundle(&quot;messages&quot;)
+	.providers(
+		Provider.useValue(LocaleProvider.class, LocaleContextHolder::getLocale))
+	.build();
+</code></pre>
+<p>Parameters are supported by the <code>translate</code> pipe:</p>
+<pre><code>MSG_GREET_WITH_PARAM=hello {0}
+</code></pre>
+<pre><code class="language-html">&lt;h1&gt;{{ 'MSG_GREET_WITH_PARAM' | translate: 'world'  }}&lt;/h1&gt;
+</code></pre>
+<p>You can inject <code>TranslateService</code> anywhere for dynamic translations:</p>
+<pre><code class="language-java">@Component(...)
+public class PersonComponent implements OnInit {
+	
+	@Inject
+	public TranslateService translateService;
+	
+	public void ngOnInit() {
+		String greeting = translateService.translate(&quot;MSG_GREET_WITH_PARAM&quot;, &quot;world&quot;);
+		...
+	}
+}
+</code></pre>
+<h2 id="forms">Forms</h2>
 <p>to be done.</p>
 <h1 id="cli">CLI</h1>
 <p>ngoy has a built in CLI with which you can</p>
@@ -789,7 +851,7 @@ generating artifact '.\src\main\java\ngoygen\person\person.component.css'...
 <pre><code>123
 </code></pre>
 <markdown-toc class="d-none d-md-block">
-<a href="#running-ngoy" style="margin-left:20px">Running ngoy</a><a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#interpolation" style="margin-left:60px">Interpolation</a><a href="#attribute-binding" style="margin-left:60px">Attribute Binding</a><a href="#hostbinding" style="margin-left:60px">@HostBinding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component interaction</a><a href="#component-styles" style="margin-left:40px">Component styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time hook</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#plain-text-templates" style="margin-left:40px">Plain Text Templates</a><a href="#xml-templates" style="margin-left:40px">XML Templates</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#routing" style="margin-left:20px">Routing</a><a href="#forms" style="margin-left:20px">Forms</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#spring-el" style="margin-left:20px">Spring EL</a></markdown-toc></markdown></doc>
+<a href="#running-ngoy" style="margin-left:20px">Running ngoy</a><a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#interpolation" style="margin-left:60px">Interpolation</a><a href="#attribute-binding" style="margin-left:60px">Attribute Binding</a><a href="#hostbinding" style="margin-left:60px">@HostBinding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component interaction</a><a href="#component-styles" style="margin-left:40px">Component styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time hook</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#plain-text-templates" style="margin-left:40px">Plain Text Templates</a><a href="#xml-templates" style="margin-left:40px">XML Templates</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#built-in-modules" style="margin-left:20px">Built-in Modules</a><a href="#router" style="margin-left:40px">Router</a><a href="#translate" style="margin-left:40px">Translate</a><a href="#forms" style="margin-left:40px">Forms</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#spring-el" style="margin-left:20px">Spring EL</a></markdown-toc></markdown></doc>
 			</div>
 		</div>
 	</div>

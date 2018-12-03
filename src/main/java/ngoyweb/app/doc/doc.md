@@ -155,7 +155,7 @@ Alternatively you can write also:
 <h1 [attr.title]="person.name"></h1>
 ```
 
-The `[attr.]` syntax is relevant when using the `@HostBinding` annotation, see later in this document.
+The `[attr.]` syntax is relevant when using the <a href="#hostbinding">`@HostBinding`</a> annotation.
 
 #### `class` attribute
 
@@ -308,7 +308,7 @@ public class PersonComponent implements OnInit {
 	public boolean isVip;
 	
 	public void ngOnInit() {
-		isVip = isVip(person);
+		isVip = calculateVipStatus(person);
 	}
 }
 ```
@@ -335,13 +335,15 @@ public class PersonComponent implements OnInit, OnDestroy {
 }
 ```
 
-`ngOnInit()` is called in the rendering phase each time the component is entered (when it's host element starts).
+`ngOnInit()` is called in the rendering phase each time the component, resp. it's host element starts.
 
-Typically, a component computes 'expensive' field values in `ngOnInit()`, which are used several times in the template.
+Typically, a component computes field values in `ngOnInit()`, may using an injected service.
 
-Note: A new component instance is created each time it is entered. Initialization can happen in the constructor as long as no injected dependecies are used. At construction time, fields are not injected yet, but in `ngOnInit()`, they are.
+Note: A new component instance is created each time it is entered.
+Initialization can happen in the constructor as long as no injected dependecies are used. 
+At construction time, fields are not injected yet, but in `ngOnInit()`, they are.
 
-`ngOnDestroy()` is called in the rendering phase each time the component is leaved (when it's host element ends).
+`ngOnDestroy()` is called in the rendering phase each time the component, resp. it's host element ends.
 
 ## Component interaction
 
@@ -454,7 +456,7 @@ public class HighlightDirective {
 }
 ```
 
-A directive is aka a 'component without a template'. All rules of a component apply also to a directive, except that the host element's content is not replaced by any template. So a directive serves merely to change the attributes of the host element with the use of `@HostBinding`s, or as a compile-time hook (see below). 
+A directive is aka a 'component without a template'. All rules of a component apply also to a directive, except that the host element's content is not replaced by any template. So a directive serves merely to change the attributes of the host element with the use of `@HostBinding`s, or as a <a href="#compile-time-hook">compile-time hook</a>. 
 
 ## Control Structures
 
@@ -676,7 +678,7 @@ These are the built-in pipes:
 - [lowercase](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/LowerCasePipe.java)
 - [capitalize](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/CapitalizePipe.java)
 - [date](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/DatePipe.java)
-- [translate](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/translate/TranslatePipe.java) (see TranslateModule later in this document)
+- [translate](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/translate/TranslatePipe.java) (see <a href="#translate">Translate Module</a>)
 
 
 Of course you can write your own:
@@ -936,12 +938,103 @@ public class Main implements InitializingBean {
 }
 ```
 
-# Routing
+# Built-in Modules
+
+These modules are contained in the ngoy binaries.
+
+See the module's documentation below on how they must be imported into your app.
+
+## Router
 
 Basic routing functionality can be found in the `RouterModule`. See the [router](https://github.com/krizzdewizz/ngoy-examples/tree/master/src/main/java/ngoyexamples/routing) example in the [ngoy-examples](https://github.com/krizzdewizz/ngoy-examples) collection.
 
+## Translate
 
-# Forms
+Using the `TranslateModule`, you can easily translate text in your templates using the standard Java way with message bundles. 
+
+The easiest way to include translation support is to build the ngoy instance with a call to `translateBundle()`:
+
+```java
+Ngoy<App> ngoy = Ngoy.app(AppComponent.class)
+	.translateBundle("messages") // PropertyResourceBundle 'baseName'
+	.build();
+```
+
+`translateBundle()` adds the `TranslateModule` to ngoy and configures the `TranslateService` to load the `PropertyResourceBundle` named `"messages"`.
+
+Given these message bundles:
+
+`messages_en.properties`:
+```
+MSG_GREETING=hello world
+```
+and `messages_de.properties`:
+```
+MSG_GREETING=hallo welt
+```
+
+then in your template, you can obtain the translation/message for a given key using either the `translate` pipe:
+```html
+<h1>{{"{{ 'MSG_GREETING'"}} | {{'translate'}}  }}</h1>
+```
+
+or the `translate` directive:
+```html
+<h1 translate="MSG_GREETING"></h1>
+```
+
+The current locale for the translation is held by the `LocaleProvider`. Default is `Locale#getDefault()`.
+
+Given a german locale, both will render:
+```html
+<h1>hallo welt</h1>
+```
+
+You can override the locale by providing another `LocaleProvider`:
+
+```java
+Ngoy<App> ngoy = Ngoy.app(AppComponent.class)
+	.translateBundle("messages")
+	.providers(
+		Provider.useValue(LocaleProvider.class, new LocaleProvider.Default(Locale.ENGLISH)))
+	.build();
+```
+
+or use the session's locale (Spring Boot):
+```java
+Ngoy<App> ngoy = Ngoy.app(AppComponent.class)
+	.translateBundle("messages")
+	.providers(
+		Provider.useValue(LocaleProvider.class, LocaleContextHolder::getLocale))
+	.build();
+```
+
+Parameters are supported by the `translate` pipe:
+```
+MSG_GREET_WITH_PARAM=hello {0}
+```
+
+```html
+<h1>{{"{{ 'MSG_GREET_WITH_PARAM'"}} | {{"translate: 'world'"}}  }}</h1>
+```
+
+You can inject `TranslateService` anywhere for dynamic translations:
+
+```java
+@Component(...)
+public class PersonComponent implements OnInit {
+	
+	@Inject
+	public TranslateService translateService;
+	
+	public void ngOnInit() {
+		String greeting = translateService.translate("MSG_GREET_WITH_PARAM", "world");
+		...
+	}
+}
+```
+
+## Forms
  
 to be done.
 
