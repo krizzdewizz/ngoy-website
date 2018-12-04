@@ -28,7 +28,7 @@ If you want more like reusable components, custom functions (pipes), services...
 It expects the root component class as the first parameter:
 
 ```java
-@Component(selector = "app", template = "hello {{ '{{ name '}} | {{ 'uppercase }}' }}")
+@Component(selector = "", template = "hello {{ '{{ name '}} | {{ 'uppercase }}' }}")
 public class AppComponent {
     public String name = "world";
 }
@@ -401,6 +401,8 @@ public class PersonComponent {
 }
 ```
 
+An `@Input` field must be public, non-static and non-final.
+
 ## Component styles
 
 A component can specify inline `style`s or resources identified by `styleUrls`:
@@ -498,7 +500,7 @@ The first `*ngSwitchCase` matching the expression `emotion` will be rendered. If
 
 A `[ngSwitch]` must have at least one `*ngSwitchCase`.
 
-[ngSwitch] can switch on any type of value.
+`[ngSwitch]` can switch on any type of value.
 
 ### *ngFor
 
@@ -720,12 +722,12 @@ $greet($uppercase('hello'))
 
 ngoy renders plain text formats (no markup) and you can nevertheless use components the same way as with regular templates.
 
-Just set the root component's `contentType` to `text/plain`.
+Just set the root component's `contentType` to `"text/plain"`.
 
 A complete example:
 
 ```java
-@Component(selector = "header", template = "Welcome, {{' {{ name }} '}}\n")
+@Component(selector = "header", template = "Welcome, {{'{{ name }}'}}\n")
 public class HeaderCmp {
 	@Input
 	public String name;
@@ -796,7 +798,7 @@ public class AppComponent {
 Without the `NgModule` annotation, the `PersonComponent` would be unknown to ngoy and the `<person>` element would not match any selector and it would just stay there as it is. 
 
 A class annotated with `NgModule` serves as a container for declarations and providers. A logical unit to group a feature together. 
-May a component needs a provider or other components to work correctly. So you would group them into a module, so that client of your component can import just the module instead of all parts separately. And you could add more stuff to the module afterwards without breaking the clients. 
+May a component needs a provider or other components to work correctly. So you would group them into a module, so that clients of your component can import just the module instead of all parts separately. And you could add more stuff to the module afterwards without breaking the clients. 
 
  A `NgModule` has three attributes:
 
@@ -804,7 +806,7 @@ May a component needs a provider or other components to work correctly. So you w
 - `providers`: make providers/services known to ngoy
 - `imports`: imports other `NgModule`s, making them known to ngoy recursively
 
-Note: Unlike other module systems, there exists no enforced boundaries between modules. At the end, everything is stuffed into a single map. Everything can be reached from anywhere.
+Note: Unlike other module systems, there exists no boundaries between modules. At the end, everything is stuffed into a single map. Everything can be reached from anywhere.
 
 A runtime exception is thrown whenever more than one component matches an element.
 
@@ -890,7 +892,7 @@ public class PersonComponent implements OnInit {
 }
 ```
 
-Fields must be annotated with `@Inject`. Constructor parameters must not be annotated.
+Fields must be public, non-static, non-final and annotated with `@Inject`. Constructor parameters must not be annotated.
 
 A runtime exception is thrown if there's no provider for a service. A dependency may be declared `@Optional` in which case no exception is thrown.
 
@@ -906,6 +908,9 @@ There are 3 kinds of providers:
 Providers can be specified at runtime, especially the `useValue` variant, which is used to inject external dependencies into ngoy.  
 
 ```java
+
+// 'service' may be an Spring repository/service or an instance created by you
+
 ngoy.app(AppComponent.class)
 	.providers(Provider.useValue(MyService.class, service)
 	.build();
@@ -1017,7 +1022,7 @@ MSG_GREET_WITH_PARAM=hello {0}
 <h1>{{"{{ 'MSG_GREET_WITH_PARAM'"}} | {{"translate: 'world'"}}  }}</h1>
 ```
 
-You can inject `TranslateService` anywhere for dynamic translations:
+You can inject `TranslateService` anywhere for translations in code:
 
 ```java
 @Component(...)
