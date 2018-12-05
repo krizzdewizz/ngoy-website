@@ -85,10 +85,13 @@ public class PersonCmp {
 	public Person person;
 }
 
-@Component(selector = "", template = "<html><person *ngFor=\"let person of persons\" [person]=\"person\"></person></html>")
+@Component(selector = "", template = "<html><person *ngFor=\"let it of persons\" [person]=\"it\"></person></html>")
 @NgModule(declarations = { PersonCmp.class })
 public class App {
-	public Person[] persons = new Person[] { new Person("Peter", 22), new Person("Paul", 26), new Person("Mary", 24) };
+	public Person[] persons = new Person[] { 
+		new Person("Peter", 22), 
+		new Person("Paul", 26), 
+		new Person("Mary", 24) };
 }
 
 Ngoy.app(App.class)

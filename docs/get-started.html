@@ -93,7 +93,7 @@ public class AppComponent {
 <li>render templates and expressions from the command line</li>
 <li>quickly generate source code artifacts for new projects, components, pipes etc.</li>
 </ul>
-<p>Download the ngoy release ZIP from <a href="https://github.com/krizzdewizz/ngoy/releases">here</a> and extract it to folder on your computer.</p>
+<p>Download the ngoy release ZIP from <a href="https://github.com/krizzdewizz/ngoy/releases">here</a> and extract it to a folder on your computer.</p>
 <p>You may want to add this folder to the system's path.</p>
 <p>The ZIP contains two shell scripts <code>ngoy</code> and <code>ngoy.cmd</code> and the ngoy distribution jar.</p>
 <pre><code>$ ./ngoy
@@ -206,7 +206,7 @@ hello world
 $ ngoy &quot;&lt;li *ngFor='let x of {1, 2, 3}.?[intValue() &gt; 1]'&gt;{{x}}&lt;/li&gt;&quot;
 &lt;li&gt;2&lt;/li&gt;&lt;li&gt;3&lt;/li&gt;
 
-$ ll | ngoy -e -in &quot;$.startsWith('total') ? '' : ($.substring(0, 10) + nl)&quot;
+$ ll | ngoy -in -e &quot;$.startsWith('total') ? '' : ($.substring(0, 10) + nl)&quot;
 drwxrwxrwx
 drwxrwxrwx
 -rwxrwxrwx

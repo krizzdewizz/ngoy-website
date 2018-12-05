@@ -345,7 +345,7 @@ At construction time, fields are not injected yet, but in `ngOnInit()`, they are
 
 `ngOnDestroy()` is called in the rendering phase each time the component, resp. it's host element ends.
 
-## Component interaction
+## Component Interaction
 
 You can pass data from a parent component to a child component with an input binding:
 
@@ -443,7 +443,7 @@ would be translated to:
 ```css
 person h1 { font-weight: normal; }
 ``` 
-## Attribute directives
+## Attribute Directives
 
 Directives are annotated with the `@Directive` annotation:
 
@@ -637,7 +637,7 @@ that will produce:
 <span>index: 2</span>
 ```
 
-## Compile-time hook
+## Compile-time Hook
 
 When the template is compiled, a component/directive has the chance to alter the template's subtree before the compiler sees it. At this point, you can i.e. insert static content, re-write or expand a template based on some attributes etc.
 
@@ -903,7 +903,7 @@ There are 3 kinds of providers:
 -  `class A` -> `useClass B`: Wherever `class A` is requested (could be an interface), inject an instance of `class B`, which must be assignable to `class A`. Used to override default behaviour.
 -  `class A` -> `useValue V`: Wherever `class A` is requested (could be an interface), inject the instance `V`, which must be an instance of `class A`. Only available at runtime, not with annotations.
 
-## Providers at runtime
+## Providers at Runtime
 
 Providers can be specified at runtime, especially the `useValue` variant, which is used to inject external dependencies into ngoy.  
 

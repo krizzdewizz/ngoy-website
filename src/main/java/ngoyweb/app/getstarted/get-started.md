@@ -71,7 +71,7 @@ ngoy has a built in CLI with which you can
 - render templates and expressions from the command line
 - quickly generate source code artifacts for new projects, components, pipes etc. 
 
-Download the ngoy release ZIP from [here](https://github.com/krizzdewizz/ngoy/releases) and extract it to folder on your computer.
+Download the ngoy release ZIP from [here](https://github.com/krizzdewizz/ngoy/releases) and extract it to a folder on your computer.
 
 You may want to add this folder to the system's path.
 
@@ -221,7 +221,7 @@ hello world
 $ ngoy "<li *ngFor='let x of {1, 2, 3}.?[intValue() > 1]'>{{'{{x}}'}}</li>"
 <li>2</li><li>3</li>
 
-$ ll | ngoy -e -in "$.startsWith('total') ? '' : ($.substring(0, 10) + nl)"
+$ ll | ngoy -in -e "$.startsWith('total') ? '' : ($.substring(0, 10) + nl)"
 drwxrwxrwx
 drwxrwxrwx
 -rwxrwxrwx

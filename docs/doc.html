@@ -267,7 +267,7 @@ public class PersonComponent implements OnInit, OnDestroy {
 Initialization can happen in the constructor as long as no injected dependecies are used.
 At construction time, fields are not injected yet, but in <code>ngOnInit()</code>, they are.</p>
 <p><code>ngOnDestroy()</code> is called in the rendering phase each time the component, resp. it's host element ends.</p>
-<h2 id="component-interaction">Component interaction</h2>
+<h2 id="component-interaction">Component Interaction</h2>
 <p>You can pass data from a parent component to a child component with an input binding:</p>
 <pre><code class="language-java">@Component(...)
 public class PersonComponent {
@@ -331,7 +331,7 @@ public class PersonComponent {
 <p>would be translated to:</p>
 <pre><code class="language-css">person h1 { font-weight: normal; }
 </code></pre>
-<h2 id="attribute-directives">Attribute directives</h2>
+<h2 id="attribute-directives">Attribute Directives</h2>
 <p>Directives are annotated with the <code>@Directive</code> annotation:</p>
 <pre><code class="language-java">@Directive(selector = &quot;[appHighlight]&quot;)
 public class HighlightDirective {
@@ -469,7 +469,7 @@ the first element inside the host element matching the selector will be projecte
 &lt;span&gt;name: Mary&lt;/span&gt;
 &lt;span&gt;index: 2&lt;/span&gt;
 </code></pre>
-<h2 id="compile-time-hook">Compile-time hook</h2>
+<h2 id="compile-time-hook">Compile-time Hook</h2>
 <p>When the template is compiled, a component/directive has the chance to alter the template's subtree before the compiler sees it. At this point, you can i.e. insert static content, re-write or expand a template based on some attributes etc.</p>
 <p>A component/directive may implement the <code>OnCompile</code> interface:</p>
 <pre><code class="language-java">@Component(...)
@@ -667,7 +667,7 @@ public class PersonComponent implements OnInit {
 <li><code>class A</code> -&gt; <code>useClass B</code>: Wherever <code>class A</code> is requested (could be an interface), inject an instance of <code>class B</code>, which must be assignable to <code>class A</code>. Used to override default behaviour.</li>
 <li><code>class A</code> -&gt; <code>useValue V</code>: Wherever <code>class A</code> is requested (could be an interface), inject the instance <code>V</code>, which must be an instance of <code>class A</code>. Only available at runtime, not with annotations.</li>
 </ul>
-<h2 id="providers-at-runtime">Providers at runtime</h2>
+<h2 id="providers-at-runtime">Providers at Runtime</h2>
 <p>Providers can be specified at runtime, especially the <code>useValue</code> variant, which is used to inject external dependencies into ngoy.</p>
 <pre><code class="language-java">
 // 'service' may be an Spring repository/service or an instance created by you
@@ -873,7 +873,7 @@ generating artifact '.\src\main\java\ngoygen\person\person.component.css'...
 <pre><code>123
 </code></pre>
 <markdown-toc class="d-none d-md-block">
-<a href="#running-ngoy" style="margin-left:20px">Running ngoy</a><a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#interpolation" style="margin-left:60px">Interpolation</a><a href="#attribute-binding" style="margin-left:60px">Attribute Binding</a><a href="#hostbinding" style="margin-left:60px">@HostBinding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component interaction</a><a href="#component-styles" style="margin-left:40px">Component styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time hook</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#plain-text-templates" style="margin-left:40px">Plain Text Templates</a><a href="#xml-templates" style="margin-left:40px">XML Templates</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#built-in-modules" style="margin-left:20px">Built-in Modules</a><a href="#router" style="margin-left:40px">Router</a><a href="#translate" style="margin-left:40px">Translate</a><a href="#forms" style="margin-left:40px">Forms</a><a href="#unit-testing" style="margin-left:20px">Unit Testing</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#spring-el" style="margin-left:20px">Spring EL</a></markdown-toc></markdown></doc>
+<a href="#running-ngoy" style="margin-left:20px">Running ngoy</a><a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#interpolation" style="margin-left:60px">Interpolation</a><a href="#attribute-binding" style="margin-left:60px">Attribute Binding</a><a href="#hostbinding" style="margin-left:60px">@HostBinding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component Interaction</a><a href="#component-styles" style="margin-left:40px">Component styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute Directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time Hook</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#plain-text-templates" style="margin-left:40px">Plain Text Templates</a><a href="#xml-templates" style="margin-left:40px">XML Templates</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at Runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#built-in-modules" style="margin-left:20px">Built-in Modules</a><a href="#router" style="margin-left:40px">Router</a><a href="#translate" style="margin-left:40px">Translate</a><a href="#forms" style="margin-left:40px">Forms</a><a href="#unit-testing" style="margin-left:20px">Unit Testing</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#spring-el" style="margin-left:20px">Spring EL</a></markdown-toc></markdown></doc>
 			</div>
 		</div>
 	</div>
