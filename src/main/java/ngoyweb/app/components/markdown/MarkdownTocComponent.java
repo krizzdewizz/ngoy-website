@@ -21,6 +21,9 @@ public class MarkdownTocComponent {
 			, "ngif" //
 			, "ngswitch" //
 			, "ngfor" //
+			, "interpolation" //
+			, "attribute-binding" //
+			, "hostbinding" //
 	));
 
 	@HostBinding("class.d-none")

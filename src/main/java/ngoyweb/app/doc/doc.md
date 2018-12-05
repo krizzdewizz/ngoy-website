@@ -403,7 +403,7 @@ public class PersonComponent {
 
 An `@Input` field must be public, non-static and non-final.
 
-## Component styles
+## Component Styles
 
 A component can specify inline `style`s or resources identified by `styleUrls`:
 
