@@ -6,4 +6,4 @@ if [ ! -e $ngoyPath ]; then
 	echo "Extracting ngoy binaries..."
     gradle extractNgoy
 fi
-java -cp "$ngoyPath/*" ngoy.Ngoy $@
+java -cp "$ngoyPath/*" ngoy.Ngoy "$@"

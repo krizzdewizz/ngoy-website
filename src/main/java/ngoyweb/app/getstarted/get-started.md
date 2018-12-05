@@ -94,7 +94,31 @@ Options:
     --version                 print version information
 ```
 
-### Generate a new Project
+## Evaluate Expressions
+
+Some examples:
+```
+$ ngoy -e "1+1"
+2
+
+$ ngoy -v name=world "hello {{'{{name}}'}}"
+hello world
+
+$ ngoy "<li *ngFor='let x of {1, 2, 3}.?[intValue() > 1]'>{{'{{x}}'}}</li>"
+<li>2</li><li>3</li>
+
+$ ll | ngoy -e -in "$.startsWith('total') ? '' : ($.substring(0, 10) + nl)"
+drwxrwxrwx
+drwxrwxrwx
+-rwxrwxrwx
+-rwxrwxrwx
+drwxrwxrwx
+-rwxrwxrwx
+drwxrwxrwx
+...
+```
+
+## Generate a new Project
 
 The generator's help:
 
@@ -120,7 +144,7 @@ Options:
     --version        print version information
 ```
 
-Let's create a new (gradle only) project in the current directory (add `-t` to generate it in another one):
+Let's create a new (gradle only) project in the current directory. Add `-t` to generate it in another one. The directory must be empty.
 
 ```
 $ ./ngoy new com.example.MyApp
@@ -150,7 +174,7 @@ gradle run
 and open
 [http://localhost:8080](http://localhost:8080) in the browser.
 
-### Add a Component
+## Add a Component
 
 
 ```

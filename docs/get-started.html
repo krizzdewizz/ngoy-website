@@ -111,7 +111,28 @@ Options:
  -v,--variable &lt;name=value&gt;   add a variable to the execution context
     --version                 print version information
 </code></pre>
-<h3 id="generate-a-new-project">Generate a new Project</h3>
+<h2 id="evaluate-expressions">Evaluate Expressions</h2>
+<p>Some examples:</p>
+<pre><code>$ ngoy -e &quot;1+1&quot;
+2
+
+$ ngoy -v name=world &quot;hello {{name}}&quot;
+hello world
+
+$ ngoy &quot;&lt;li *ngFor='let x of {1, 2, 3}.?[intValue() &gt; 1]'&gt;{{x}}&lt;/li&gt;&quot;
+&lt;li&gt;2&lt;/li&gt;&lt;li&gt;3&lt;/li&gt;
+
+$ ll | ngoy -e -in &quot;$.startsWith('total') ? '' : ($.substring(0, 10) + nl)&quot;
+drwxrwxrwx
+drwxrwxrwx
+-rwxrwxrwx
+-rwxrwxrwx
+drwxrwxrwx
+-rwxrwxrwx
+drwxrwxrwx
+...
+</code></pre>
+<h2 id="generate-a-new-project">Generate a new Project</h2>
 <p>The generator's help:</p>
 <pre><code>$ ./ngoy new
 
@@ -133,7 +154,7 @@ Options:
                      ./src, .]
     --version        print version information
 </code></pre>
-<p>Let's create a new (gradle only) project in the current directory (add <code>-t</code> to generate it in another one):</p>
+<p>Let's create a new (gradle only) project in the current directory. Add <code>-t</code> to generate it in another one. The directory must be empty.</p>
 <pre><code>$ ./ngoy new com.example.MyApp
 
 generating artifact '.\.gitignore'...
@@ -156,7 +177,7 @@ Initializing git...
 </code></pre>
 <p>and open
 <a href="http://localhost:8080">http://localhost:8080</a> in the browser.</p>
-<h3 id="add-a-component">Add a Component</h3>
+<h2 id="add-a-component">Add a Component</h2>
 <pre><code>$ ./ngoy g c com.example.person.Person
 
 generating artifact '.\src\main\java\com\example\person\PersonComponent.java'...
@@ -197,7 +218,7 @@ avoid collisions with existing HTML elements or components from other libraries.
 <p>Checkout ngoy's <a href="https://github.com/krizzdewizz/ngoy-tour-of-heroes">Tour of Heroes</a> tutorial rewrite,
 the <a href="https://github.com/krizzdewizz/ngoy-examples">examples collection</a> or visit the <a routerLink="doc" href="doc">documentation</a>.</p>
 <markdown-toc class="d-none d-md-block">
-<a href="#ngoy-starter-web" style="margin-left:20px">ngoy-starter-web</a><a href="#standalonecli" style="margin-left:20px">Standalone/CLI</a><a href="#generate-a-new-project" style="margin-left:60px">Generate a new Project</a><a href="#add-a-component" style="margin-left:60px">Add a Component</a><a href="#next-steps" style="margin-left:20px">Next steps</a></markdown-toc></markdown>
+<a href="#ngoy-starter-web" style="margin-left:20px">ngoy-starter-web</a><a href="#standalonecli" style="margin-left:20px">Standalone/CLI</a><a href="#evaluate-expressions" style="margin-left:40px">Evaluate Expressions</a><a href="#generate-a-new-project" style="margin-left:40px">Generate a new Project</a><a href="#add-a-component" style="margin-left:40px">Add a Component</a><a href="#next-steps" style="margin-left:20px">Next steps</a></markdown-toc></markdown>
 </get-started>
 			</div>
 		</div>
