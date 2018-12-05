@@ -1141,6 +1141,17 @@ generating artifact '.\src\main\java\ngoygen\person\person.component.html'...
 generating artifact '.\src\main\java\ngoygen\person\person.component.css'...
 ```
 
+Note: the element, resp. the `selector` of `PersonComponent` is prefixed with `app`. It's common practice to have a prefix in order to 
+avoid collisions with existing HTML elements or components from other libraries.
+
+You can override the prefix. Create a `ngoy.properties` file and add this property:
+
+```
+app.prefix=myprefix
+```
+
+The generator looks up the properties file in the current directory.
+
 # Spring EL
 
 ngoy uses the [Spring EL](https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html) library for expression/evaluation.
