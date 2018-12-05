@@ -45,81 +45,160 @@
 		<div class="row">
 			<div class="col">
 				<get-started><ngoy-title><h1 class="mt-5 ngoy-title">Getting started</h1></ngoy-title>
-<p>Welcome to ngoy!
-</p><p>This guide shows you how to build and run a simple ngoy app.
-</p><p>
-</p><h3>Prerequisites</h3><ul>
-
-
-	<li>JRE &gt;= 8</li>
+<markdown url="getstarted/get-started.md" toc><p>This guide shows you how to build and run a simple ngoy app and how to use the CLI to generate an app from scratch.</p>
+<p><strong>Prerequisites</strong></p>
+<ul>
+<li>JRE &gt;= 8</li>
 </ul>
-
-<ngoy-starter><p>ngoy is a standalone library with no dependencies to any web
-	server/framework. All it needs is an OutputStream to write the contents
-	to.
-</p><p>
-	Since we are going to produce HTML, it is best to spin off a web server
-	and view the HTML contents in the browser. We are going to use a
-	Gradle/Spring Boot application for that purpose. So for this guide you
-	must have <a href="https://gradle.org">gradle</a> installed.
-</p><p>
-	The <a href="https://github.com/krizzdewizz/ngoy-starter-web">ngoy-starter-web</a>
-	repository is a good place to start. Let's clone it:
-</p><pre>git clone https://github.com/krizzdewizz/ngoy-starter-web </pre>
-<pre>cd ngoy-starter-web</pre>
-
-
-<p>Run the web server:
-</p><pre>gradle run</pre>
-
-and open
-<a href="http://localhost:8080">http://localhost:8080</a>
-in the browser.
-<p></p></ngoy-starter>
-
-<p>
-	You should see the app's greeting:<br> <img src="images/ngoy-starter-web-a.png">
-</p><h3>Make some changes</h3>
-<p>
-	Open
-	<code>AppComponent.java</code>
-	and change the
-	<code>title</code>
-	field from
-	<code>&quot;my-app&quot;</code>
-	to
-	<code>&quot;My first ngoy app&quot;</code>
-	:
-</p><pre><code class="language-java">@Component(selector = &quot;&quot;, templateUrl = &quot;app.component.html&quot;, styleUrls = { &quot;app.component.css&quot; })
+<p>ngoy is a standalone library with no dependencies to any web server/framework.
+All it needs is an OutputStream to write the contents to.</p>
+<h1 id="ngoy-starter-web">ngoy-starter-web</h1>
+<p>In this guide we are going to produce HTML. It's best to spin off a web server and view the HTML contents in the browser.
+We are going to use a Gradle/Spring Boot application for that purpose. So for this guide you must have <a href="https://gradle.org">gradle</a> installed.</p>
+<p>The <a href="https://github.com/krizzdewizz/ngoy-starter-web">ngoy-starter-web</a> repository is a good place to start.</p>
+<p>Let's clone it:</p>
+<pre><code>git clone https://github.com/krizzdewizz/ngoy-starter-web
+</code></pre>
+<p>Run the web server:</p>
+<pre><code>gradle run
+</code></pre>
+<p>and open
+<a href="http://localhost:8080">http://localhost:8080</a> in the browser.</p>
+<p>You should see the app's greeting:</p>
+<p><img src="images/ngoy-starter-web-a.png" alt=""></p>
+<p><strong>Make some changes</strong></p>
+<p>Open <code>AppComponent.java</code> and change the <code>title</code> field from <code>&quot;my-app&quot;</code> to <code>&quot;My first ngoy app&quot;</code>:</p>
+<pre><code class="language-java">@Component(selector = &quot;&quot;, templateUrl = &quot;app.component.html&quot;, styleUrls = { &quot;app.component.css&quot; })
 public class AppComponent {
 	public final String title = &quot;My first ngoy app&quot;;
 }
 </code></pre>
-
-
-<p>
-	You should see the changed title:<br> <img src="images/ngoy-starter-web-b.png">
-</p><p>
-	Open
-	<code>app.component.css</code>
-	and give it some style:
-</p><pre><code class="language-html">h1 {
+<p>You should see the changed title:</p>
+<p><img src="images/ngoy-starter-web-b.png" alt=""></p>
+<p>Open <code>app.component.css</code> and give it some style:</p>
+<pre><code class="language-css">h1 {
 	color: #369;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 250%;
 }
 </code></pre>
+<p>Looking nice:</p>
+<p><img src="images/ngoy-starter-web-c.png" alt=""></p>
+<h1 id="standalonecli">Standalone/CLI</h1>
+<p>ngoy has a built in CLI with which you can</p>
+<ul>
+<li>render templates and expressions from the command line</li>
+<li>quickly generate source code artifacts for new projects, components, pipes etc.</li>
+</ul>
+<p>Download the ngoy release ZIP from <a href="https://github.com/krizzdewizz/ngoy/releases">here</a> and extract it to folder on your computer.</p>
+<p>You may want to add this folder to the system's path.</p>
+<p>The ZIP contains two shell scripts <code>ngoy</code> and <code>ngoy.cmd</code> and the ngoy distribution jar.</p>
+<pre><code>$ ./ngoy
 
-Looking nice:
-<br>
-<img src="images/ngoy-starter-web-c.png">
+usage: ngoy [new|g|gen|generate] [options] template
 
-<p>
-</p><h3>Next steps</h3>
-<p>
-	Checkout ngoy's <a href="https://github.com/krizzdewizz/ngoy-tour-of-heroes">&quot;Tour of
-		Heroes&quot;</a> tutorial rewrite, the <a href="https://github.com/krizzdewizz/ngoy-examples">examples collection</a> or visit the <a routerLink="doc" href="doc">documentation</a>.
-</p></get-started>
+If 'generate' is given, the rest of the arguments are passed over to
+ngoy-gen. 'new' is an alias for 'generate project'.
+
+Options:
+ -e,--expression              treat template as an expression
+ -f,--file                    read template from file instead of command
+                              line
+ -h,--help                    display this help
+ -in,--input                  run template for each line read from stdin
+                              (use $ variable to access line within
+                              template)
+ -v,--variable &lt;name=value&gt;   add a variable to the execution context
+    --version                 print version information
+</code></pre>
+<h3 id="generate-a-new-project">Generate a new Project</h3>
+<p>The generator's help:</p>
+<pre><code>$ ./ngoy new
+
+usage: ngoy-gen [options] project|component|directive|pipe|module|service
+                name
+
+name should be a fully qualified Java class name.
+
+Examples:
+  ngoy-gen component org.myapp.PersonList
+
+Shortcuts works as well:
+  ngoy-gen pi org.myapp.MyPipe
+
+Options:
+ -h,--help           display this help
+ -t,--target &lt;arg&gt;   target folder for the generated artifacts. A default
+                     is searched in the following order: [./src/main/java,
+                     ./src, .]
+    --version        print version information
+</code></pre>
+<p>Let's create a new (gradle only) project in the current directory (add <code>-t</code> to generate it in another one):</p>
+<pre><code>$ ./ngoy new com.example.MyApp
+
+generating artifact '.\.gitignore'...
+generating artifact '.\build.gradle'...
+generating artifact '.\ngoy.cmd'...
+generating artifact '.\ngoy'...
+generating artifact '.\settings.gradle'...
+generating artifact '.\src\main\java\com\example\MyAppWebApplication.java'...
+generating artifact '.\src\main\java\com\example\app\app.component.css'...
+generating artifact '.\src\main\java\com\example\app\app.component.html'...
+generating artifact '.\src\main\java\com\example\app\AppComponent.java'...
+generating artifact '.\src\main\java\com\example\app\Main.java'...
+generating artifact '.\src\main\resources\application.properties'...
+generating artifact '.\src\main\resources\messages_en.properties'...
+Initializing git...
+</code></pre>
+<p>If you have git installed, a new repository is automatically initialized.</p>
+<p>Run the app:</p>
+<pre><code>gradle run
+</code></pre>
+<p>and open
+<a href="http://localhost:8080">http://localhost:8080</a> in the browser.</p>
+<h3 id="add-a-component">Add a Component</h3>
+<pre><code>$ ./ngoy g c com.example.person.Person
+
+generating artifact '.\src\main\java\com\example\person\PersonComponent.java'...
+generating artifact '.\src\main\java\com\example\person\person.component.html'...
+generating artifact '.\src\main\java\com\example\person\person.component.css'...
+</code></pre>
+<p>A component consists of several files and should be placed in an own package. The <code>Component</code> suffix is added by ngoy.</p>
+<p>Open <code>AppComponent.java</code> and add <code>PersonComponent.class</code> to the <code>NgModule</code>'s <code>declarations</code> list:</p>
+<pre><code class="language-java">@Component(selector = &quot;&quot;, templateUrl = &quot;app.component.html&quot;, styleUrls = { &quot;app.component.css&quot; })
+@NgModule(declarations = { PersonComponent.class }, providers = {})
+public class AppComponent {
+	...
+}
+
+</code></pre>
+<p>Open <code>app.component.html</code> and add an <code>&lt;app-person&gt;</code> element:</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+...
+
+&lt;body&gt;
+	...
+		
+	&lt;app-person&gt;&lt;/app-person&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
+<p>Person works:</p>
+<p><img src="images/my-app-a.png" alt=""></p>
+<p>Note: the element, resp. the <code>selector</code> of <code>PersonComponent</code> is prefixed with <code>app</code>. It's common practice to have a prefix in order to
+avoid collisions with existing HTML elements or components from other libraries.</p>
+<p>You can override the prefix. Create a <code>ngoy.properties</code> file and add this property:</p>
+<pre><code>app.prefix=myprefix
+</code></pre>
+<p>The generator looks up the properties file in the current directory.</p>
+<h1 id="next-steps">Next steps</h1>
+<p>Checkout ngoy's <a href="https://github.com/krizzdewizz/ngoy-tour-of-heroes">Tour of Heroes</a> tutorial rewrite,
+the <a href="https://github.com/krizzdewizz/ngoy-examples">examples collection</a> or visit the <a routerLink="doc" href="doc">documentation</a>.</p>
+<markdown-toc class="d-none d-md-block">
+<a href="#ngoy-starter-web" style="margin-left:20px">ngoy-starter-web</a><a href="#standalonecli" style="margin-left:20px">Standalone/CLI</a><a href="#generate-a-new-project" style="margin-left:60px">Generate a new Project</a><a href="#add-a-component" style="margin-left:60px">Add a Component</a><a href="#next-steps" style="margin-left:20px">Next steps</a></markdown-toc></markdown>
+</get-started>
 			</div>
 		</div>
 	</div>

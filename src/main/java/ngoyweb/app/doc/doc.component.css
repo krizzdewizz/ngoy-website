@@ -2,14 +2,3 @@ doc {
 	display: block;
 }
 
-@media (min-width: 768px) {
-  doc {
-	margin-right: 250px;
-  }
-}
-
-@media (min-width: 992px) {
-	doc {
-		margin-right: 200px;
-	}
-}

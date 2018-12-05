@@ -110,3 +110,16 @@ a {
 a:hover {
 	color: var(--primary8);
 }
+
+@media (min-width: 768px) {
+  doc, get-started {
+	margin-right: 250px;
+  }
+}
+
+@media (min-width: 992px) {
+	doc, get-started {
+		margin-right: 200px;
+	}
+}
+

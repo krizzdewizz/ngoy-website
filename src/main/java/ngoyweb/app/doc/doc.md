@@ -1046,7 +1046,7 @@ to be done.
 
 ngoy has a built in CLI with which you can
 - render templates and expressions from the command line
-- quickly generate source code artifacts for new components, pipes etc. 
+- quickly generate source code artifacts for new projects, components, pipes etc. 
 
 The CLI main class is `ngoy.Ngoy`. When you started with [ngoy-starter-web](https://github.com/krizzdewizz/ngoy-starter-web), 
 the ngoy binaries and a shell script `ngoy` are ready to use:
