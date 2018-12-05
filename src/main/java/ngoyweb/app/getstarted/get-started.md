@@ -96,30 +96,6 @@ Options:
     --version                 print version information
 ```
 
-## Evaluate Expressions
-
-Some examples:
-```
-$ ngoy -e "1+1"
-2
-
-$ ngoy -v name=world "hello {{'{{name}}'}}"
-hello world
-
-$ ngoy "<li *ngFor='let x of {1, 2, 3}.?[intValue() > 1]'>{{'{{x}}'}}</li>"
-<li>2</li><li>3</li>
-
-$ ll | ngoy -e -in "$.startsWith('total') ? '' : ($.substring(0, 10) + nl)"
-drwxrwxrwx
-drwxrwxrwx
--rwxrwxrwx
--rwxrwxrwx
-drwxrwxrwx
--rwxrwxrwx
-drwxrwxrwx
-...
-```
-
 ## Generate a new Project
 
 The generator's help:
@@ -230,6 +206,30 @@ app.prefix=myprefix
 ```
 
 The generator looks up the properties file in the current directory.
+
+## Evaluate Expressions
+
+Some examples:
+```
+$ ngoy -e "1+1"
+2
+
+$ ngoy -v name=world "hello {{'{{name}}'}}"
+hello world
+
+$ ngoy "<li *ngFor='let x of {1, 2, 3}.?[intValue() > 1]'>{{'{{x}}'}}</li>"
+<li>2</li><li>3</li>
+
+$ ll | ngoy -e -in "$.startsWith('total') ? '' : ($.substring(0, 10) + nl)"
+drwxrwxrwx
+drwxrwxrwx
+-rwxrwxrwx
+-rwxrwxrwx
+drwxrwxrwx
+-rwxrwxrwx
+drwxrwxrwx
+...
+```
 
 # Next steps
 
