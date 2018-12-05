@@ -53,21 +53,14 @@
 <p>ngoy is a pure Java library with no JavaScript involved.</p>
 </markdown>
 
-
-<span class="logo"></span>
+<span class="logo-spacer"></span>
+<span class="logo logo1"></span>
+<span class="logo logo2"></span>
 
 <p class="lead ngoy-enjoy2">enjoy ngoy!</p>
 
 <div class="row">
-	<div class="col">
-		<div class="card">
-		  <div class="card-body">
-			  <h5 class="card-title">Flexible</h5>
-				<p class="card-text">Produce any text content.<br><br>Use components in plain text formats.<br><br>Built-in CLI to render templates/expressions and generate source artifacts.<br><br></p>
-		  </div>
-		</div>
-	</div>
-	
+
 	<div class="col">
 		<div class="card">
 		  <div class="card-body">
@@ -81,7 +74,7 @@
 		<div class="card">
 		  <div class="card-body">
 			  <h5 class="card-title">Extensible</h5>
-				<p class="card-text">Dependency injection, modules, components, directives, pipes, providers/services.<br><br>Compile-time hook for components and directives.<br><br>Provide dependencies from any other DI system.</p>
+				<p class="card-text">Dependency injection, modules, components, directives, pipes, providers/services.<br><br>Compile-time hook for components and directives.<br><br>Connect other DI system.</p>
 		  </div>
 		</div>
 	</div>
@@ -94,6 +87,16 @@
 		  </div>
 		</div>
 	</div>
+	
+	<div class="col">
+		<div class="card">
+		  <div class="card-body">
+			  <h5 class="card-title">Flexible</h5>
+				<p class="card-text">Produce any text content.<br><br>Use components in plain text formats.<br><br>Built-in CLI to render templates/expressions and generate source artifacts.<br><br></p>
+		  </div>
+		</div>
+	</div>
+
 </div>
 
 <div class="row">
@@ -136,6 +139,17 @@ Ngoy.app(App.class)
 	&lt;person&gt;&lt;h1&gt;PAUL&lt;/h1&gt;age: 26&lt;/person&gt;
 	&lt;person&gt;&lt;h1&gt;MARY&lt;/h1&gt;age: 24&lt;/person&gt;
 &lt;/html&gt;
+</code></pre>
+<h2 id="distribution">Distribution</h2>
+<p>You can download the ngoy binaries from <a href="https://github.com/krizzdewizz/ngoy/releases">here</a> or via jitpack.io:</p>
+<p><code>build.gradle</code>:</p>
+<pre><code>repositories {
+	maven { url &quot;https://jitpack.io&quot; }
+}
+
+dependencies {
+	implementation(&quot;com.github.krizzdewizz:ngoy:1.0.0-rc0&quot;)
+}
 </code></pre>
 </markdown>
 

@@ -68,18 +68,53 @@ h3 {
 	padding-top: 2rem;
 }
 
+@keyframes rotate-clockwise {
+  100% {transform: rotate(360deg);}
+}
+
+@keyframes rotate-counter-clockwise {
+  100% {transform: rotate(-360deg);}
+}
+
+.logo-spacer {
+	display: block;
+	height: 3rem;
+}
+
 .logo {
 	background-image: url("images/logo.png");
 	height: 128px;
     width: 128px;
     display: block;
+ 	margin-left: auto;
+    margin-right: auto;
+	animation-duration: 30s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	animation-play-state: paused;
+	opacity: 0.8;
 }
 
-home .logo {
-    margin-top: 2.5rem;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 1rem;
+.logo1 {
+	animation-name: rotate-clockwise;
+}
+
+.logo2 {
+	background-image: url("images/logo-beam.png");
+	animation-name: rotate-counter-clockwise;
+	position: relative;
+    top: -128px;
+    pointer-events: none;
+    animation-duration: 10s;
+    transform: rotate(-45deg);
+}
+
+.logo1:hover {
+	animation-play-state: running;
+}
+
+.logo1:hover ~ .logo2 {
+	animation-play-state: running;
 }
 
 code {
@@ -153,6 +188,7 @@ home .ngoy-enjoy {
 
 home .ngoy-enjoy2 {
 	font-size: 2rem;
+	margin-top: -5rem;
 }
 get-started {
 	display: block;

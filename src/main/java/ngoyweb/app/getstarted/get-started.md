@@ -6,7 +6,7 @@ This guide shows you how to build and run a simple ngoy app and how to use the C
 ngoy is a standalone library with no dependencies to any web server/framework. 
 All it needs is an OutputStream to write the contents to.
 
-# ngoy-starter-web
+# Clone ngoy-starter-web
 
 In this guide we are going to produce HTML. It's best to spin off a web server and view the HTML contents in the browser. 
 We are going to use a Gradle/Spring Boot application for that purpose. So for this part of the guide you must have [gradle](https://gradle.org) installed.
@@ -63,6 +63,8 @@ Looking nice:
 
 ![](images/ngoy-starter-web-c.png)
 
+In the next part, we are going to create a new project from scratch.
+
 # Standalone/CLI
 
 ngoy has a built in CLI with which you can
@@ -103,10 +105,9 @@ The generator's help:
 ```
 $ ./ngoy new
 
-usage: ngoy-gen [options] project|component|directive|pipe|module|service
-                name
+usage: ngoy-gen [options] project|component|directive|pipe|module|service name
 
-name should be a fully qualified Java class name.
+'name' should be a fully qualified Java class name.
 
 Examples:
   ngoy-gen component org.myapp.PersonList

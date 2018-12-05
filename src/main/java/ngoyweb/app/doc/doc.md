@@ -1042,6 +1042,30 @@ public class PersonComponent implements OnInit {
  
 to be done.
 
+# Unit Testing
+
+Unit testing your components, directives, pipes etc. is a piece of cake. ngoy can render any component, not just the 'app'. 
+You can provide mock services or quickly have a container that uses your component. 
+
+See [`ANgoyTest.java`](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/test/java/ngoy/ANgoyTest.java) to get started or any of the other [~190 tests](https://github.com/krizzdewizz/ngoy/tree/master/ngoy/src/test/java/ngoy).
+
+Example:
+```java
+public class ContainerTest extends ANgoyTest {
+	@Component(
+		selector = "test", 
+		template = "a<ng-container *ngFor=\"let s of strings\">{{'{{s}}'}}</ng-container>b")
+	public static class CmpRepeated {
+		public String[] strings = new String[] { "w", "x", "q" };
+	}
+	
+	@Test
+	public void testRepeated() {
+		assertThat(render(CmpRepeated.class)).isEqualTo("awxqb");
+	}
+}
+```
+
 # CLI
 
 ngoy has a built in CLI with which you can

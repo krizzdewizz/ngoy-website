@@ -761,6 +761,25 @@ public class PersonComponent implements OnInit {
 </code></pre>
 <h2 id="forms">Forms</h2>
 <p>to be done.</p>
+<h1 id="unit-testing">Unit Testing</h1>
+<p>Unit testing your components, directives, pipes etc. is a piece of cake. ngoy can render any component, not just the 'app'.
+You can provide mock services or quickly have a container that uses your component.</p>
+<p>See <a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/test/java/ngoy/ANgoyTest.java"><code>ANgoyTest.java</code></a> to get started or any of the other <a href="https://github.com/krizzdewizz/ngoy/tree/master/ngoy/src/test/java/ngoy">~190 tests</a>.</p>
+<p>Example:</p>
+<pre><code class="language-java">public class ContainerTest extends ANgoyTest {
+	@Component(
+		selector = &quot;test&quot;, 
+		template = &quot;a&lt;ng-container *ngFor=\&quot;let s of strings\&quot;&gt;{{s}}&lt;/ng-container&gt;b&quot;)
+	public static class CmpRepeated {
+		public String[] strings = new String[] { &quot;w&quot;, &quot;x&quot;, &quot;q&quot; };
+	}
+	
+	@Test
+	public void testRepeated() {
+		assertThat(render(CmpRepeated.class)).isEqualTo(&quot;awxqb&quot;);
+	}
+}
+</code></pre>
 <h1 id="cli">CLI</h1>
 <p>ngoy has a built in CLI with which you can</p>
 <ul>
@@ -854,7 +873,7 @@ generating artifact '.\src\main\java\ngoygen\person\person.component.css'...
 <pre><code>123
 </code></pre>
 <markdown-toc class="d-none d-md-block">
-<a href="#running-ngoy" style="margin-left:20px">Running ngoy</a><a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#interpolation" style="margin-left:60px">Interpolation</a><a href="#attribute-binding" style="margin-left:60px">Attribute Binding</a><a href="#hostbinding" style="margin-left:60px">@HostBinding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component interaction</a><a href="#component-styles" style="margin-left:40px">Component styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time hook</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#plain-text-templates" style="margin-left:40px">Plain Text Templates</a><a href="#xml-templates" style="margin-left:40px">XML Templates</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#built-in-modules" style="margin-left:20px">Built-in Modules</a><a href="#router" style="margin-left:40px">Router</a><a href="#translate" style="margin-left:40px">Translate</a><a href="#forms" style="margin-left:40px">Forms</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#spring-el" style="margin-left:20px">Spring EL</a></markdown-toc></markdown></doc>
+<a href="#running-ngoy" style="margin-left:20px">Running ngoy</a><a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#interpolation" style="margin-left:60px">Interpolation</a><a href="#attribute-binding" style="margin-left:60px">Attribute Binding</a><a href="#hostbinding" style="margin-left:60px">@HostBinding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component interaction</a><a href="#component-styles" style="margin-left:40px">Component styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time hook</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#plain-text-templates" style="margin-left:40px">Plain Text Templates</a><a href="#xml-templates" style="margin-left:40px">XML Templates</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#built-in-modules" style="margin-left:20px">Built-in Modules</a><a href="#router" style="margin-left:40px">Router</a><a href="#translate" style="margin-left:40px">Translate</a><a href="#forms" style="margin-left:40px">Forms</a><a href="#unit-testing" style="margin-left:20px">Unit Testing</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#spring-el" style="margin-left:20px">Spring EL</a></markdown-toc></markdown></doc>
 			</div>
 		</div>
 	</div>
