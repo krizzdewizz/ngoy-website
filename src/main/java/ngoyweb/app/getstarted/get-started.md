@@ -9,7 +9,7 @@ All it needs is an OutputStream to write the contents to.
 # ngoy-starter-web
 
 In this guide we are going to produce HTML. It's best to spin off a web server and view the HTML contents in the browser. 
-We are going to use a Gradle/Spring Boot application for that purpose. So for this guide you must have [gradle](https://gradle.org) installed.
+We are going to use a Gradle/Spring Boot application for that purpose. So for this part of the guide you must have [gradle](https://gradle.org) installed.
 
 The [ngoy-starter-web](https://github.com/krizzdewizz/ngoy-starter-web) repository is a good place to start.
 
@@ -17,6 +17,8 @@ Let's clone it:
 
 ```
 git clone https://github.com/krizzdewizz/ngoy-starter-web
+
+cd ngoy-starter-web
 ```
 
 Run the web server:
