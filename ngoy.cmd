@@ -1,6 +1,6 @@
 @echo off
 setlocal
-set ngoyVersion=1.0.0-rc1
+set ngoyVersion=1.0.0-rc2
 set ngoyPath=%~dp0build\tmp\ngoy-%ngoyVersion%
 
 if not exist %ngoyPath% (

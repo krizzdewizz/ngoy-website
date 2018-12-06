@@ -1,5 +1,5 @@
 #!/bin/bash
-ngoyVersion=1.0.0-rc1
+ngoyVersion=1.0.0-rc2
 ngoyPath=`dirname "$0"`/build/tmp/ngoy-$ngoyVersion
 
 if [ ! -e $ngoyPath ]; then
