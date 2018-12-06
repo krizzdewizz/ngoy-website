@@ -77,9 +77,8 @@ You may want to add this folder to the system's path.
 
 The ZIP contains two shell scripts `ngoy` and `ngoy.cmd` and the ngoy distribution jar. 
 
-
 ```
-$ ./ngoy
+$ ngoy
 
 usage: ngoy [new|g|gen|generate] [options] template
 
@@ -103,7 +102,7 @@ Options:
 The generator's help:
 
 ```
-$ ./ngoy new
+$ ngoy new
 
 usage: ngoy-gen [options] project|component|directive|pipe|module|service name
 
@@ -123,10 +122,12 @@ Options:
     --version        print version information
 ```
 
-Let's create a new (gradle only) project in the current directory. Add `-t` to generate it in another one. The directory must be empty.
+Let's create a new (gradle only) project in an empty directory:
 
 ```
-$ ./ngoy new com.example.MyApp
+$ mkdir my-app
+$ cd my-app
+$ ngoy new com.example.MyApp
 
 generating artifact '.\.gitignore'...
 generating artifact '.\build.gradle'...
@@ -157,7 +158,7 @@ and open
 
 
 ```
-$ ./ngoy g c com.example.person.Person
+$ ngoy g c com.example.person.Person
 
 generating artifact '.\src\main\java\com\example\person\PersonComponent.java'...
 generating artifact '.\src\main\java\com\example\person\person.component.html'...

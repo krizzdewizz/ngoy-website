@@ -96,7 +96,7 @@ public class AppComponent {
 <p>Download the ngoy release ZIP from <a href="https://github.com/krizzdewizz/ngoy/releases">here</a> and extract it to a folder on your computer.</p>
 <p>You may want to add this folder to the system's path.</p>
 <p>The ZIP contains two shell scripts <code>ngoy</code> and <code>ngoy.cmd</code> and the ngoy distribution jar.</p>
-<pre><code>$ ./ngoy
+<pre><code>$ ngoy
 
 usage: ngoy [new|g|gen|generate] [options] template
 
@@ -116,7 +116,7 @@ Options:
 </code></pre>
 <h2 id="generate-a-new-project">Generate a new Project</h2>
 <p>The generator's help:</p>
-<pre><code>$ ./ngoy new
+<pre><code>$ ngoy new
 
 usage: ngoy-gen [options] project|component|directive|pipe|module|service name
 
@@ -135,8 +135,10 @@ Options:
                      ./src, .]
     --version        print version information
 </code></pre>
-<p>Let's create a new (gradle only) project in the current directory. Add <code>-t</code> to generate it in another one. The directory must be empty.</p>
-<pre><code>$ ./ngoy new com.example.MyApp
+<p>Let's create a new (gradle only) project in an empty directory:</p>
+<pre><code>$ mkdir my-app
+$ cd my-app
+$ ngoy new com.example.MyApp
 
 generating artifact '.\.gitignore'...
 generating artifact '.\build.gradle'...
@@ -159,7 +161,7 @@ Initializing git...
 <p>and open
 <a href="http://localhost:8080">http://localhost:8080</a> in the browser.</p>
 <h2 id="add-a-component">Add a Component</h2>
-<pre><code>$ ./ngoy g c com.example.person.Person
+<pre><code>$ ngoy g c com.example.person.Person
 
 generating artifact '.\src\main\java\com\example\person\PersonComponent.java'...
 generating artifact '.\src\main\java\com\example\person\person.component.html'...
