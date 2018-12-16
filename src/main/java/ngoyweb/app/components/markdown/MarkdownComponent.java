@@ -67,18 +67,18 @@ public class MarkdownComponent implements OnCompile {
 							.substring(1));
 
 					if (expr.length() == 0) {
-						expr.append("{");
+						expr.append("List(");
 					} else {
 						expr.append(",");
 					}
 
-					expr.append("{'");
+					expr.append("List('");
 					expr.append(el.attr("id"));
 					expr.append("','");
 					expr.append(el.text());
 					expr.append("',");
 					expr.append(level);
-					expr.append("}");
+					expr.append(")");
 				}
 			}
 
@@ -88,7 +88,7 @@ public class MarkdownComponent implements OnCompile {
 
 		});
 
-		expr.append("}");
+		expr.append(")");
 		toc.attr("[entries]", expr.toString());
 		return toc;
 	}

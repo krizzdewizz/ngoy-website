@@ -62,7 +62,7 @@ ngoy is a pure Java library with no JavaScript involved.
 Render anything from simple text:
 
 ```java
-Ngoy.renderString("hello {{ '{{ name }}' }}", Context.of("name", "world"), System.out);
+Ngoy.renderString("hello {{ "{{ name }}" }}", Context.of("name", "world"), System.out);
 
 // hello world
 ```
@@ -79,7 +79,7 @@ public class Person {
 	}
 }
 
-@Component(selector = "person", template = "<h1>{{'{{person.name'}} | {{'uppercase}}'}}</h1>age: {{'{{person.age}}'}}")
+@Component(selector = "person", template = "<h1>{{"{{person.name"}} | {{"uppercase}}"}}</h1>age: {{"{{person.age}}"}}")
 public class PersonCmp {
 	@Input
 	public Person person;
@@ -118,7 +118,7 @@ repositories {
 }
 
 dependencies {
-	implementation("com.github.krizzdewizz:ngoy:1.0.0-rc3")
+	implementation("com.github.krizzdewizz:ngoy:1.0.0-rc4")
 }
 ```
 

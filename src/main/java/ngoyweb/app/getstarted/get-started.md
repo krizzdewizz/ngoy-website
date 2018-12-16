@@ -216,13 +216,13 @@ Some examples:
 $ ngoy -e "1+1"
 2
 
-$ ngoy -v name=world "hello {{'{{name}}'}}"
+$ ngoy -v name=world "hello {{"{{name}}"}}"
 hello world
 
-$ ngoy "<li *ngFor='let x of {1, 2, 3}.?[intValue() > 1]'>{{'{{x}}'}}</li>"
+$ ngoy "<li *ngFor='let x of {1, 2, 3}.?[intValue() > 1]'>{{"{{x}}"}}</li>"
 <li>2</li><li>3</li>
 
-$ ll | ngoy -in -e "$.startsWith('total') ? '' : ($.substring(0, 10) + nl)"
+$ ll | ngoy -in -e "$.startsWith("total") ? '' : ($.substring(0, 10) + nl)"
 drwxrwxrwx
 drwxrwxrwx
 -rwxrwxrwx
