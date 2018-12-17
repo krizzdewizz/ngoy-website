@@ -32,10 +32,10 @@ public class MarkdownTocComponent {
 	@HostBinding("class.d-md-block")
 	public final boolean dMdBlock = true;
 
-	public List<List<String>> entries;
+	public List<List<Object>> entries;
 
 	@Input
-	public void setEntries(List<List<String>> entries) {
+	public void setEntries(List<List<Object>> entries) {
 		this.entries = entries.stream()
 				.filter(e -> !EXCLUDE.contains(e.get(0)))
 				.collect(toList());
