@@ -20,8 +20,8 @@ ngoy is a pure Java library with no JavaScript involved.
 	<div class="col">
 		<div class="card">
 		  <div class="card-body">
-			  <h5 class="card-title">Fast &amp; light</h5>
-			  <p class="card-text">Single pass template to byte code compiler.<br><br>DOM used only once for compiling.<br><br>Streaming output to any destination.</p>
+			  <h5 class="card-title">Fast  &amp; Safe</h5>
+			  <p class="card-text">Fast, statically typed template to byte code compiler.<br><br>DOM used only once for compiling.<br><br>Streaming output to any destination.</p>
 		  </div>
 		</div>
 	</div>
@@ -30,7 +30,7 @@ ngoy is a pure Java library with no JavaScript involved.
 		<div class="card">
 		  <div class="card-body">
 			  <h5 class="card-title">Extensible</h5>
-				<p class="card-text">Dependency injection, modules, components, directives, pipes, providers/services.<br><br>Compile-time hook for components and directives.<br><br>Connect other DI system.</p>
+				<p class="card-text">Dependency injection, modules, components, directives, pipes, providers/services.<br><br>Compile-time hook for components and directives.<br><br>Connect other DI systems.</p>
 		  </div>
 		</div>
 	</div>
@@ -92,11 +92,13 @@ public class App {
 		new Person("Peter", 22), 
 		new Person("Paul", 26), 
 		new Person("Mary", 24) };
+		
+	public static void main(String[] args) {
+		Ngoy.app(App.class)
+			.build()
+			.render(System.out);
+	}
 }
-
-Ngoy.app(App.class)
-	.build()
-	.render(System.out);
 ```
 produces:
 ```html
@@ -118,8 +120,24 @@ repositories {
 }
 
 dependencies {
-	implementation("com.github.krizzdewizz:ngoy:1.0.0-rc5")
+	implementation("com.github.krizzdewizz:ngoy:1.0.0-rc7")
 }
+```
+
+`pom.xml`:
+```xml
+<repositories>
+	<repository>
+	    <id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+	</repository>
+</repositories>
+
+<dependency>
+    <groupId>com.github.krizzdewizz</groupId>
+    <artifactId>ngoy</artifactId>
+    <version>1.0.0-rc7</version>
+</dependency>
 ```
 
 ]]>

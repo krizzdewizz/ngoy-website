@@ -64,8 +64,8 @@
 	<div class="col">
 		<div class="card">
 		  <div class="card-body">
-			  <h5 class="card-title">Fast &amp; light</h5>
-			  <p class="card-text">Single pass template to byte code compiler.<br><br>DOM used only once for compiling.<br><br>Streaming output to any destination.</p>
+			  <h5 class="card-title">Fast  &amp; Safe</h5>
+			  <p class="card-text">Fast, statically typed template to byte code compiler.<br><br>DOM used only once for compiling.<br><br>Streaming output to any destination.</p>
 		  </div>
 		</div>
 	</div>
@@ -74,7 +74,7 @@
 		<div class="card">
 		  <div class="card-body">
 			  <h5 class="card-title">Extensible</h5>
-				<p class="card-text">Dependency injection, modules, components, directives, pipes, providers/services.<br><br>Compile-time hook for components and directives.<br><br>Connect other DI system.</p>
+				<p class="card-text">Dependency injection, modules, components, directives, pipes, providers/services.<br><br>Compile-time hook for components and directives.<br><br>Connect other DI systems.</p>
 		  </div>
 		</div>
 	</div>
@@ -130,11 +130,13 @@ public class App {
 		new Person(&quot;Peter&quot;, 22), 
 		new Person(&quot;Paul&quot;, 26), 
 		new Person(&quot;Mary&quot;, 24) };
+		
+	public static void main(String[] args) {
+		Ngoy.app(App.class)
+			.build()
+			.render(System.out);
+	}
 }
-
-Ngoy.app(App.class)
-	.build()
-	.render(System.out);
 </code></pre>
 <p>produces:</p>
 <pre><code class="language-html">&lt;html&gt;
@@ -151,8 +153,22 @@ Ngoy.app(App.class)
 }
 
 dependencies {
-	implementation(&quot;com.github.krizzdewizz:ngoy:1.0.0-rc5&quot;)
+	implementation(&quot;com.github.krizzdewizz:ngoy:1.0.0-rc7&quot;)
 }
+</code></pre>
+<p><code>pom.xml</code>:</p>
+<pre><code class="language-xml">&lt;repositories&gt;
+	&lt;repository&gt;
+	    &lt;id&gt;jitpack.io&lt;/id&gt;
+	    &lt;url&gt;https://jitpack.io&lt;/url&gt;
+	&lt;/repository&gt;
+&lt;/repositories&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;com.github.krizzdewizz&lt;/groupId&gt;
+    &lt;artifactId&gt;ngoy&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-rc7&lt;/version&gt;
+&lt;/dependency&gt;
 </code></pre>
 </markdown>
 

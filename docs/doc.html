@@ -53,7 +53,7 @@
 
 // hello world
 </code></pre>
-<p>The first parameter is the template. Text inside the double curly braces is treated as an expression (see <a href="#template-syntax--data-binding">Template Syntax &amp; Data Binding</a>).</p>
+<p>The first parameter is the template. Text inside the double curly braces is treated as a Java expression (see <a href="#template-syntax--data-binding">Template Syntax &amp; Data Binding</a>).</p>
 <p>The second parameter is the evaluation 'context' or <code>this</code> inside the template. Context can be an object and/or a bunch of variables.
 In the example the variable <code>&quot;name&quot;</code> is assigned the value <code>&quot;world&quot;</code>.</p>
 <p>The third parameter is the <code>OutputStream</code> to write to.</p>
@@ -115,11 +115,11 @@ public class PersonComponent {
 <h2 id="template-syntax--data-binding">Template Syntax &amp; Data Binding</h2>
 <p>A component has full control over the HTML by the use of data binding. There exists several possibilities:</p>
 <h3 id="interpolation">Interpolation</h3>
-<p>The text inside double curly braces is interpreted as an expression:</p>
+<p>The text inside double curly braces is interpreted as a Java expression:</p>
 <pre><code class="language-html">&lt;h1&gt;Person details: {{ person.name }}&lt;/h1&gt;
 </code></pre>
-<p>At runtime, the expression is evaluated and it's return value is rendered.</p>
-<p>Note: ngoy uses the <a href="https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html">Spring EL</a> library for expression/evaluation. Please consult their docs for what is possible. It's syntax is almost conform to Angular.</p>
+<p>At runtime, the expression's return value is rendered.</p>
+<p>Note: Expressions are Java code with some script-friendly extensions. See <a href="#java-expressions">Java Expressions</a>.</p>
 <p>The component designates the 'context' (aka <code>this</code>) of the evaluation. So <code>person</code> in <code>{{ person.name }}</code> designates the <code>person</code> field of the <code>PersonComponent</code> instance:</p>
 <pre><code class="language-java">public class Person {
 	public String name;
@@ -147,6 +147,7 @@ public class PersonComponent {
 <pre><code class="language-html">&lt;h1 [attr.title]=&quot;person.name&quot;&gt;&lt;/h1&gt;
 </code></pre>
 <p>The <code>[attr.]</code> syntax is relevant when using the <a href="#hostbinding"><code>@HostBinding</code></a> annotation.</p>
+<p>In Angular, there exists property bindings and attribute bindings. In ngoy, there exists only attribute bindings.</p>
 <h4 id="class-attribute"><code>class</code> attribute</h4>
 <p>The <code>class</code> attribute receives special treatment because it's value is effectively a class <em>list</em>.</p>
 <p>A class can be added to the list by the use of the <code>[class.]</code> syntax:</p>
@@ -181,8 +182,8 @@ public class PersonComponent implements OnInit {
 	}
 }
 </code></pre>
-<p>Or as an expression using Spring EL map literals:</p>
-<pre><code class="language-html">&lt;h1 [ngClass]=&quot;{vip: isVip(person), cool: isCool(person)}&quot;&gt;&lt;/h1&gt;
+<p>Or as an expression using the <a href="#built-in-functions">built-in</a> Map function:</p>
+<pre><code class="language-html">&lt;h1 [ngClass]=&quot;Map('vip', isVip(person), 'cool', isCool(person))&quot;&gt;&lt;/h1&gt;
 </code></pre>
 <h4 id="style-attribute"><code>style</code> attribute</h4>
 <p>The <code>style</code> attribute receives special treatment because it's value is effectively a <em>map</em> from the style's name to it's value.</p>
@@ -223,8 +224,8 @@ public class PersonComponent implements OnInit {
 	}
 }
 </code></pre>
-<p>Or as an expression using Spring EL map literals:</p>
-<pre><code class="language-html">&lt;h1 [ngStyle]=&quot;{'background-color': isVip(person) ? 'red' : 'inherit'}&quot;&gt;&lt;/h1&gt;
+<p>Or as an expression using the <a href="#built-in-functions">built-in</a> Map function:</p>
+<pre><code class="language-html">&lt;h1 [ngStyle]=&quot;Map('background-color', isVip(person) ? 'red' : 'inherit')&quot;&gt;&lt;/h1&gt;
 </code></pre>
 <h3 id="hostbinding">@HostBinding</h3>
 <p>The attributes of a component's host element can be dynamically set using the <code>@HostBinding</code> annotation. It is set on a component's field (or getter).</p>
@@ -369,14 +370,23 @@ public class HighlightDirective {
 <p>A <code>[ngSwitch]</code> must have at least one <code>*ngSwitchCase</code>.</p>
 <p><code>[ngSwitch]</code> can switch on any type of value.</p>
 <h3 id="ngfor">*ngFor</h3>
-<p><code>*ngFor</code> allows you to repeat an element for every item in an <code>Iterator</code> or array.</p>
+<p><code>*ngFor</code> allows you to repeat an element for every item in an <code>Iterable</code>, <code>Stream</code> or array.</p>
 <pre><code class="language-html">&lt;div *ngFor=&quot;let person of persons&quot;&gt;{{ person.name }}&lt;/div&gt;
 </code></pre>
-<p><code>persons</code> may be an instance of <code>Iterable</code> or an array. <code>person</code> designates the current item of the iteration,
+<p><code>persons</code> may be an instance of <code>Iterable</code>, <code>Stream</code> or array. <code>person</code> designates the current item of the iteration,
 which is available as a local variable inside the <code>&lt;div&gt;</code>.</p>
-<p>This is the same as Java's enhanced for loop:</p>
-<pre><code class="language-java">for (Person person : persons) {
-}
+<p>Several flavors are supported to bring Angular and Java developers together. The general syntax is:</p>
+<pre><code>let|var|Type item :|of iterable-or-array
+</code></pre>
+<p>So these are all the same. The type of the item is inferred at compile time:</p>
+<pre><code class="language-java">let person of persons
+var person of persons
+let person : persons
+var person : persons
+</code></pre>
+<p>ngoy's type inference algorithm should cover most cases. If the type cannot be determined, <code>java.lang.Object</code> is used.
+If this is insufficent, you can specify the item's type. The type must be full qualified if not in <code>java.lang</code>.</p>
+<pre><code class="language-html">&lt;div *ngFor=&quot;com.example.Person person of persons&quot;&gt;{{ person.name }}&lt;/div&gt;
 </code></pre>
 <p>Optionally, you can declare local aliases for the built-in iteration variables, delimited with <code>;</code></p>
 <pre><code class="language-html">&lt;div *ngFor=&quot;let person of persons; index as i; first as f&quot;&gt;
@@ -519,7 +529,7 @@ public class UpperCasePipe implements PipeTransform {
 	}
 }
 </code></pre>
-<p>Note: The pipe syntax <code>|</code> is not part of the Spring EL grammar. ngoy parses it 'manually' with regex. It should be fine in most cases, but in complex expressions (which should be avoided anyway) it could lead to a parse error. In such a situation, you can always resort to the function call syntax, prefixing the pipe with <code>$</code>:</p>
+<p>Note: The pipe syntax <code>|</code> is not part of the Java grammar. ngoy parses it 'manually' with regex. It should be fine in most cases, but in complex expressions (which should be avoided anyway) it could lead to a parse error. In such a situation, you can always resort to the function call syntax, prefixing the pipe with <code>$</code>:</p>
 <pre><code class="language-java">'hello' | uppercase | greet
 </code></pre>
 <p>is the same as:</p>
@@ -759,14 +769,13 @@ public class PersonComponent implements OnInit {
 	}
 }
 </code></pre>
-<h2 id="forms">Forms</h2>
-<p>to be done.</p>
 <h1 id="unit-testing">Unit Testing</h1>
 <p>Unit testing your components, directives, pipes etc. is a piece of cake. ngoy can render any component, not just the 'app'.
 You can provide mock services or quickly have a container that uses your component.</p>
-<p>See <a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/test/java/ngoy/ANgoyTest.java"><code>ANgoyTest.java</code></a> to get started or any of the other <a href="https://github.com/krizzdewizz/ngoy/tree/master/ngoy/src/test/java/ngoy">~190 tests</a>.</p>
+<p>See <a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/test/java/ngoy/ANgoyTest.java"><code>ANgoyTest.java</code></a> to get started or any of the other <a href="https://github.com/krizzdewizz/ngoy/tree/master/ngoy/src/test/java/ngoy">~290 tests</a>.</p>
 <p>Example:</p>
 <pre><code class="language-java">public class ContainerTest extends ANgoyTest {
+
 	@Component(
 		selector = &quot;test&quot;, 
 		template = &quot;a&lt;ng-container *ngFor=\&quot;let s of strings\&quot;&gt;{{s}}&lt;/ng-container&gt;b&quot;)
@@ -807,7 +816,7 @@ Options:
     --version                 print version information
 </code></pre>
 <p>Evaluate an expression:</p>
-<pre><code>$ ./ngoy -e &quot;T(LocalDateTime).now()&quot;
+<pre><code>$ ./ngoy -e &quot;java.time.LocalDateTime.now()&quot;
 
 2018-12-03T00:07:33.187
 </code></pre>
@@ -849,9 +858,39 @@ avoid collisions with existing HTML elements or components from other libraries.
 <pre><code>app.prefix=myprefix
 </code></pre>
 <p>The generator looks up the properties file in the current directory.</p>
-<h1 id="spring-el">Spring EL</h1>
-<p>ngoy uses the <a href="https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html">Spring EL</a> library for expression/evaluation.</p>
-<p>Here are some notable differences to the Angular syntax:</p>
+<h1 id="java-expressions">Java Expressions</h1>
+<p>ngoy expression are Java code with some template friendly extensions.</p>
+<h2 id="access-fields-call-methods">Access fields, call methods</h2>
+<p>Expressions are bound to the template's component instance. You can access the component's (static) fields and call it's (static) methods.</p>
+<p>Except for the <code>java</code> package, all other static calls are prohibited. So inside template expressions, you may use a fully qualified call to <code>java.*</code>:</p>
+<pre><code class="language-html">&lt;div *ngFor=&quot;let nbr of java.util.Arrays.asList(1, 2, 3)&quot;&gt;{{nbr}}&lt;/div&gt;
+</code></pre>
+<h3 id="built-in-functions">Built-in Functions</h3>
+<p>These built-in functions are available:</p>
+<pre><code class="language-java">// returns the array as a List
+&lt;T&gt; java.util.List&lt;T&gt; List(T...items)
+
+// returns the key-value pair's array as a Map
+// example: Map('key1', value1, 'key2', value2)
+&lt;K, V&gt; Map&lt;K, V&gt; Map(Object... pairs)
+</code></pre>
+<p>The above example can be written as:</p>
+<pre><code class="language-html">&lt;div *ngFor=&quot;let nbr of List(1, 2, 3)&quot;&gt;{{nbr}}&lt;/div&gt;
+</code></pre>
+<h3 id="lambdas">Lambdas</h3>
+<p>Lambdas can be used in template expressions. Method references are not supported.</p>
+<pre><code class="language-html">&lt;div *ngFor=&quot;let entry : java.util.stream.Stream.of('a ', ' b').map(c -&gt; c.trim())&quot;&gt;{{entry}}&lt;/div&gt;
+</code></pre>
+<p>Note: Template expression should be kept simple and basically free from business logic. Complex logic should reside in the component class.</p>
+<h2 id="prohibited-syntax">Prohibited Syntax</h2>
+<p>These Java syntax elements are prohibited and will lead to a compile error:</p>
+<ul>
+<li>assignments such as <code>name = 'x'</code></li>
+<li>increment/decrement such as <code>x++</code>, <code>--i</code>, <code>x += 1</code></li>
+<li><code>this</code> reference</li>
+<li>Anonymous class</li>
+</ul>
+<p><strong>For Angular users, here are some notable differences to the Angular syntax:</strong></p>
 <p>Truthy/falsy values do not exist. Expressions like this won't work:</p>
 <pre><code class="language-html">&lt;!-- runtime error: person is not a boolean --&gt;
 &lt;h1 *ngIf=&quot;person&quot;&gt;{{ person.name }}&lt;/h1&gt; 
@@ -865,21 +904,51 @@ avoid collisions with existing HTML elements or components from other libraries.
 &lt;h1 *ngIf=&quot;persons.length &gt; 0&quot;&gt;&lt;/h1&gt;
 </code></pre>
 <p><code>===</code> does not exist. Use <code>==</code> instead.</p>
-<p>List and Map literals are nice:</p>
-<pre><code>// list
-{1, 2, 3}
+<h2 id="java-extensions">Java Extensions</h2>
+<p>ngoy adds some template friendly extensions to the Java language. They are transformed to standard Java and compiled directly into the template class to be statically verified.</p>
+<h3 id="smart-strings">Smart Strings</h3>
+<p>A string's delimiter may be the single or double quote; just like JavaScript.</p>
+<p>Using Java's double quoted strings inside template attribute bindings enforces you to escape or use single quoted strings
+for the attribute value:</p>
+<pre><code class="language-html">&lt;div [title]=' &quot;-&quot; + person.name + &quot;-&quot; '&gt;&lt;/div&gt;
+</code></pre>
+<p>With ngoy's Smart Strings, you can have it also the regular way:</p>
+<pre><code class="language-html">&lt;div [title]=&quot; '-' + person.name + '-' &quot;&gt;&lt;/div&gt;
+</code></pre>
+<p>As a consequence, the char literal does not exist anymore, since <code>'a'</code> is transformed to <code>&quot;a&quot;</code>. If you really need a char, you can write:</p>
+<pre><code class="language-java">'a'.charAt(0)
+</code></pre>
+<h3 id="field-access-to-getter">Field access to getter</h3>
+<p>A field access is replaced by it's getter if available:</p>
+<pre><code class="language-java">public class Person {
+	private String name;
+	public String getName() {
+		return name;
+	}
 
-// map
-{a: 1, b: 2, c: 3}
+	public int age;
+	public boolean isTeenager() {
+		return age &lt; 20;
+	}
+}
+
+person.name     // -&gt; person.getName()
+person.teenager // -&gt; person.isTeenager()
 </code></pre>
-<p>I.e.</p>
-<pre><code class="language-html">&lt;ng-container *ngFor=&quot;let x of {1, 2, 3}&quot;&gt;{{ x }}&lt;/ng-container&gt;
+<h3 id="listmap-index-access">List/Map index access</h3>
+<p>The array index syntax <code>array[index]</code> can be used on <code>java.util.List</code> and <code>java.util.Map</code>:</p>
+<pre><code class="language-java">List&lt;Person&gt; persons = ...
+person[0]           // -&gt; person.get(0)
+
+Map&lt;String, Person&gt; personMap = ...
+personMap['Peter']  // -&gt; personMap.get(&quot;Peter&quot;)
 </code></pre>
-<p>will print:</p>
-<pre><code>123
+<h3 id="pipes-1">Pipes</h3>
+<p>A pipe is transformed to a function prefixed with <code>$</code>.</p>
+<pre><code class="language-java">person.birthdate | date:'dd.MM.yyyy' // -&gt; $date(person.birthdate, 'dd.MM.yyyy') 
 </code></pre>
 <markdown-toc class="d-none d-md-block">
-<a href="#running-ngoy" style="margin-left:20px">Running ngoy</a><a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component Interaction</a><a href="#component-styles" style="margin-left:40px">Component Styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute Directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time Hook</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#plain-text-templates" style="margin-left:40px">Plain Text Templates</a><a href="#xml-templates" style="margin-left:40px">XML Templates</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at Runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#built-in-modules" style="margin-left:20px">Built-in Modules</a><a href="#router" style="margin-left:40px">Router</a><a href="#translate" style="margin-left:40px">Translate</a><a href="#forms" style="margin-left:40px">Forms</a><a href="#unit-testing" style="margin-left:20px">Unit Testing</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#spring-el" style="margin-left:20px">Spring EL</a></markdown-toc></markdown></doc>
+<a href="#running-ngoy" style="margin-left:20px">Running ngoy</a><a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component Interaction</a><a href="#component-styles" style="margin-left:40px">Component Styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute Directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time Hook</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#plain-text-templates" style="margin-left:40px">Plain Text Templates</a><a href="#xml-templates" style="margin-left:40px">XML Templates</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at Runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#built-in-modules" style="margin-left:20px">Built-in Modules</a><a href="#router" style="margin-left:40px">Router</a><a href="#translate" style="margin-left:40px">Translate</a><a href="#unit-testing" style="margin-left:20px">Unit Testing</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#java-expressions" style="margin-left:20px">Java Expressions</a><a href="#access-fields-call-methods" style="margin-left:40px">Access fields, call methods</a><a href="#java-extensions" style="margin-left:40px">Java Extensions</a></markdown-toc></markdown></doc>
 			</div>
 		</div>
 	</div>

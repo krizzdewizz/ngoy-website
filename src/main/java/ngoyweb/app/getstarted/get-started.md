@@ -3,6 +3,8 @@ This guide shows you how to build and run a simple ngoy app and how to use the C
 **Prerequisites**
 - JRE >= 8
 
+Tested with Java 11.
+
 ngoy is a standalone library with no dependencies to any web server/framework. 
 All it needs is an OutputStream to write the contents to.
 
@@ -34,6 +36,8 @@ You should see the app's greeting:
 ![](images/ngoy-starter-web-a.png)
 
 **Make some changes**
+
+Note: Depending on your development environment (Hot Code Replace), you may have to restart the server to pick up the changes.
 
 Open `AppComponent.java` and change the `title` field from `"my-app"` to `"My first ngoy app"`:
 
@@ -125,9 +129,9 @@ Options:
 Let's create a new (gradle only) project in an empty directory:
 
 ```
-$ mkdir my-app
-$ cd my-app
-$ ngoy new com.example.MyApp
+$ mkdir ngoy-example
+$ cd ngoy-example
+$ ngoy new com.example.Example
 
 generating artifact './.gitignore'...
 generating artifact './build.gradle'...
@@ -170,6 +174,8 @@ A component consists of several files and should be placed in an own package. Th
 Open `AppComponent.java` and add `PersonComponent.class` to the `NgModule`'s `declarations` list:
 
 ```java
+import com.example.person.PersonComponent;
+
 @Component(selector = "", templateUrl = "app.component.html", styleUrls = { "app.component.css" })
 @NgModule(declarations = { PersonComponent.class }, providers = {})
 public class AppComponent {
@@ -219,10 +225,10 @@ $ ngoy -e "1+1"
 $ ngoy -v name=world "hello {{"{{name}}"}}"
 hello world
 
-$ ngoy "<li *ngFor='let x of {1, 2, 3}.?[intValue() > 1]'>{{"{{x}}"}}</li>"
+$ ngoy "<li *ngFor='let x of java.util.stream.Stream.of(1, 2, 3).filter(x -> x > 1)'>{{"{{x}}"}}</li>"
 <li>2</li><li>3</li>
 
-$ ll | ngoy -in -e "$.startsWith("total") ? '' : ($.substring(0, 10) + nl)"
+$ ll | ngoy -in -e "$.startsWith('total') ? '' : ($.substring(0, 10) + nl)"
 drwxrwxrwx
 drwxrwxrwx
 -rwxrwxrwx

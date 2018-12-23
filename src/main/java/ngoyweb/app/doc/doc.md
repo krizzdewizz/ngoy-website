@@ -12,7 +12,7 @@ Ngoy.renderString("hello {{ '{{ name }}' }}", Context.of("name", "world"), Syste
 // hello world
 ```
 
-The first parameter is the template. Text inside the double curly braces is treated as an expression (see <a href="#template-syntax--data-binding">Template Syntax & Data Binding</a>).
+The first parameter is the template. Text inside the double curly braces is treated as a Java expression (see <a href="#template-syntax--data-binding">Template Syntax & Data Binding</a>).
 
 The second parameter is the evaluation 'context' or `this` inside the template. Context can be an object and/or a bunch of variables.
 In the example the variable `"name"` is assigned the value `"world"`.
@@ -106,14 +106,14 @@ A component has full control over the HTML by the use of data binding. There exi
 
 ### Interpolation
 
-The text inside double curly braces is interpreted as an expression:
+The text inside double curly braces is interpreted as a Java expression:
 
 ```html
 <h1>Person details: {{ '{{ person.name }}' }}</h1>
 ``` 
-At runtime, the expression is evaluated and it's return value is rendered.
+At runtime, the expression's return value is rendered.
 
-Note: ngoy uses the [Spring EL](https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html) library for expression/evaluation. Please consult their docs for what is possible. It's syntax is almost conform to Angular. 
+Note: Expressions are Java code with some script-friendly extensions. See <a href="#java-expressions">Java Expressions</a>.
 
 The component designates the 'context' (aka `this`) of the evaluation. So `person` in `{{ '{{ person.name }}' }}` designates the `person` field of the `PersonComponent` instance:
 ```java
@@ -156,6 +156,8 @@ Alternatively you can write also:
 ```
 
 The `[attr.]` syntax is relevant when using the <a href="#hostbinding">`@HostBinding`</a> annotation.
+
+In Angular, there exists property bindings and attribute bindings. In ngoy, there exists only attribute bindings. 
 
 #### `class` attribute
 
@@ -212,10 +214,10 @@ public class PersonComponent implements OnInit {
 }
 ```
 
-Or as an expression using Spring EL map literals:
+Or as an expression using the <a href="#built-in-functions">built-in</a> Map function:
 
 ```html
-<h1 [ngClass]="{vip: isVip(person), cool: isCool(person)}"></h1>
+<h1 [ngClass]="Map('vip', isVip(person), 'cool', isCool(person))"></h1>
 ```
 
 #### `style` attribute
@@ -285,10 +287,10 @@ public class PersonComponent implements OnInit {
 }
 ```
 
-Or as an expression using Spring EL map literals:
+Or as an expression using the <a href="#built-in-functions">built-in</a> Map function:
 
 ```html
-<h1 [ngStyle]="{'background-color': isVip(person) ? 'red' : 'inherit'}"></h1>
+<h1 [ngStyle]="Map('background-color', isVip(person) ? 'red' : 'inherit')"></h1>
 ```
 
 ### @HostBinding
@@ -504,20 +506,32 @@ A `[ngSwitch]` must have at least one `*ngSwitchCase`.
 
 ### *ngFor
 
-`*ngFor` allows you to repeat an element for every item in an `Iterator` or array.
+`*ngFor` allows you to repeat an element for every item in an `Iterable`, `Stream` or array.
 
 ```html
 <div *ngFor="let person of persons">{{ '{{ person.name }}' }}</div>
 ```
-
-`persons` may be an instance of `Iterable` or an array. `person` designates the current item of the iteration, 
+`persons` may be an instance of `Iterable`, `Stream` or array. `person` designates the current item of the iteration, 
 which is available as a local variable inside the `<div>`.
 
-This is the same as Java's enhanced for loop:
-```java
-for (Person person : persons) {
-}
+Several flavors are supported to bring Angular and Java developers together. The general syntax is:
 ```
+let|var|Type item :|of iterable-or-array
+```
+
+So these are all the same. The type of the item is inferred at compile time:
+```java
+let person of persons
+var person of persons
+let person : persons
+var person : persons
+```
+
+ngoy's type inference algorithm should cover most cases. If the type cannot be determined, `java.lang.Object` is used. 
+If this is insufficent, you can specify the item's type. The type must be full qualified if not in `java.lang`.
+```html
+<div *ngFor="com.example.Person person of persons">{{'{{ person.name }}'}}</div>
+```   
 
 Optionally, you can declare local aliases for the built-in iteration variables, delimited with `;`
 
@@ -707,7 +721,7 @@ public class UpperCasePipe implements PipeTransform {
 }
 ```
 
-Note: The pipe syntax `|` is not part of the Spring EL grammar. ngoy parses it 'manually' with regex. It should be fine in most cases, but in complex expressions (which should be avoided anyway) it could lead to a parse error. In such a situation, you can always resort to the function call syntax, prefixing the pipe with `$`:
+Note: The pipe syntax `|` is not part of the Java grammar. ngoy parses it 'manually' with regex. It should be fine in most cases, but in complex expressions (which should be avoided anyway) it could lead to a parse error. In such a situation, you can always resort to the function call syntax, prefixing the pipe with `$`:
 
 ```java
 'hello' | uppercase | greet
@@ -1038,20 +1052,17 @@ public class PersonComponent implements OnInit {
 }
 ```
 
-## Forms
- 
-to be done.
-
 # Unit Testing
 
 Unit testing your components, directives, pipes etc. is a piece of cake. ngoy can render any component, not just the 'app'. 
 You can provide mock services or quickly have a container that uses your component. 
 
-See [`ANgoyTest.java`](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/test/java/ngoy/ANgoyTest.java) to get started or any of the other [~190 tests](https://github.com/krizzdewizz/ngoy/tree/master/ngoy/src/test/java/ngoy).
+See [`ANgoyTest.java`](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/test/java/ngoy/ANgoyTest.java) to get started or any of the other [~290 tests](https://github.com/krizzdewizz/ngoy/tree/master/ngoy/src/test/java/ngoy).
 
 Example:
 ```java
 public class ContainerTest extends ANgoyTest {
+
 	@Component(
 		selector = "test", 
 		template = "a<ng-container *ngFor=\"let s of strings\">{{'{{s}}'}}</ng-container>b")
@@ -1098,7 +1109,7 @@ Options:
 Evaluate an expression:
 
 ```
-$ ./ngoy -e "T(LocalDateTime).now()"
+$ ./ngoy -e "java.time.LocalDateTime.now()"
 
 2018-12-03T00:07:33.187
 ```
@@ -1152,11 +1163,58 @@ app.prefix=myprefix
 
 The generator looks up the properties file in the current directory.
 
-# Spring EL
+# Java Expressions
 
-ngoy uses the [Spring EL](https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.html) library for expression/evaluation.
+ngoy expression are Java code with some template friendly extensions.
 
-Here are some notable differences to the Angular syntax:
+## Access fields, call methods
+
+Expressions are bound to the template's component instance. You can access the component's (static) fields and call it's (static) methods.
+
+Except for the `java` package, all other static calls are prohibited. So inside template expressions, you may use a fully qualified call to `java.*`:
+
+```html
+<div *ngFor="let nbr of java.util.Arrays.asList(1, 2, 3)">{{'{{nbr}}'}}</div>
+```
+
+### Built-in Functions
+
+These built-in functions are available:
+
+```java
+// returns the array as a List
+<T> java.util.List<T> List(T...items)
+
+// returns the key-value pair's array as a Map
+// example: Map('key1', value1, 'key2', value2)
+<K, V> Map<K, V> Map(Object... pairs)
+```
+
+The above example can be written as:
+```html
+<div *ngFor="let nbr of List(1, 2, 3)">{{'{{nbr}}'}}</div>
+```
+
+### Lambdas
+
+Lambdas can be used in template expressions. Method references are not supported.
+
+```html
+<div *ngFor="let entry : java.util.stream.Stream.of('a ', ' b').map(c -> c.trim())">{{'{{entry}}'}}</div>
+```
+
+Note: Template expression should be kept simple and basically free from business logic. Complex logic should reside in the component class. 
+
+## Prohibited Syntax
+
+These Java syntax elements are prohibited and will lead to a compile error:
+
+- assignments such as `name = 'x'`
+- increment/decrement such as `x++`, `--i`, `x += 1` 
+- `this` reference
+- Anonymous class 
+
+**For Angular users, here are some notable differences to the Angular syntax:**
 
 Truthy/falsy values do not exist. Expressions like this won't work:
 
@@ -1177,24 +1235,68 @@ You have to write:
 
 `===` does not exist. Use `==` instead.
 
-List and Map literals are nice:
+## Java Extensions
 
-```
-// list
-{1, 2, 3}
+ngoy adds some template friendly extensions to the Java language. They are transformed to standard Java and compiled directly into the template class to be statically verified.
 
-// map
-{a: 1, b: 2, c: 3}
-```
+### Smart Strings
 
-I.e.
+A string's delimiter may be the single or double quote; just like JavaScript.
+
+Using Java's double quoted strings inside template attribute bindings enforces you to escape or use single quoted strings
+ for the attribute value:
 ```html
-<ng-container *ngFor="let x of {1, 2, 3}">{{ '{{ x }}' }}</ng-container>
+<div [title]=' "-" + person.name + "-" '></div>
 ```
 
-will print:
-```
-123
+With ngoy's Smart Strings, you can have it also the regular way:
+```html
+<div [title]=" '-' + person.name + '-' "></div>
 ```
 
+As a consequence, the char literal does not exist anymore, since `'a'` is transformed to `"a"`. If you really need a char, you can write:
+```java
+'a'.charAt(0)
+```
+
+### Field access to getter
+
+A field access is replaced by it's getter if available:
+
+```java
+public class Person {
+	private String name;
+	public String getName() {
+		return name;
+	}
+
+	public int age;
+	public boolean isTeenager() {
+		return age < 20;
+	}
+}
+
+person.name     // -> person.getName()
+person.teenager // -> person.isTeenager()
+```
+
+### List/Map index access
+
+The array index syntax `array[index]` can be used on `java.util.List` and `java.util.Map`:
+
+```java
+List<Person> persons = ...
+person[0]           // -> person.get(0)
+
+Map<String, Person> personMap = ...
+personMap['Peter']  // -> personMap.get("Peter")
+```
+
+### Pipes
+
+A pipe is transformed to a function prefixed with `$`.
+
+```java
+person.birthdate | date:'dd.MM.yyyy' // -> $date(person.birthdate, 'dd.MM.yyyy') 
+```
 

@@ -24,6 +24,13 @@ public class MarkdownTocComponent {
 			, "interpolation" //
 			, "attribute-binding" //
 			, "hostbinding" //
+			, "built-in-functions" //
+			, "lambdas" //
+			, "smart-strings" //
+			, "field-access-to-getter" //
+			, "listmap-index-access" //
+			, "prohibited-syntax" //
+			, "pipes-1" //
 	));
 
 	@HostBinding("class.d-none")

@@ -50,6 +50,7 @@
 <ul>
 <li>JRE &gt;= 8</li>
 </ul>
+<p>Tested with Java 11.</p>
 <p>ngoy is a standalone library with no dependencies to any web server/framework.
 All it needs is an OutputStream to write the contents to.</p>
 <h1 id="clone-ngoy-starter-web">Clone ngoy-starter-web</h1>
@@ -69,6 +70,7 @@ cd ngoy-starter-web
 <p>You should see the app's greeting:</p>
 <p><img src="images/ngoy-starter-web-a.png" alt=""></p>
 <p><strong>Make some changes</strong></p>
+<p>Note: Depending on your development environment (Hot Code Replace), you may have to restart the server to pick up the changes.</p>
 <p>Open <code>AppComponent.java</code> and change the <code>title</code> field from <code>&quot;my-app&quot;</code> to <code>&quot;My first ngoy app&quot;</code>:</p>
 <pre><code class="language-java">@Component(selector = &quot;&quot;, templateUrl = &quot;app.component.html&quot;, styleUrls = { &quot;app.component.css&quot; })
 public class AppComponent {
@@ -136,9 +138,9 @@ Options:
     --version        print version information
 </code></pre>
 <p>Let's create a new (gradle only) project in an empty directory:</p>
-<pre><code>$ mkdir my-app
-$ cd my-app
-$ ngoy new com.example.MyApp
+<pre><code>$ mkdir ngoy-example
+$ cd ngoy-example
+$ ngoy new com.example.Example
 
 generating artifact './.gitignore'...
 generating artifact './build.gradle'...
@@ -169,7 +171,9 @@ generating artifact './src/main/java/com/example/person/person.component.css'...
 </code></pre>
 <p>A component consists of several files and should be placed in an own package. The <code>Component</code> suffix is added by ngoy.</p>
 <p>Open <code>AppComponent.java</code> and add <code>PersonComponent.class</code> to the <code>NgModule</code>'s <code>declarations</code> list:</p>
-<pre><code class="language-java">@Component(selector = &quot;&quot;, templateUrl = &quot;app.component.html&quot;, styleUrls = { &quot;app.component.css&quot; })
+<pre><code class="language-java">import com.example.person.PersonComponent;
+
+@Component(selector = &quot;&quot;, templateUrl = &quot;app.component.html&quot;, styleUrls = { &quot;app.component.css&quot; })
 @NgModule(declarations = { PersonComponent.class }, providers = {})
 public class AppComponent {
 	...
@@ -205,7 +209,7 @@ avoid collisions with existing HTML elements or components from other libraries.
 $ ngoy -v name=world &quot;hello {{name}}&quot;
 hello world
 
-$ ngoy &quot;&lt;li *ngFor='let x of {1, 2, 3}.?[intValue() &gt; 1]'&gt;{{x}}&lt;/li&gt;&quot;
+$ ngoy &quot;&lt;li *ngFor='let x of java.util.stream.Stream.of(1, 2, 3).filter(x -&gt; x &gt; 1)'&gt;{{x}}&lt;/li&gt;&quot;
 &lt;li&gt;2&lt;/li&gt;&lt;li&gt;3&lt;/li&gt;
 
 $ ll | ngoy -in -e &quot;$.startsWith('total') ? '' : ($.substring(0, 10) + nl)&quot;
