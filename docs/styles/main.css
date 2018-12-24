@@ -158,6 +158,32 @@ a:hover {
 	}
 }
 
+ngoy-markdown-toc {
+    position: fixed;
+    display: block;
+    top: 4rem;
+    height: calc(100vh - 4rem);
+    padding-top: 1.5rem;
+    font-size: .8rem;
+    background-color: whi;
+    right: 30px;
+    overflow: hidden;
+}
+
+ngoy-markdown-toc a {
+    display: block;
+    white-space: nowrap;
+	color: #99979c;
+}
+
+ngoy-markdown[toc] *[id]::before {
+  content: "";
+  display: block;
+  height: 70px;
+  margin: -70px 0 0;
+}
+
+
 
 home .row {
 	margin-top: 4rem;
@@ -195,30 +221,4 @@ get-started {
 }
 doc {
 	display: block;
-}
-
-
-markdown-toc {
-    position: fixed;
-    display: block;
-    top: 4rem;
-    height: calc(100vh - 4rem);
-    padding-top: 1.5rem;
-    font-size: .8rem;
-    background-color: whi;
-    right: 30px;
-    overflow: hidden;
-}
-
-markdown-toc a {
-    display: block;
-    white-space: nowrap;
-	color: #99979c;
-}
-
-markdown[toc] *[id]::before {
-  content: "";
-  display: block;
-  height: 70px;
-  margin: -70px 0 0;
 }
