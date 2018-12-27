@@ -1300,3 +1300,6 @@ A pipe is transformed to a function prefixed with `$`.
 person.birthdate | date:'dd.MM.yyyy' // -> $date(person.birthdate, 'dd.MM.yyyy') 
 ```
 
+# Javadoc
+
+Javadoc can be found [here](javadoc/index.html).

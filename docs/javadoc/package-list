@@ -1,0 +1,9 @@
+ngoy
+ngoy.common
+ngoy.core
+ngoy.core.cli
+ngoy.core.dom
+ngoy.core.gen
+ngoy.forms
+ngoy.router
+ngoy.translate
