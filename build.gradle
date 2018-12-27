@@ -32,7 +32,7 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	implementation('org.jodd:jodd-lagarto:5.0.6')
 	implementation("com.github.krizzdewizz:ngoy:$ngoyVersion")
-	implementation("com.github.krizzdewizz.ngoy-modules:ngoy-module-markdown:1.0.0")
+	implementation("com.github.krizzdewizz.ngoy-modules:ngoy-module-markdown:1.0.1")
 }
 
 // include component html/css files that reside next to the class

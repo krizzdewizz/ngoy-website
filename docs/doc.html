@@ -46,7 +46,7 @@
 			<div class="col">
 				<doc><ngoy-title><h1 class="mt-5 ngoy-title">Documentation</h1></ngoy-title>
 
-<ngoy-markdown url="doc/doc.md" toc toc-exclude="[field-access-to-getter, ngif, attribute-binding, pipes-1, prohibited-syntax, class-attribute, ngfor, hostbinding, ngstyle-attribute, interpolation, built-in-functions, ngswitch, ngclass-attribute, smart-strings, lambdas, listmap-index-access, style-attribute]"><p>All ngoy features and notable differences to Angular are documented here.</p>
+<ngoy-markdown url="/ngoyweb/app/doc/doc.md" toc toc-exclude="[field-access-to-getter, ngif, attribute-binding, pipes-1, prohibited-syntax, class-attribute, ngfor, hostbinding, ngstyle-attribute, interpolation, built-in-functions, ngswitch, ngclass-attribute, smart-strings, lambdas, listmap-index-access, style-attribute]"><p>All ngoy features and notable differences to Angular are documented here.</p>
 <h1 id="running-ngoy">Running ngoy</h1>
 <p>The simplest way to use ngoy's template engine is via the static <code>renderString()</code> or <code>renderTemplate()</code> methods:</p>
 <pre><code class="language-java">Ngoy.renderString(&quot;hello {{ name }}&quot;, Context.of(&quot;name&quot;, &quot;world&quot;), System.out);
@@ -639,6 +639,71 @@ public class PersonService {
 	}
 }
 </code></pre>
+<p>Package modules are currently not supported in Java 11.</p>
+<h2 id="built-in-modules">Built-in Modules</h2>
+<p>The following modules are contained in the ngoy binaries.
+See the module's documentation below on how they must be imported into your app.</p>
+<h3 id="router">Router</h3>
+<p>Basic routing functionality can be found in the <code>RouterModule</code>. See the <a href="https://github.com/krizzdewizz/ngoy-examples/tree/master/src/main/java/ngoyexamples/routing">router</a> example in the <a href="https://github.com/krizzdewizz/ngoy-examples">ngoy-examples</a> collection.</p>
+<h3 id="translate">Translate</h3>
+<p>Using the <code>TranslateModule</code>, you can easily translate text in your templates using the standard Java way with message bundles.</p>
+<p>The easiest way to include translation support is to build the ngoy instance with a call to <code>translateBundle()</code>:</p>
+<pre><code class="language-java">Ngoy&lt;AppComponent&gt; ngoy = Ngoy.app(AppComponent.class)
+	.translateBundle(&quot;messages&quot;) // PropertyResourceBundle 'baseName'
+	.build();
+</code></pre>
+<p><code>translateBundle()</code> adds the <code>TranslateModule</code> to ngoy and configures the <code>TranslateService</code> to load the <code>PropertyResourceBundle</code> named <code>&quot;messages&quot;</code>.</p>
+<p>Given these message bundles:</p>
+<p><code>messages_en.properties</code>:</p>
+<pre><code>MSG_GREETING=hello world
+</code></pre>
+<p>and <code>messages_de.properties</code>:</p>
+<pre><code>MSG_GREETING=hallo welt
+</code></pre>
+<p>then in your template, you can obtain the translation/message for a given key using either the <code>translate</code> pipe:</p>
+<pre><code class="language-html">&lt;h1&gt;{{ 'MSG_GREETING' | translate  }}&lt;/h1&gt;
+</code></pre>
+<p>or the <code>translate</code> directive:</p>
+<pre><code class="language-html">&lt;h1 translate=&quot;MSG_GREETING&quot;&gt;&lt;/h1&gt;
+</code></pre>
+<p>The current locale for the translation is held by the <code>LocaleProvider</code>. Default is <code>Locale#getDefault()</code>.</p>
+<p>Given a german locale, both will render:</p>
+<pre><code class="language-html">&lt;h1&gt;hallo welt&lt;/h1&gt;
+</code></pre>
+<p>You can override the locale by providing another <code>LocaleProvider</code>:</p>
+<pre><code class="language-java">Ngoy&lt;AppComponent&gt; ngoy = Ngoy.app(AppComponent.class)
+	.translateBundle(&quot;messages&quot;)
+	.providers(
+		Provider.useValue(LocaleProvider.class, new LocaleProvider.Default(Locale.ENGLISH)))
+	.build();
+</code></pre>
+<p>or use the session's locale (Spring Boot):</p>
+<pre><code class="language-java">Ngoy&lt;AppComponent&gt; ngoy = Ngoy.app(AppComponent.class)
+	.translateBundle(&quot;messages&quot;)
+	.providers(
+		Provider.useValue(LocaleProvider.class, LocaleContextHolder::getLocale))
+	.build();
+</code></pre>
+<p>Parameters are supported by the <code>translate</code> pipe:</p>
+<pre><code>MSG_GREET_WITH_PARAM=hello {0}
+</code></pre>
+<pre><code class="language-html">&lt;h1&gt;{{ 'MSG_GREET_WITH_PARAM' | translate: 'world'  }}&lt;/h1&gt;
+</code></pre>
+<p>You can inject <code>TranslateService</code> anywhere for translations in code:</p>
+<pre><code class="language-java">@Component(...)
+public class PersonComponent implements OnInit {
+	
+	@Inject
+	public TranslateService translateService;
+	
+	public void ngOnInit() {
+		String greeting = translateService.translate(&quot;MSG_GREET_WITH_PARAM&quot;, &quot;world&quot;);
+		...
+	}
+}
+</code></pre>
+<h2 id="additional-modules">Additional Modules</h2>
+<p>More ready-to-use modules can be found in the <a href="https://github.com/krizzdewizz/ngoy-modules">ngoy-modules</a> collection.</p>
 <h1 id="dependency-injection">Dependency Injection</h1>
 <p>Any class can be registered as a service/provider within ngoy and be injected into declarations and other services.</p>
 <p>ngoy supports field injection and constructor injection.</p>
@@ -704,68 +769,6 @@ public class Main implements InitializingBean {
 			...
 			.injectors(beanInjector) // make Spring beans known to ngoy
 			.build();
-	}
-}
-</code></pre>
-<h1 id="built-in-modules">Built-in Modules</h1>
-<p>The following modules are contained in the ngoy binaries.
-See the module's documentation below on how they must be imported into your app.</p>
-<h2 id="router">Router</h2>
-<p>Basic routing functionality can be found in the <code>RouterModule</code>. See the <a href="https://github.com/krizzdewizz/ngoy-examples/tree/master/src/main/java/ngoyexamples/routing">router</a> example in the <a href="https://github.com/krizzdewizz/ngoy-examples">ngoy-examples</a> collection.</p>
-<h2 id="translate">Translate</h2>
-<p>Using the <code>TranslateModule</code>, you can easily translate text in your templates using the standard Java way with message bundles.</p>
-<p>The easiest way to include translation support is to build the ngoy instance with a call to <code>translateBundle()</code>:</p>
-<pre><code class="language-java">Ngoy&lt;AppComponent&gt; ngoy = Ngoy.app(AppComponent.class)
-	.translateBundle(&quot;messages&quot;) // PropertyResourceBundle 'baseName'
-	.build();
-</code></pre>
-<p><code>translateBundle()</code> adds the <code>TranslateModule</code> to ngoy and configures the <code>TranslateService</code> to load the <code>PropertyResourceBundle</code> named <code>&quot;messages&quot;</code>.</p>
-<p>Given these message bundles:</p>
-<p><code>messages_en.properties</code>:</p>
-<pre><code>MSG_GREETING=hello world
-</code></pre>
-<p>and <code>messages_de.properties</code>:</p>
-<pre><code>MSG_GREETING=hallo welt
-</code></pre>
-<p>then in your template, you can obtain the translation/message for a given key using either the <code>translate</code> pipe:</p>
-<pre><code class="language-html">&lt;h1&gt;{{ 'MSG_GREETING' | translate  }}&lt;/h1&gt;
-</code></pre>
-<p>or the <code>translate</code> directive:</p>
-<pre><code class="language-html">&lt;h1 translate=&quot;MSG_GREETING&quot;&gt;&lt;/h1&gt;
-</code></pre>
-<p>The current locale for the translation is held by the <code>LocaleProvider</code>. Default is <code>Locale#getDefault()</code>.</p>
-<p>Given a german locale, both will render:</p>
-<pre><code class="language-html">&lt;h1&gt;hallo welt&lt;/h1&gt;
-</code></pre>
-<p>You can override the locale by providing another <code>LocaleProvider</code>:</p>
-<pre><code class="language-java">Ngoy&lt;AppComponent&gt; ngoy = Ngoy.app(AppComponent.class)
-	.translateBundle(&quot;messages&quot;)
-	.providers(
-		Provider.useValue(LocaleProvider.class, new LocaleProvider.Default(Locale.ENGLISH)))
-	.build();
-</code></pre>
-<p>or use the session's locale (Spring Boot):</p>
-<pre><code class="language-java">Ngoy&lt;AppComponent&gt; ngoy = Ngoy.app(AppComponent.class)
-	.translateBundle(&quot;messages&quot;)
-	.providers(
-		Provider.useValue(LocaleProvider.class, LocaleContextHolder::getLocale))
-	.build();
-</code></pre>
-<p>Parameters are supported by the <code>translate</code> pipe:</p>
-<pre><code>MSG_GREET_WITH_PARAM=hello {0}
-</code></pre>
-<pre><code class="language-html">&lt;h1&gt;{{ 'MSG_GREET_WITH_PARAM' | translate: 'world'  }}&lt;/h1&gt;
-</code></pre>
-<p>You can inject <code>TranslateService</code> anywhere for translations in code:</p>
-<pre><code class="language-java">@Component(...)
-public class PersonComponent implements OnInit {
-	
-	@Inject
-	public TranslateService translateService;
-	
-	public void ngOnInit() {
-		String greeting = translateService.translate(&quot;MSG_GREET_WITH_PARAM&quot;, &quot;world&quot;);
-		...
 	}
 }
 </code></pre>
@@ -882,6 +885,7 @@ avoid collisions with existing HTML elements or components from other libraries.
 <pre><code class="language-html">&lt;div *ngFor=&quot;let entry : java.util.stream.Stream.of('a ', ' b').map(c -&gt; c.trim())&quot;&gt;{{entry}}&lt;/div&gt;
 </code></pre>
 <p>Note: Template expression should be kept simple and basically free from business logic. Complex logic should reside in the component class.</p>
+<p>Static interface methods like <code>java.util.stream.Stream#of</code> are currently not supported in Java 11.</p>
 <h2 id="prohibited-syntax">Prohibited Syntax</h2>
 <p>These Java syntax elements are prohibited and will lead to a compile error:</p>
 <ul>
@@ -949,7 +953,7 @@ personMap['Peter']  // -&gt; personMap.get(&quot;Peter&quot;)
 </code></pre>
 <h1 id="javadoc">Javadoc</h1>
 <p>Javadoc can be found <a href="javadoc/index.html">here</a>.</p>
-<ngoy-markdown-toc class="d-none d-md-block"><a href="#running-ngoy" style="margin-left:20px">Running ngoy</a><a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component Interaction</a><a href="#component-styles" style="margin-left:40px">Component Styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute Directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time Hook</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#plain-text-templates" style="margin-left:40px">Plain Text Templates</a><a href="#xml-templates" style="margin-left:40px">XML Templates</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at Runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#built-in-modules" style="margin-left:20px">Built-in Modules</a><a href="#router" style="margin-left:40px">Router</a><a href="#translate" style="margin-left:40px">Translate</a><a href="#unit-testing" style="margin-left:20px">Unit Testing</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#java-expressions" style="margin-left:20px">Java Expressions</a><a href="#access-fields-call-methods" style="margin-left:40px">Access fields, call methods</a><a href="#java-extensions" style="margin-left:40px">Java Extensions</a><a href="#javadoc" style="margin-left:20px">Javadoc</a></ngoy-markdown-toc></ngoy-markdown></doc>
+<ngoy-markdown-toc class="d-none d-md-block"><a href="#running-ngoy" style="margin-left:20px">Running ngoy</a><a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component Interaction</a><a href="#component-styles" style="margin-left:40px">Component Styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute Directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time Hook</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#plain-text-templates" style="margin-left:40px">Plain Text Templates</a><a href="#xml-templates" style="margin-left:40px">XML Templates</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#built-in-modules" style="margin-left:40px">Built-in Modules</a><a href="#router" style="margin-left:60px">Router</a><a href="#translate" style="margin-left:60px">Translate</a><a href="#additional-modules" style="margin-left:40px">Additional Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at Runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#unit-testing" style="margin-left:20px">Unit Testing</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#java-expressions" style="margin-left:20px">Java Expressions</a><a href="#access-fields-call-methods" style="margin-left:40px">Access fields, call methods</a><a href="#java-extensions" style="margin-left:40px">Java Extensions</a><a href="#javadoc" style="margin-left:20px">Javadoc</a></ngoy-markdown-toc></ngoy-markdown></doc>
 			</div>
 		</div>
 	</div>

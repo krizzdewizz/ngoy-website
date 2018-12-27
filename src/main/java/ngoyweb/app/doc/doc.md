@@ -842,7 +842,6 @@ A dynamic module's declarations/providers are computed at runtime instead of 'de
 See [ModuleWithProviders.java](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/core/ModuleWithProviders.java) and 
 [RouterModule.java](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/router/RouterModule.java) for an example usage.
 
-
 ## Package Modules
 
 It can be tedious to add every single thing to a module. And in an isolated app, there's no risk that there would be collisions.
@@ -872,101 +871,18 @@ public class PersonService {
 }
 ```
 
-# Dependency Injection
+Package modules are currently not supported in Java 11.
 
-Any class can be registered as a service/provider within ngoy and be injected into declarations and other services.
-
-ngoy supports field injection and constructor injection.
-
-```java
-public class PersonService {
-	public Person[] getPersons() {
-		return ...;
-	}
-}
-
-public class WeatherService {
-}
-
-@Component(selector = "person", providers = { PersonService.class, WeatherService.class }) 
-public class PersonComponent implements OnInit {
-
-	// constructor injection
-	public PersonComponent(WeatherService weatherService) {
-		// do things with weatherService
-	}
-
-	// field injection
-	@Inject
-	public PersonService personService;
-	
-	public void ngOnInit() {
-		// do things with personService
-	}
-}
-```
-
-Fields must be public, non-static, non-final and annotated with `@Inject`. Constructor parameters must not be annotated.
-
-A runtime exception is thrown if there's no provider for a service. A dependency may be declared `@Optional` in which case no exception is thrown.
-
-Note: a service must be annotated with `@Injectable` when it should be picked up by <a href="#package-modules">Package Modules</a>.
-
-There are 3 kinds of providers:
-- `class A` -> `class A`: Wherever `class A` is requested, inject an instance of `class A` (example above)
--  `class A` -> `useClass B`: Wherever `class A` is requested (could be an interface), inject an instance of `class B`, which must be assignable to `class A`. Used to override default behaviour.
--  `class A` -> `useValue V`: Wherever `class A` is requested (could be an interface), inject the instance `V`, which must be an instance of `class A`. Only available at runtime, not with annotations.
-
-## Providers at Runtime
-
-Providers can be specified at runtime, especially the `useValue` variant, which is used to inject external dependencies into ngoy.  
-
-```java
-
-// 'service' may be an Spring repository/service or an instance created by you
-
-ngoy.app(AppComponent.class)
-	.providers(Provider.useValue(MyService.class, service)
-	.build();
-```
-
-See also [Provider.java](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/core/Provider.java)
-
-## External DI Systems
-
-By implementing the `Injector` interface, one can provide dependencies from other DI systems such as Spring Boot to ngoy.
-
-See [BeanInjector.java](https://github.com/krizzdewizz/ngoy-tour-of-heroes/blob/master/src/main/java/toh/app/BeanInjector.java) for an example.
-
-```java
-@Controller
-@RequestMapping("/**")
-public class Main implements InitializingBean {
-
-	...
-
-	@Autowired
-	private BeanInjector beanInjector;
-
-	private void createApp() {
-		ngoy = Ngoy.app(AppComponent.class)
-			...
-			.injectors(beanInjector) // make Spring beans known to ngoy
-			.build();
-	}
-}
-```
-
-# Built-in Modules
+## Built-in Modules
 
 The following modules are contained in the ngoy binaries. 
 See the module's documentation below on how they must be imported into your app.
 
-## Router
+### Router
 
 Basic routing functionality can be found in the `RouterModule`. See the [router](https://github.com/krizzdewizz/ngoy-examples/tree/master/src/main/java/ngoyexamples/routing) example in the [ngoy-examples](https://github.com/krizzdewizz/ngoy-examples) collection.
 
-## Translate
+### Translate
 
 Using the `TranslateModule`, you can easily translate text in your templates using the standard Java way with message bundles. 
 
@@ -1052,6 +968,94 @@ public class PersonComponent implements OnInit {
 }
 ```
 
+## Additional Modules
+
+More ready-to-use modules can be found in the [ngoy-modules](https://github.com/krizzdewizz/ngoy-modules) collection.
+
+# Dependency Injection
+
+Any class can be registered as a service/provider within ngoy and be injected into declarations and other services.
+
+ngoy supports field injection and constructor injection.
+
+```java
+public class PersonService {
+	public Person[] getPersons() {
+		return ...;
+	}
+}
+
+public class WeatherService {
+}
+
+@Component(selector = "person", providers = { PersonService.class, WeatherService.class }) 
+public class PersonComponent implements OnInit {
+
+	// constructor injection
+	public PersonComponent(WeatherService weatherService) {
+		// do things with weatherService
+	}
+
+	// field injection
+	@Inject
+	public PersonService personService;
+	
+	public void ngOnInit() {
+		// do things with personService
+	}
+}
+```
+
+Fields must be public, non-static, non-final and annotated with `@Inject`. Constructor parameters must not be annotated.
+
+A runtime exception is thrown if there's no provider for a service. A dependency may be declared `@Optional` in which case no exception is thrown.
+
+Note: a service must be annotated with `@Injectable` when it should be picked up by <a href="#package-modules">Package Modules</a>.
+
+There are 3 kinds of providers:
+- `class A` -> `class A`: Wherever `class A` is requested, inject an instance of `class A` (example above)
+-  `class A` -> `useClass B`: Wherever `class A` is requested (could be an interface), inject an instance of `class B`, which must be assignable to `class A`. Used to override default behaviour.
+-  `class A` -> `useValue V`: Wherever `class A` is requested (could be an interface), inject the instance `V`, which must be an instance of `class A`. Only available at runtime, not with annotations.
+
+## Providers at Runtime
+
+Providers can be specified at runtime, especially the `useValue` variant, which is used to inject external dependencies into ngoy.  
+
+```java
+
+// 'service' may be an Spring repository/service or an instance created by you
+
+ngoy.app(AppComponent.class)
+	.providers(Provider.useValue(MyService.class, service)
+	.build();
+```
+
+See also [Provider.java](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/core/Provider.java)
+
+## External DI Systems
+
+By implementing the `Injector` interface, one can provide dependencies from other DI systems such as Spring Boot to ngoy.
+
+See [BeanInjector.java](https://github.com/krizzdewizz/ngoy-tour-of-heroes/blob/master/src/main/java/toh/app/BeanInjector.java) for an example.
+
+```java
+@Controller
+@RequestMapping("/**")
+public class Main implements InitializingBean {
+
+	...
+
+	@Autowired
+	private BeanInjector beanInjector;
+
+	private void createApp() {
+		ngoy = Ngoy.app(AppComponent.class)
+			...
+			.injectors(beanInjector) // make Spring beans known to ngoy
+			.build();
+	}
+}
+```
 # Unit Testing
 
 Unit testing your components, directives, pipes etc. is a piece of cake. ngoy can render any component, not just the 'app'. 
@@ -1203,7 +1207,9 @@ Lambdas can be used in template expressions. Method references are not supported
 <div *ngFor="let entry : java.util.stream.Stream.of('a ', ' b').map(c -> c.trim())">{{'{{entry}}'}}</div>
 ```
 
-Note: Template expression should be kept simple and basically free from business logic. Complex logic should reside in the component class. 
+Note: Template expression should be kept simple and basically free from business logic. Complex logic should reside in the component class.
+
+Static interface methods like `java.util.stream.Stream#of` are currently not supported in Java 11. 
 
 ## Prohibited Syntax
 

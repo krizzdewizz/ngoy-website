@@ -3,8 +3,6 @@ This guide shows you how to build and run a simple ngoy app and how to use the C
 **Prerequisites**
 - JRE >= 8
 
-Tested with Java 11.
-
 ngoy is a standalone library with no dependencies to any web server/framework. 
 All it needs is an OutputStream to write the contents to.
 
