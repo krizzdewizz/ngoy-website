@@ -270,7 +270,7 @@ At construction time, fields are not injected yet, but in <code>ngOnInit()</code
 <p><code>ngOnDestroy()</code> is called in the rendering phase each time the component, resp. it's host element ends.</p>
 <h2 id="component-interaction">Component Interaction</h2>
 <p>You can pass data from a parent component to a child component with an input binding:</p>
-<pre><code class="language-java">@Component(...)
+<pre><code class="language-java">@Component(selector=&quot;person&quot;, ...)
 public class PersonComponent {
 	@Input
 	public Person thePerson;
@@ -288,7 +288,7 @@ public class AppComponent {
 </code></pre>
 <p><code>[]</code> designates an expression. its value, <code>peter</code>, is assigned to the component's input <code>thePerson</code>.</p>
 <p>The <code>@Input</code> can optionally be renamed:</p>
-<pre><code class="language-java">@Component(...)
+<pre><code class="language-java">@Component(selector=&quot;person&quot;, ...)
 public class PersonComponent {
 	@Input(&quot;personas&quot;)
 	public Person thePerson;
@@ -297,7 +297,7 @@ public class PersonComponent {
 <pre><code class="language-html">&lt;person [personas]=&quot;peter&quot;&gt;&lt;/person&gt;
 </code></pre>
 <p>The <code>@Input</code> annotation can also be specified on a 'setter':</p>
-<pre><code class="language-java">@Component(...)
+<pre><code class="language-java">@Component(selector=&quot;person&quot;, ...)
 public class PersonComponent {
 	private Person _person;
 	
@@ -491,7 +491,7 @@ public class PersonComponent implements OnCompile {
 }
 </code></pre>
 <p><code>ngOnCompile()</code> is called only <em>once</em> in the compile phase and not in the rendering phase.</p>
-<p>See the <a href="https://github.com/krizzdewizz/ngoy-website/blob/master/src/main/java/ngoyweb/app/components/markdown/MarkdownComponent.java">MarkdownComponent</a> for an example. It appends the HTML converted from CommonMark. You can write markdown inside the component or reference a <code>.md</code> resource.</p>
+<p>See the <a href="https://github.com/krizzdewizz/ngoy-modules/blob/master/ngoy-module-markdown/src/main/java/ngoy/markdown/component/MarkdownComponent.java">MarkdownComponent</a> for an example. It appends the HTML converted from CommonMark. You can write markdown inside the component or reference a <code>.md</code> resource.</p>
 <h2 id="pipes">Pipes</h2>
 <p>A pipe takes data as input and transforms it to a desired output. You can pipe the result of an expression to the desired pipe:</p>
 <pre><code class="language-html">&lt;h1&gt;hello:  {{ person.name | uppercase }}&lt;/h1&gt;
@@ -508,6 +508,7 @@ public class PersonComponent implements OnCompile {
 <li><a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/LowerCasePipe.java">lowercase</a></li>
 <li><a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/CapitalizePipe.java">capitalize</a></li>
 <li><a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/DatePipe.java">date</a></li>
+<li><a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/RawPipe.java">raw</a></li>
 <li><a href="https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/translate/TranslatePipe.java">translate</a> (see <a href="#translate">Translate Module</a>)</li>
 </ul>
 <p>Of course you can write your own:</p>

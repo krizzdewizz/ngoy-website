@@ -352,7 +352,7 @@ At construction time, fields are not injected yet, but in `ngOnInit()`, they are
 You can pass data from a parent component to a child component with an input binding:
 
 ```java
-@Component(...)
+@Component(selector="person", ...)
 public class PersonComponent {
 	@Input
 	public Person thePerson;
@@ -378,7 +378,7 @@ The input parameter is passed to the `PersonComponent` instance with the use of 
 The `@Input` can optionally be renamed:
 
 ```java
-@Component(...)
+@Component(selector="person", ...)
 public class PersonComponent {
 	@Input("personas")
 	public Person thePerson;
@@ -392,7 +392,7 @@ public class PersonComponent {
 The `@Input` annotation can also be specified on a 'setter':
 
 ```java
-@Component(...)
+@Component(selector="person", ...)
 public class PersonComponent {
 	private Person _person;
 	
@@ -669,7 +669,7 @@ public class PersonComponent implements OnCompile {
 
 `ngOnCompile()` is called only *once* in the compile phase and not in the rendering phase.
 
-See the [MarkdownComponent](https://github.com/krizzdewizz/ngoy-website/blob/master/src/main/java/ngoyweb/app/components/markdown/MarkdownComponent.java) for an example. It appends the HTML converted from CommonMark. You can write markdown inside the component or reference a `.md` resource.  
+See the [MarkdownComponent](https://github.com/krizzdewizz/ngoy-modules/blob/master/ngoy-module-markdown/src/main/java/ngoy/markdown/component/MarkdownComponent.java) for an example. It appends the HTML converted from CommonMark. You can write markdown inside the component or reference a `.md` resource.  
 
 ## Pipes
 
@@ -694,6 +694,7 @@ These are the built-in pipes:
 - [lowercase](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/LowerCasePipe.java)
 - [capitalize](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/CapitalizePipe.java)
 - [date](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/DatePipe.java)
+- [raw](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/common/RawPipe.java)
 - [translate](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/translate/TranslatePipe.java) (see <a href="#translate">Translate Module</a>)
 
 
