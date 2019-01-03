@@ -51,7 +51,7 @@
 <li>JRE &gt;= 8</li>
 </ul>
 <p>ngoy is a standalone library with no dependencies to any web server/framework.
-All it needs is an OutputStream to write the contents to.</p>
+All it needs is an Writer/OutputStream to write the contents to.</p>
 <h1 id="clone-ngoy-starter-web">Clone ngoy-starter-web</h1>
 <p>In this guide we are going to produce HTML. It's best to spin off a web server and view the HTML contents in the browser.
 We are going to use a Gradle/Spring Boot application for that purpose. So for this part of the guide you must have <a href="https://gradle.org">gradle</a> installed.</p>
@@ -95,8 +95,10 @@ public class AppComponent {
 <li>quickly generate source code artifacts for new projects, components, pipes etc.</li>
 </ul>
 <p>Download the ngoy release ZIP from <a href="https://github.com/krizzdewizz/ngoy/releases">here</a> and extract it to a folder on your computer.</p>
-<p>You may want to add this folder to the system's path.</p>
-<p>The ZIP contains two shell scripts <code>ngoy</code> and <code>ngoy.cmd</code> and the ngoy distribution jar.</p>
+<p>You may want to add this folder to the system's path or create an alias:</p>
+<pre><code>$ alias ngoy=/mnt/d/downloads/ngoy-1.0.0-rc7/ngoy
+</code></pre>
+<p>The ZIP contains two shell scripts <code>ngoy</code>, <code>ngoy.cmd</code> and the ngoy distribution jar.</p>
 <pre><code>$ ngoy
 
 usage: ngoy [new|g|gen|generate] [options] template
@@ -119,15 +121,15 @@ Options:
 <p>The generator's help:</p>
 <pre><code>$ ngoy new
 
-usage: ngoy-gen [options] project|component|directive|pipe|module|service name
+usage: ngoy gen [options] project|component|directive|pipe|module|service name
 
 'name' should be a fully qualified Java class name.
 
 Examples:
-  ngoy-gen component org.myapp.person.PersonList
+  ngoy gen component org.myapp.person.PersonList
 
 Shortcuts works as well:
-  ngoy-gen pi org.myapp.MyPipe
+  ngoy gen pi org.myapp.MyPipe
 
 Options:
  -h,--help           display this help

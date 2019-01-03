@@ -4,7 +4,7 @@ This guide shows you how to build and run a simple ngoy app and how to use the C
 - JRE >= 8
 
 ngoy is a standalone library with no dependencies to any web server/framework. 
-All it needs is an OutputStream to write the contents to.
+All it needs is an Writer/OutputStream to write the contents to.
 
 # Clone ngoy-starter-web
 
@@ -75,9 +75,13 @@ ngoy has a built in CLI with which you can
 
 Download the ngoy release ZIP from [here](https://github.com/krizzdewizz/ngoy/releases) and extract it to a folder on your computer.
 
-You may want to add this folder to the system's path.
+You may want to add this folder to the system's path or create an alias:
 
-The ZIP contains two shell scripts `ngoy` and `ngoy.cmd` and the ngoy distribution jar. 
+```
+$ alias ngoy=/mnt/d/downloads/ngoy-1.0.0-rc7/ngoy
+```
+
+The ZIP contains two shell scripts `ngoy`, `ngoy.cmd` and the ngoy distribution jar. 
 
 ```
 $ ngoy
@@ -106,15 +110,15 @@ The generator's help:
 ```
 $ ngoy new
 
-usage: ngoy-gen [options] project|component|directive|pipe|module|service name
+usage: ngoy gen [options] project|component|directive|pipe|module|service name
 
 'name' should be a fully qualified Java class name.
 
 Examples:
-  ngoy-gen component org.myapp.person.PersonList
+  ngoy gen component org.myapp.person.PersonList
 
 Shortcuts works as well:
-  ngoy-gen pi org.myapp.MyPipe
+  ngoy gen pi org.myapp.MyPipe
 
 Options:
  -h,--help           display this help

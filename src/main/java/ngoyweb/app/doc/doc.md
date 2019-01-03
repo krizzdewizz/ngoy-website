@@ -1170,7 +1170,7 @@ The generator looks up the properties file in the current directory.
 
 # Java Expressions
 
-ngoy expression are Java code with some template friendly extensions.
+ngoy expressions are Java code with some template friendly extensions.
 
 ## Access fields, call methods
 
@@ -1208,7 +1208,7 @@ Lambdas can be used in template expressions. Method references are not supported
 <div *ngFor="let entry : java.util.stream.Stream.of('a ', ' b').map(c -> c.trim())">{{'{{entry}}'}}</div>
 ```
 
-Note: Template expression should be kept simple and basically free from business logic. Complex logic should reside in the component class.
+Note: Template expressions should be kept simple and basically free from business logic. Complex logic should reside in the component class.
 
 Static interface methods like `java.util.stream.Stream#of` are currently not supported in Java 11. 
 
@@ -1278,6 +1278,7 @@ public class Person {
 	}
 
 	public int age;
+
 	public boolean isTeenager() {
 		return age < 20;
 	}

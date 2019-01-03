@@ -863,7 +863,7 @@ avoid collisions with existing HTML elements or components from other libraries.
 </code></pre>
 <p>The generator looks up the properties file in the current directory.</p>
 <h1 id="java-expressions">Java Expressions</h1>
-<p>ngoy expression are Java code with some template friendly extensions.</p>
+<p>ngoy expressions are Java code with some template friendly extensions.</p>
 <h2 id="access-fields-call-methods">Access fields, call methods</h2>
 <p>Expressions are bound to the template's component instance. You can access the component's (static) fields and call it's (static) methods.</p>
 <p>Except for the <code>java</code> package, all other static calls are prohibited. So inside template expressions, you may use a fully qualified call to <code>java.*</code>:</p>
@@ -885,7 +885,7 @@ avoid collisions with existing HTML elements or components from other libraries.
 <p>Lambdas can be used in template expressions. Method references are not supported.</p>
 <pre><code class="language-html">&lt;div *ngFor=&quot;let entry : java.util.stream.Stream.of('a ', ' b').map(c -&gt; c.trim())&quot;&gt;{{entry}}&lt;/div&gt;
 </code></pre>
-<p>Note: Template expression should be kept simple and basically free from business logic. Complex logic should reside in the component class.</p>
+<p>Note: Template expressions should be kept simple and basically free from business logic. Complex logic should reside in the component class.</p>
 <p>Static interface methods like <code>java.util.stream.Stream#of</code> are currently not supported in Java 11.</p>
 <h2 id="prohibited-syntax">Prohibited Syntax</h2>
 <p>These Java syntax elements are prohibited and will lead to a compile error:</p>
@@ -932,6 +932,7 @@ for the attribute value:</p>
 	}
 
 	public int age;
+
 	public boolean isTeenager() {
 		return age &lt; 20;
 	}

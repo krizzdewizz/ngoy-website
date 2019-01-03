@@ -52,7 +52,7 @@ task extractNgoy(type: Copy) {
     from configurations.ngoy
 }
 
-task publish(type: JavaExec) {
+task renderSite(type: JavaExec) {
   classpath = sourceSets.main.runtimeClasspath
   main = 'ngoyweb.app.Main'
 }
