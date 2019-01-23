@@ -872,8 +872,6 @@ public class PersonService {
 }
 ```
 
-Package modules are currently not supported in Java 11.
-
 ## Built-in Modules
 
 The following modules are contained in the ngoy binaries. 
@@ -1150,7 +1148,7 @@ Options:
 
 Generate a component:
 ```
-$ ./ngoy g c person
+$ ./ngoy g c com.example.person.Person
 
 generating artifact './src/main/java/ngoygen/person/PersonComponent.java'...
 generating artifact './src/main/java/ngoygen/person/person.component.html'...
