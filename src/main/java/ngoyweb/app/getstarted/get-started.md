@@ -78,7 +78,7 @@ Download the ngoy release ZIP from [here](https://github.com/krizzdewizz/ngoy/re
 You may want to add this folder to the system's path or create an alias:
 
 ```
-$ alias ngoy=/mnt/d/downloads/ngoy-1.0.0-rc7/ngoy
+$ alias ngoy=/mnt/d/downloads/ngoy-1.0.0-rc8/ngoy
 ```
 
 The ZIP contains two shell scripts `ngoy`, `ngoy.cmd` and the ngoy distribution jar. 
