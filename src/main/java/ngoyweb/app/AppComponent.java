@@ -25,7 +25,7 @@ public class AppComponent implements OnInit {
 	}
 
 	@Override
-	public void ngOnInit() {
+	public void onInit() {
 		activeRoute = getRoutes().stream()
 				.filter(router::isActive)
 				.findFirst()

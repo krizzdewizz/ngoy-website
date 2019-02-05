@@ -4,6 +4,9 @@ ngoy.core
 ngoy.core.cli
 ngoy.core.dom
 ngoy.core.gen
+ngoy.core.reflect
 ngoy.forms
+ngoy.hyperml
+ngoy.hyperml.base
 ngoy.router
 ngoy.translate

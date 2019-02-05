@@ -3,7 +3,6 @@ All ngoy features and notable differences to Angular are documented here.
 
 # Running ngoy
 
-
 The simplest way to use ngoy's template engine is via the static `renderString()` or `renderTemplate()` methods:
 
 ```java
@@ -19,7 +18,7 @@ In the example the variable `"name"` is assigned the value `"world"`.
 
 The third parameter is the `OutputStream` to write to.
 
-`renderTemplate()` works exactly the same, except that the template is read from a resource via `Class#getResourceAsStream()`.  
+`renderTemplate()` works exactly the same, except that the template is read from a resource via `Class#getResourceAsStream()`.
 
 For a simple template this might be already enough.
 
@@ -48,11 +47,11 @@ public static void main(String[] args) {
 // hello WORLD
 ```
 
-`build()` compiles the template to Java byte code on the fly and returns an Ngoy instance which then renders the content to the given `OutputStream`. 
+`build()` compiles the template to Java byte code on the fly and returns an Ngoy instance which then renders the content to the given `OutputStream`.
 
-It's supposed to build once, render many times. 
+It's supposed to build once, render many times.
 
-Note: In Angular, you normally have an `index.html` which 'bootstraps' the root app. In ngoy, the root app *is* the page. 
+Note: In Angular, you normally have an `index.html` which 'bootstraps' the root app. In ngoy, the root app *is* the page.
 
 # Components & Templates
 
@@ -100,7 +99,7 @@ public class PersonComponent {
 }
 ```
 
-## Template Syntax & Data Binding 
+## Template Syntax & Data Binding
 
 A component has full control over the HTML by the use of data binding. There exists several possibilities:
 
@@ -110,7 +109,7 @@ The text inside double curly braces is interpreted as a Java expression:
 
 ```html
 <h1>Person details: {{ '{{ person.name }}' }}</h1>
-``` 
+```
 At runtime, the expression's return value is rendered.
 
 Note: Expressions are Java code with some script-friendly extensions. See <a href="#java-expressions">Java Expressions</a>.
@@ -157,7 +156,7 @@ Alternatively you can write also:
 
 The `[attr.]` syntax is relevant when using the <a href="#hostbinding">`@HostBinding`</a> annotation.
 
-In Angular, there exists property bindings and attribute bindings. In ngoy, there exists only attribute bindings. 
+In Angular, there exists property bindings and attribute bindings. In ngoy, there exists only attribute bindings.
 
 #### `class` attribute
 
@@ -206,18 +205,18 @@ It expects a `java.util.Map<String, Boolean>` as the expression result:
 public class PersonComponent implements OnInit {
 	...
 	public Map<String, Boolean> personClasses = new HashMap<>();
-	
-	public void ngOnInit() {
+
+	public void onInit() {
 		personClasses.put("vip", isVip(person));
 		personClasses.put("cool", isCool(person));
 	}
 }
 ```
 
-Or as an expression using the <a href="#built-in-functions">built-in</a> Map function:
+Or as an expression using the `map` pipe:
 
 ```html
-<h1 [ngClass]="Map('vip', isVip(person), 'cool', isCool(person))"></h1>
+<h1 [ngClass]="$map('vip', isVip(person), 'cool', isCool(person))"></h1>
 ```
 
 #### `style` attribute
@@ -279,8 +278,8 @@ It expects a `java.util.Map<String, String>` as the expression result:
 public class PersonComponent implements OnInit {
 	...
 	public Map<String, Boolean> personStyles = new HashMap<>();
-	
-	public void ngOnInit() {
+
+	public void onInit() {
 		personStyles.put("background-color", isVip(person) ? "red" : "inherit");
 		...
 	}
@@ -290,7 +289,7 @@ public class PersonComponent implements OnInit {
 Or as an expression using the <a href="#built-in-functions">built-in</a> Map function:
 
 ```html
-<h1 [ngStyle]="Map('background-color', isVip(person) ? 'red' : 'inherit')"></h1>
+<h1 [ngStyle]="$map('background-color', isVip(person) ? 'red' : 'inherit')"></h1>
 ```
 
 ### @HostBinding
@@ -308,8 +307,8 @@ The attributes of a component's host element can be dynamically set using the `@
 public class PersonComponent implements OnInit {
 	@HostBinding("class.vip")
 	public boolean isVip;
-	
-	public void ngOnInit() {
+
+	public void onInit() {
 		isVip = calculateVipStatus(person);
 	}
 }
@@ -324,28 +323,28 @@ The `@HostBinding`'s value is one of the bindings mentioned above (without the b
 
 ## Lifecycle hooks
 
-Ngoy supports two lifecycle hooks. `OnInit` and `OnDestroy`:
+Ngoy supports these lifecycle hooks: `OnInit` and `OnDestroy`:
 ```java
 ...
 public class PersonComponent implements OnInit, OnDestroy {
-	
-	public void ngOnInit() {
+
+	public void onInit() {
 	}
 
-	public void ngOnDestroy() {
+	public void onDestroy() {
 	}
 }
 ```
 
-`ngOnInit()` is called in the rendering phase each time the component, resp. it's host element starts.
+`onInit()` is called in the rendering phase each time the component, resp. it's host element starts.
 
-Typically, a component computes field values in `ngOnInit()`, may using an injected service.
+Typically, a component computes field values in `onInit()`, may using an injected service.
 
 Note: A new component instance is created each time it is entered.
-Initialization can happen in the constructor as long as no injected dependecies are used. 
-At construction time, fields are not injected yet, but in `ngOnInit()`, they are.
+Initialization can happen in the constructor as long as no injected dependecies are used.
+At construction time, fields are not injected yet, but in `onInit()`, they are.
 
-`ngOnDestroy()` is called in the rendering phase each time the component, resp. it's host element ends.
+`onDestroy()` is called in the rendering phase each time the component, resp. it's host element ends.
 
 ## Component Interaction
 
@@ -371,7 +370,7 @@ The input parameter is passed to the `PersonComponent` instance with the use of 
 
 ```html
 <person [thePerson]="peter"></person>
-``` 
+```
 
 `[]` designates an expression. its value, `peter`, is assigned to the component's input `thePerson`.
 
@@ -395,7 +394,7 @@ The `@Input` annotation can also be specified on a 'setter':
 @Component(selector="person", ...)
 public class PersonComponent {
 	private Person _person;
-	
+
 	@Input("personas")
 	public void setThePerson(Person person) {
 		_person = person;
@@ -411,7 +410,7 @@ A component can specify inline `style`s or resources identified by `styleUrls`:
 
 ```java
 @Component(
-	selector = "person", 
+	selector = "person",
 	styleUrls = { "person.component.css" },
 	styles = { "h1 { font-weight: normal; }" })
 public class PersonComponent {
@@ -428,7 +427,7 @@ You can, however, opt-in to auto-prefixing:
 
 ```java
 Ngoy.app(AppComponent.class)
-	.prefixCss(true) // enable auto-prefixer 
+	.prefixCss(true) // enable auto-prefixer
 	.build();
 ```
 
@@ -444,7 +443,7 @@ would be translated to:
 
 ```css
 person h1 { font-weight: normal; }
-``` 
+```
 ## Attribute Directives
 
 Directives are annotated with the `@Directive` annotation:
@@ -460,7 +459,7 @@ public class HighlightDirective {
 }
 ```
 
-A directive is aka a 'component without a template'. All rules of a component apply also to a directive, except that the host element's content is not replaced by any template. So a directive serves merely to change the attributes of the host element with the use of `@HostBinding`s, or as a <a href="#compile-time-hook">compile-time hook</a>. 
+A directive is aka a 'component without a template'. All rules of a component apply also to a directive, except that the host element's content is not replaced by any template. So a directive serves merely to change the attributes of the host element with the use of `@HostBinding`s, or as a <a href="#compile-time-hook">compile-time hook</a>.
 
 ## Control Structures
 
@@ -474,7 +473,7 @@ Control structures allows you to alter a host element's subtree by adding, remov
 <h1>Person details <span *ngIf="isVip(person)">VIP!</span></h1>
 ```
 
-The value of the `*ngIf` attribute designates an expression. The element is rendered only when the expression evaluates to `true`. 
+The value of the `*ngIf` attribute designates an expression. The element is rendered only when the expression evaluates to `true`.
 
 You can optionally add an `else` clause:
 
@@ -511,7 +510,7 @@ A `[ngSwitch]` must have at least one `*ngSwitchCase`.
 ```html
 <div *ngFor="let person of persons">{{ '{{ person.name }}' }}</div>
 ```
-`persons` may be an instance of `Iterable`, `Stream` or array. `person` designates the current item of the iteration, 
+`persons` may be an instance of `Iterable`, `Stream` or array. `person` designates the current item of the iteration,
 which is available as a local variable inside the `<div>`.
 
 Several flavors are supported to bring Angular and Java developers together. The general syntax is:
@@ -527,11 +526,11 @@ let person : persons
 var person : persons
 ```
 
-ngoy's type inference algorithm should cover most cases. If the type cannot be determined, `java.lang.Object` is used. 
+ngoy's type inference algorithm should cover most cases. If the type cannot be determined, `java.lang.Object` is used.
 If this is insufficent, you can specify the item's type. The type must be full qualified if not in `java.lang`.
 ```html
 <div *ngFor="com.example.Person person of persons">{{'{{ person.name }}'}}</div>
-```   
+```
 
 Optionally, you can declare local aliases for the built-in iteration variables, delimited with `;`
 
@@ -582,7 +581,7 @@ will finally become:
 </html>
 ```
 
-A &lt;ng-content&gt; element may have a CSS `select` attribute. When this attribute is given, 
+A &lt;ng-content&gt; element may have a CSS `select` attribute. When this attribute is given,
 the first element inside the host element matching the selector will be projected:
 
 Given this template:
@@ -627,7 +626,7 @@ Using &lt;ng-container&gt;, you can often spare an element that would otherwise 
 
 Instead of:
 ```html
-<div *ngFor="let person of persons; index as i">    <!-- we don't need that div -->  
+<div *ngFor="let person of persons; index as i">    <!-- we don't need that div -->
 	<span>name: {{ '{{ person.name }}' }}</span>
 	<span>index: {{ '{{ i }}' }}</span>
 </div>
@@ -635,7 +634,7 @@ Instead of:
 
 You can write:
 ```html
-<ng-container *ngFor="let person of persons; index as i">    <!-- will disappear -->  
+<ng-container *ngFor="let person of persons; index as i">    <!-- will disappear -->
 	<span>name: {{ '{{ person.name }}' }}</span>
 	<span>index: {{ '{{ i }}' }}</span>
 </ng-container>
@@ -660,16 +659,60 @@ A component/directive may implement the `OnCompile` interface:
 ```java
 @Component(...)
 public class PersonComponent implements OnCompile {
-	public void ngOnCompile(Jerry el, String componentClass) {
-		// changes to the DOM element 'el', it's attributes 
+	public void onCompile(Jerry el, String componentClass) {
+		// changes to the DOM element 'el', it's attributes
 		// and content will be picked up by the compiler
 	}
 }
 ```
 
-`ngOnCompile()` is called only *once* in the compile phase and not in the rendering phase.
+`onCompile()` is called only *once* in the compile phase and not in the rendering phase.
 
-See the [MarkdownComponent](https://github.com/krizzdewizz/ngoy-modules/blob/master/ngoy-module-markdown/src/main/java/ngoy/markdown/component/MarkdownComponent.java) for an example. It appends the HTML converted from CommonMark. You can write markdown inside the component or reference a `.md` resource.  
+See the [MarkdownComponent](https://github.com/krizzdewizz/ngoy-modules/blob/master/ngoy-module-markdown/src/main/java/ngoy/markdown/component/MarkdownComponent.java) for an example. It appends the HTML converted from CommonMark. You can write markdown inside the component or reference a `.md` resource.
+
+## Custom rendering
+
+A component may implement the `OnRender` interface to render any content. Such a component does not need a template. Rendering can be done in code only:
+
+```java
+@Component(selector = "person") // no template
+public class PersonComponent implements OnRender {
+	public void onRender(Output output) {
+		output.write("Person works!");
+	}
+}
+```
+
+Some prefer to have the logic/view separated, some prefer to have it all in code. ngoy has you both covered.
+
+For code only components, we heavily suggest our other product `hyperml`, which is integrated in ngoy. Like ngoy, it provides fast, near zero-copy rendering. Please visit the [hyperml site](https://github.com/krizzdewizz/hyperml) for documentation.
+
+Make your component a subclass of `HtmlComponent` and write the `hyperml` markup in the overridden `content()` method:
+
+```java
+@Component(selector = "person")
+public class PersonComponent extends HtmlComponent {
+
+	protected void content() {
+		div(classs, "title");
+		{
+			h1("Person works!", $);
+		}
+		$(); // div
+	}
+
+	// optionally render styles - corresponds to styles/styleUrls
+	protected void styles() {
+		css(".title", color, "red");
+		css("body");
+		{
+			$(height, "100%");
+			$(backgroundColor, "blue");
+		}
+		$();
+	}
+}
+```
 
 ## Pipes
 
@@ -810,10 +853,10 @@ public class AppComponent {
 }
 ```
 
-Without the `NgModule` annotation, the `PersonComponent` would be unknown to ngoy and the `<person>` element would not match any selector and it would just stay there as it is. 
+Without the `NgModule` annotation, the `PersonComponent` would be unknown to ngoy and the `<person>` element would not match any selector and it would just stay there as it is.
 
-A class annotated with `NgModule` serves as a container for declarations and providers. A logical unit to group a feature together. 
-May a component needs a provider or other components to work correctly. So you would group them into a module, so that clients of your component can import just the module instead of all parts separately. And you could add more stuff to the module afterwards without breaking the clients. 
+A class annotated with `NgModule` serves as a container for declarations and providers. A logical unit to group a feature together.
+May a component needs a provider or other components to work correctly. So you would group them into a module, so that clients of your component can import just the module instead of all parts separately. And you could add more stuff to the module afterwards without breaking the clients.
 
  A `NgModule` has three attributes:
 
@@ -827,7 +870,7 @@ A runtime exception is thrown whenever more than one component matches an elemen
 
 A provider can also be specified on a `@Component` to spare a `NgModule`:
 ```java
-@Component(selector = "person", providers = { PersonService.class }) 
+@Component(selector = "person", providers = { PersonService.class })
 public class PersonComponent {
 }
 ```
@@ -840,7 +883,7 @@ A `@Component` can also be a `@NgModule`.
 
 A dynamic module's declarations/providers are computed at runtime instead of 'declaration time' with annotations.
 
-See [ModuleWithProviders.java](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/core/ModuleWithProviders.java) and 
+See [ModuleWithProviders.java](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/core/ModuleWithProviders.java) and
 [RouterModule.java](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/main/java/ngoy/router/RouterModule.java) for an example usage.
 
 ## Package Modules
@@ -848,12 +891,12 @@ See [ModuleWithProviders.java](https://github.com/krizzdewizz/ngoy/blob/master/n
 It can be tedious to add every single thing to a module. And in an isolated app, there's no risk that there would be collisions.
 
 In addition to organize declarations with modules, ngoy can scan the class path for them:
-  
+
 ```java
 ngoy.app(AppComponent.class)
 
 	// load all declarations/providers inside org.myapp package
-	.modules("org.myapp")                     
+	.modules("org.myapp")
 
 	// load all declarations/providers inside the app's package
 	.modules(AppComponent.class.getPackage())
@@ -874,16 +917,130 @@ public class PersonService {
 
 ## Built-in Modules
 
-The following modules are contained in the ngoy binaries. 
+The following modules are contained in the ngoy binaries.
 See the module's documentation below on how they must be imported into your app.
 
 ### Router
 
-Basic routing functionality can be found in the `RouterModule`. See the [router](https://github.com/krizzdewizz/ngoy-examples/tree/master/src/main/java/ngoyexamples/routing) example in the [ngoy-examples](https://github.com/krizzdewizz/ngoy-examples) collection.
+A 'traditional' server-side web setup is page oriented. A page's url, such as /index.jsp, is bound to a template engine which renders the page's content. When your site will get more pages, you start extracting out common parts to separate 'fragments' and #include them in the different pages.
+
+You could do that with ngoy as well, but ngoy favors the 'single page application' design pattern.
+
+All your site/app's urls are served by this single page. A `Router` maps from a url/path to a component, which is rendered inside that single page when the user navigates to that url.
+
+We'll use the code of this website as an example to configure the router. See [Main.java](https://github.com/krizzdewizz/ngoy-website/blob/master/src/main/java/ngoyweb/app/Main.java).
+
+This website has 4 urls: `/index`, `/get-started`, `/doc` and `/motivation`
+
+In order to serve all these, add a `/*` mapping to the `@Controller`:
+
+```java
+@Controller
+@RequestMapping("/*")
+public class Main implements InitializingBean {
+	...
+}
+```
+
+Configure the router using a `RouterConfig`:
+
+```java
+RouterConfig routerConfig = RouterConfig
+	.baseHref("/")
+	.location(useValue(Location.class, () -> request.getRequestURI()))
+	.route("index", HomeComponent.class)
+	.route("get-started", GetStartedComponent.class)
+	.route("doc", DocComponent.class)
+	.route("motivation", MotivationComponent.class)
+	.build();
+```
+
+`baseHref()` should be given the same path prefix as in `@RequestMapping()` above. So if your app serves `/example/*`, the `baseHref()` would be `/example`.
+
+`location()` specifies a `Location` provider, which uses the current `request.getRequestURI()` value for the location path.
+
+`route()` takes a path for the first parameter and a component to render when `Location` points to that path.
+
+`build()` finally builds the router config to be passed to the router module:
+
+```java
+Ngoy<AppComponent> ngoy = Ngoy.app(AppComponent.class)
+
+	// add router module
+	.modules(RouterModule.forRoot(routerConfig))
+
+	...
+	.build();
+```
+
+Inside the app's template, add a `<router-outlet>` element to the place where you want the components to be rendered:
+
+```html
+<!-- Page Content -->
+<div class="container app-container">
+	<div class="row">
+		<div class="col">
+			<!-- HomeComponent, GetStartedComponent etc will be rendered here -->
+			<router-outlet></router-outlet>
+		</div>
+	</div>
+</div>
+```
+
+Note: In Angular, the component is rendered as a sibling to the `<router-outlet>` element. In ngoy, the `<router-outlet>` element is not rendered.
+
+So if the user navigates to `/get-started`, the `GetStartedComponent` is rendered where `<router-outlet>` is etc.
+
+One route path segment, and only one, can be parametrized:
+
+```java
+.route("person/detail/:id", PersonDetailComponent.class)
+```
+
+The actual parameter `id` can be retrived by injecting the `RouteParams` object:
+
+```java
+@Component(...)
+public class PersonDetailComponent implements OnInit {
+	@Inject
+	public RouteParams routeParams;
+
+	@Override
+	public void onInit() {
+		String id = routeParams.get("id");
+
+		// load person with id
+	}
+}
+```
+
+So when the user navigates to `/person/detail/27`, the route parameter `id` would be `27`.
+
+The `RouteParams` object is valid only during the rendering phase and is cleared afterwards.
+
+The routing possibilities are very basic at the moment. You can provide your own sophisticated routing by a `ActiveRouteProvider`:
+
+```java
+public interface ActiveRouteProvider {
+	/**
+	 * Returns the active route based on the path returned by
+	 * {@link Location#getPath()}.
+	 *
+	 * @param path Path
+	 * @return active route or null if none
+	 */
+	@Nullable
+	ActiveRoute getActiveRoute(String path);
+}
+```
+
+So you could handle query parameters, maybe sub routing etc. Contributions are welcome!
+
+For more information see also [Static site](#static-site).
 
 ### Translate
 
-Using the `TranslateModule`, you can easily translate text in your templates using the standard Java way with message bundles. 
+Using the `TranslateModule`, you can easily translate text in your templates using the standard Java way with message bundles.
 
 The easiest way to include translation support is to build the ngoy instance with a call to `translateBundle()`:
 
@@ -956,11 +1113,11 @@ You can inject `TranslateService` anywhere for translations in code:
 ```java
 @Component(...)
 public class PersonComponent implements OnInit {
-	
+
 	@Inject
 	public TranslateService translateService;
-	
-	public void ngOnInit() {
+
+	public void onInit() {
 		String greeting = translateService.translate("MSG_GREET_WITH_PARAM", "world");
 		...
 	}
@@ -987,7 +1144,7 @@ public class PersonService {
 public class WeatherService {
 }
 
-@Component(selector = "person", providers = { PersonService.class, WeatherService.class }) 
+@Component(selector = "person", providers = { PersonService.class, WeatherService.class })
 public class PersonComponent implements OnInit {
 
 	// constructor injection
@@ -998,8 +1155,8 @@ public class PersonComponent implements OnInit {
 	// field injection
 	@Inject
 	public PersonService personService;
-	
-	public void ngOnInit() {
+
+	public void onInit() {
 		// do things with personService
 	}
 }
@@ -1018,7 +1175,7 @@ There are 3 kinds of providers:
 
 ## Providers at Runtime
 
-Providers can be specified at runtime, especially the `useValue` variant, which is used to inject external dependencies into ngoy.  
+Providers can be specified at runtime, especially the `useValue` variant, which is used to inject external dependencies into ngoy.
 
 ```java
 
@@ -1057,8 +1214,8 @@ public class Main implements InitializingBean {
 ```
 # Unit Testing
 
-Unit testing your components, directives, pipes etc. is a piece of cake. ngoy can render any component, not just the 'app'. 
-You can provide mock services or quickly have a container that uses your component. 
+Unit testing your components, directives, pipes etc. is a piece of cake. ngoy can render any component, not just the 'app'.
+You can provide mock services or quickly have a container that uses your component.
 
 See [`ANgoyTest.java`](https://github.com/krizzdewizz/ngoy/blob/master/ngoy/src/test/java/ngoy/ANgoyTest.java) to get started or any of the other [~290 tests](https://github.com/krizzdewizz/ngoy/tree/master/ngoy/src/test/java/ngoy).
 
@@ -1067,12 +1224,12 @@ Example:
 public class ContainerTest extends ANgoyTest {
 
 	@Component(
-		selector = "test", 
+		selector = "test",
 		template = "a<ng-container *ngFor=\"let s of strings\">{{'{{s}}'}}</ng-container>b")
 	public static class CmpRepeated {
 		public String[] strings = new String[] { "w", "x", "q" };
 	}
-	
+
 	@Test
 	public void testRepeated() {
 		assertThat(render(CmpRepeated.class)).isEqualTo("awxqb");
@@ -1080,13 +1237,57 @@ public class ContainerTest extends ANgoyTest {
 }
 ```
 
+# Applications
+
+ngoy is a standalone library with no dependencies to any web server/framework. All it needs is an Writer/OutputStream to write the contents to.
+
+You can simply render it to `System.out` in the `main` method:
+
+```java
+public static void main(String[] args) {
+	Ngoy.app(AppComponent.class)
+		.build()
+		.render(System.out);
+}
+```
+
+## Web
+
+When rendering HTML, it's practical to spin off a web server to view the contents in the browser. See the [Getting started](get-started) guide for an example. May the app stays/is designed for a web app or, after successful testing, you can render it to a static site (see below).
+
+ngoy is designed to 'build once, render many times'. So there should be a single instance of your ngoy app serving all the clients.
+
+If you need session state, separate it from any other and provide it with `Provider#useValue()`. A complete example is available in the [ngoy-e2e-test](https://github.com/krizzdewizz/ngoy-e2e-test) project.
+
+## Static site
+
+Using the `renderSite()` method, you can render the app to a folder on your computer:
+
+```java
+public static void main(String[] args) {
+	Ngoy.app(AppComponent.class)
+		.build()
+		.renderSite(Paths.get("docs"));
+}
+```
+
+If your site consists of only one component, an `index.html` file is written.
+
+If your app contains a `Router`, a file for every configured route is written. You can render individual/parametrized routes:
+
+```java
+.renderSite(Paths.get("docs"), "/index", "/person/detail/23", "/person/detail/56");
+```
+
+See also [this file](https://github.com/krizzdewizz/blog/blob/master/src/main/java/blog/app/Main.java) for an example.
+
 # CLI
 
 ngoy has a built in CLI with which you can
 - render templates and expressions from the command line
-- quickly generate source code artifacts for new projects, components, pipes etc. 
+- quickly generate source code artifacts for new projects, components, pipes etc.
 
-The CLI main class is `ngoy.Ngoy`. When you started with [ngoy-starter-web](https://github.com/krizzdewizz/ngoy-starter-web), 
+The CLI main class is `ngoy.Ngoy`. When you started with [ngoy-starter-web](https://github.com/krizzdewizz/ngoy-starter-web),
 the ngoy binaries and a shell script `ngoy` are ready to use:
 
 ```
@@ -1155,7 +1356,7 @@ generating artifact './src/main/java/ngoygen/person/person.component.html'...
 generating artifact './src/main/java/ngoygen/person/person.component.css'...
 ```
 
-Note: the element, resp. the `selector` of `PersonComponent` is prefixed with `app`. It's common practice to have a prefix in order to 
+Note: the element, resp. the `selector` of `PersonComponent` is prefixed with `app`. It's common practice to have a prefix in order to
 avoid collisions with existing HTML elements or components from other libraries.
 
 You can override the prefix. Create a `ngoy.properties` file and add this property:
@@ -1180,22 +1381,9 @@ Except for the `java` package, all other static calls are prohibited. So inside 
 <div *ngFor="let nbr of java.util.Arrays.asList(1, 2, 3)">{{'{{nbr}}'}}</div>
 ```
 
-### Built-in Functions
-
-These built-in functions are available:
-
-```java
-// returns the array as a List
-<T> java.util.List<T> List(T...items)
-
-// returns the key-value pair's array as a Map
-// example: Map('key1', value1, 'key2', value2)
-<K, V> Map<K, V> Map(Object... pairs)
-```
-
-The above example can be written as:
+The above example can also be written using the `list` pipe:
 ```html
-<div *ngFor="let nbr of List(1, 2, 3)">{{'{{nbr}}'}}</div>
+<div *ngFor="let nbr of $list(1, 2, 3)">{{'{{nbr}}'}}</div>
 ```
 
 ### Lambdas
@@ -1208,16 +1396,16 @@ Lambdas can be used in template expressions. Method references are not supported
 
 Note: Template expressions should be kept simple and basically free from business logic. Complex logic should reside in the component class.
 
-Static interface methods like `java.util.stream.Stream#of` are currently not supported in Java 11. 
+Static interface methods like `java.util.stream.Stream#of` are currently not supported in Java 11.
 
 ## Prohibited Syntax
 
 These Java syntax elements are prohibited and will lead to a compile error:
 
 - assignments such as `name = 'x'`
-- increment/decrement such as `x++`, `--i`, `x += 1` 
+- increment/decrement such as `x++`, `--i`, `x += 1`
 - `this` reference
-- Anonymous class 
+- Anonymous class
 
 **For Angular users, here are some notable differences to the Angular syntax:**
 
@@ -1225,7 +1413,7 @@ Truthy/falsy values do not exist. Expressions like this won't work:
 
 ```html
 <!-- runtime error: person is not a boolean -->
-<h1 *ngIf="person">{{ '{{ person.name }}' }}</h1> 
+<h1 *ngIf="person">{{ '{{ person.name }}' }}</h1>
 
 <!-- runtime error: length is not a boolean -->
 <h1 *ngIf="persons.length"></h1>
@@ -1303,7 +1491,7 @@ personMap['Peter']  // -> personMap.get("Peter")
 A pipe is transformed to a function prefixed with `$`.
 
 ```java
-person.birthdate | date:'dd.MM.yyyy' // -> $date(person.birthdate, 'dd.MM.yyyy') 
+person.birthdate | date:'dd.MM.yyyy' // -> $date(person.birthdate, 'dd.MM.yyyy')
 ```
 
 # Javadoc
