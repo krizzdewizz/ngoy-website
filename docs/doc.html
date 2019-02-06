@@ -527,6 +527,32 @@ public class PersonComponent extends HtmlComponent {
 	}
 }
 </code></pre>
+<p>You can render components. Attributes, as usual, are used to pass inputs to the component.</p>
+<pre><code class="language-java">div();
+{
+	$(&quot;person&quot;, &quot;thePerson&quot;, new Person(&quot;peter&quot;), $);
+
+	// or using the component's class instead of it's selector
+	$(PersonComponent.class, &quot;thePerson&quot;, new Person(&quot;paul&quot;), $);
+
+	// instead of untyped input initialization using attributes, you can pass an init function:
+	$(PersonComponent.class, personCmp -&gt; personCmp.thePerson = new Person(&quot;mary&quot;), $);
+
+	// the selector variant needs a type parameter or a cast inside the lambda
+	this.&lt;PersonComponent&gt;$(&quot;person&quot;, personCmp -&gt; personCmp.thePerson = new Person(&quot;gandalf&quot;), $);
+}
+$(); // div
+
+/*
+&lt;div&gt;
+  &lt;person&gt;hello: peter&lt;/person&gt;
+  &lt;person&gt;hello: paul&lt;/person&gt;
+  &lt;person&gt;hello: mary&lt;/person&gt;
+  &lt;person&gt;hello: gandalf&lt;/person&gt;
+&lt;/div&gt;
+*/
+</code></pre>
+<p>This allows you to freely mix template- and code-only components.</p>
 <h2 id="pipes">Pipes</h2>
 <p>A pipe takes data as input and transforms it to a desired output. You can pipe the result of an expression to the desired pipe:</p>
 <pre><code class="language-html">&lt;h1&gt;hello:  {{ person.name | uppercase }}&lt;/h1&gt;
@@ -907,6 +933,25 @@ You can provide mock services or quickly have a container that uses your compone
 	}
 }
 </code></pre>
+<h1 id="debugging">Debugging</h1>
+<p>The most common source of errors are probably the Java expressions inside the template. Developers are used to have smart editors that indicate syntax errors, unresolved/misspelled fields etc. Currently there is no such thing for ngoy templates.</p>
+<p>ngoy tries hard to give you precise information about an error inside your template.</p>
+<p>There are two type of errors:</p>
+<ul>
+<li>Compile errors are thrown as part of the template -&gt; Java -&gt; byte code process when there is a syntax error, unresolved field etc.</li>
+</ul>
+<p>Example of a compile error:</p>
+<pre><code>ngoy.core.CompileException: Compile error in expression &quot;persn.getName()&quot;: &quot;persn&quot; is neither a method, a field, nor a member class of &quot;ngoy.demo.PersonComponent&quot;
+source: templateUrl: person.component.html, position: [7:3 @256]
+</code></pre>
+<ul>
+<li>Runtime errors are thrown when an exception occurs during the evaluation of the expression, such as <code>NullPointerException</code>.</li>
+</ul>
+<p>Example of a runtime error:</p>
+<pre><code>ngoy.core.NgoyException: Runtime error in expression &quot;person.getName()&quot;: java.lang.NullPointerException
+source: templateUrl: person.component.html, position: [7:3 @256]
+</code></pre>
+<p>Both errors give you the errorneous expression, the template url/component and line information.</p>
 <h1 id="applications">Applications</h1>
 <p>ngoy is a standalone library with no dependencies to any web server/framework. All it needs is an Writer/OutputStream to write the contents to.</p>
 <p>You can simply render it to <code>System.out</code> in the <code>main</code> method:</p>
@@ -1086,7 +1131,7 @@ personMap['Peter']  // -&gt; personMap.get(&quot;Peter&quot;)
 </code></pre>
 <h1 id="javadoc">Javadoc</h1>
 <p>Javadoc can be found <a href="javadoc/index.html">here</a>.</p>
-<ngoy-markdown-toc class="d-none d-md-block"><a href="#running-ngoy" style="margin-left:20px">Running ngoy</a><a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component Interaction</a><a href="#component-styles" style="margin-left:40px">Component Styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute Directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time Hook</a><a href="#custom-rendering" style="margin-left:40px">Custom rendering</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#plain-text-templates" style="margin-left:40px">Plain Text Templates</a><a href="#xml-templates" style="margin-left:40px">XML Templates</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#built-in-modules" style="margin-left:40px">Built-in Modules</a><a href="#router" style="margin-left:60px">Router</a><a href="#translate" style="margin-left:60px">Translate</a><a href="#additional-modules" style="margin-left:40px">Additional Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at Runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#unit-testing" style="margin-left:20px">Unit Testing</a><a href="#applications" style="margin-left:20px">Applications</a><a href="#web" style="margin-left:40px">Web</a><a href="#static-site" style="margin-left:40px">Static site</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#java-expressions" style="margin-left:20px">Java Expressions</a><a href="#access-fields-call-methods" style="margin-left:40px">Access fields, call methods</a><a href="#java-extensions" style="margin-left:40px">Java Extensions</a><a href="#javadoc" style="margin-left:20px">Javadoc</a></ngoy-markdown-toc></ngoy-markdown></doc>
+<ngoy-markdown-toc class="d-none d-md-block"><a href="#running-ngoy" style="margin-left:20px">Running ngoy</a><a href="#components--templates" style="margin-left:20px">Components &amp; Templates</a><a href="#template-syntax--data-binding" style="margin-left:40px">Template Syntax &amp; Data Binding</a><a href="#lifecycle-hooks" style="margin-left:40px">Lifecycle hooks</a><a href="#component-interaction" style="margin-left:40px">Component Interaction</a><a href="#component-styles" style="margin-left:40px">Component Styles</a><a href="#auto-prefixer" style="margin-left:60px">Auto Prefixer</a><a href="#attribute-directives" style="margin-left:40px">Attribute Directives</a><a href="#control-structures" style="margin-left:40px">Control Structures</a><a href="#ng-content" style="margin-left:40px">&lt;ng-content&gt;</a><a href="#ng-container" style="margin-left:40px">&lt;ng-container&gt;</a><a href="#compile-time-hook" style="margin-left:40px">Compile-time Hook</a><a href="#custom-rendering" style="margin-left:40px">Custom rendering</a><a href="#pipes" style="margin-left:40px">Pipes</a><a href="#plain-text-templates" style="margin-left:40px">Plain Text Templates</a><a href="#xml-templates" style="margin-left:40px">XML Templates</a><a href="#modules" style="margin-left:20px">Modules</a><a href="#dynamic-modules" style="margin-left:40px">Dynamic Modules</a><a href="#package-modules" style="margin-left:40px">Package Modules</a><a href="#built-in-modules" style="margin-left:40px">Built-in Modules</a><a href="#router" style="margin-left:60px">Router</a><a href="#translate" style="margin-left:60px">Translate</a><a href="#additional-modules" style="margin-left:40px">Additional Modules</a><a href="#dependency-injection" style="margin-left:20px">Dependency Injection</a><a href="#providers-at-runtime" style="margin-left:40px">Providers at Runtime</a><a href="#external-di-systems" style="margin-left:40px">External DI Systems</a><a href="#unit-testing" style="margin-left:20px">Unit Testing</a><a href="#debugging" style="margin-left:20px">Debugging</a><a href="#applications" style="margin-left:20px">Applications</a><a href="#web" style="margin-left:40px">Web</a><a href="#static-site" style="margin-left:40px">Static site</a><a href="#cli" style="margin-left:20px">CLI</a><a href="#generate-source-artifactes" style="margin-left:40px">Generate Source Artifactes</a><a href="#java-expressions" style="margin-left:20px">Java Expressions</a><a href="#access-fields-call-methods" style="margin-left:40px">Access fields, call methods</a><a href="#java-extensions" style="margin-left:40px">Java Extensions</a><a href="#javadoc" style="margin-left:20px">Javadoc</a></ngoy-markdown-toc></ngoy-markdown></doc>
 			</div>
 		</div>
 	</div>

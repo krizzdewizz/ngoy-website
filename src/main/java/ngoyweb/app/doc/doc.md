@@ -714,6 +714,36 @@ public class PersonComponent extends HtmlComponent {
 }
 ```
 
+You can render components. Attributes, as usual, are used to pass inputs to the component.
+
+```java
+div();
+{
+	$("person", "thePerson", new Person("peter"), $);
+
+	// or using the component's class instead of it's selector
+	$(PersonComponent.class, "thePerson", new Person("paul"), $);
+
+	// instead of untyped input initialization using attributes, you can pass an init function:
+	$(PersonComponent.class, personCmp -> personCmp.thePerson = new Person("mary"), $);
+
+	// the selector variant needs a type parameter or a cast inside the lambda
+	this.<PersonComponent>$("person", personCmp -> personCmp.thePerson = new Person("gandalf"), $);
+}
+$(); // div
+
+/*
+<div>
+  <person>hello: peter</person>
+  <person>hello: paul</person>
+  <person>hello: mary</person>
+  <person>hello: gandalf</person>
+</div>
+*/
+```
+
+This allows you to freely mix template- and code-only components.
+
 ## Pipes
 
 A pipe takes data as input and transforms it to a desired output. You can pipe the result of an expression to the desired pipe:
@@ -1212,6 +1242,7 @@ public class Main implements InitializingBean {
 	}
 }
 ```
+
 # Unit Testing
 
 Unit testing your components, directives, pipes etc. is a piece of cake. ngoy can render any component, not just the 'app'.
@@ -1236,6 +1267,32 @@ public class ContainerTest extends ANgoyTest {
 	}
 }
 ```
+
+# Debugging
+
+The most common source of errors are probably the Java expressions inside the template. Developers are used to have smart editors that indicate syntax errors, unresolved/misspelled fields etc. Currently there is no such thing for ngoy templates.
+
+ngoy tries hard to give you precise information about an error inside your template.
+
+There are two type of errors:
+
+- Compile errors are thrown as part of the template -> Java -> byte code process when there is a syntax error, unresolved field etc.
+
+Example of a compile error:
+```
+ngoy.core.CompileException: Compile error in expression "persn.getName()": "persn" is neither a method, a field, nor a member class of "ngoy.demo.PersonComponent"
+source: templateUrl: person.component.html, position: [7:3 @256]
+```
+
+- Runtime errors are thrown when an exception occurs during the evaluation of the expression, such as `NullPointerException`.
+
+Example of a runtime error:
+```
+ngoy.core.NgoyException: Runtime error in expression "person.getName()": java.lang.NullPointerException
+source: templateUrl: person.component.html, position: [7:3 @256]
+```
+
+Both errors give you the errorneous expression, the template url/component and line information.
 
 # Applications
 
