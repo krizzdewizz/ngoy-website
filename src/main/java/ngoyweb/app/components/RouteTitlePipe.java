@@ -7,20 +7,20 @@ import ngoy.router.Route;
 @Pipe("routeTitle")
 public class RouteTitlePipe implements PipeTransform {
 
-	@Override
-	public Object transform(Object obj, Object... args) {
-		Route route = (Route) obj;
-		switch (route.getPath()) {
-		case "index":
-			return "Home";
-		case "motivation":
-			return "Motivation";
-		case "get-started":
-			return "Getting started";
-		case "doc":
-			return "Docs";
-		default:
-			return route.getPath();
-		}
-	}
+    @Override
+    public Object transform(Object obj, Object... args) {
+        Route route = (Route) obj;
+        switch (route.getPath()) {
+            case "index":
+                return "Home";
+            case "motivation":
+                return "Motivation";
+            case "get-started":
+                return "Getting started";
+            case "doc":
+                return "Docs";
+            default:
+                return route.getPath();
+        }
+    }
 }

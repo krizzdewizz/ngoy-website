@@ -1,24 +1,25 @@
 <p>ngoy is a standalone library with no dependencies to any web
-	server/framework. All it needs is an OutputStream to write the contents
-	to.
+    server/framework. All it needs is an OutputStream to write the contents
+    to.
 <p>
-	Since we are going to produce HTML, it is best to spin off a web server
-	and view the HTML contents in the browser. We are going to use a
-	Gradle/Spring Boot application for that purpose. So for this guide you
-	must have <a href="https://gradle.org">gradle</a> installed.
+    Since we are going to produce HTML, it is best to spin off a web server
+    and view the HTML contents in the browser. We are going to use a
+    Gradle/Spring Boot application for that purpose. So for this guide you
+    must have <a href="https://gradle.org">gradle</a> installed.
 <p>
-	The <a href="https://github.com/krizzdewizz/ngoy-starter-web">ngoy-starter-web</a>
-	repository is a good place to start. Let's clone it:
+    The <a href="https://github.com/krizzdewizz/ngoy-starter-web">ngoy-starter-web</a>
+    repository is a good place to start. Let's clone it:
 <pre>git clone https://github.com/krizzdewizz/ngoy-starter-web {{forApp}}</pre>
 <pre>cd {{ forApp == null ? 'ngoy-starter-web' : forApp }}</pre>
 <ng-template [ngIf]="forApp != null">
-<p>
-	In
-	<code>settings.gradle</code>
-	, change the project name to
-	<code>tour-of-heroes</code>
-	:
-<pre>rootProject.name = 'tour-of-heros'</pre> </ng-template>
+    <p>
+        In
+        <code>settings.gradle</code>
+        , change the project name to
+        <code>tour-of-heroes</code>
+        :
+    <pre>rootProject.name = 'tour-of-heros'</pre>
+</ng-template>
 
 <p>Run the web server:
 <pre>gradle run</pre>

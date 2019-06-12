@@ -1,109 +1,113 @@
 :root {
-	--primary1: #f8d3f1;
-	--primary2: #f4bde9;
-	--primary3: #f1a7e2;
-	--primary4: #ed91db;
-	--primary5: #ea7bd4;
-	--primary6: #e665cc;
-	--primary7: #e250c5;
-	--primary8: #df3abe;
-	--primary9: #db24b7;
-	--primary10: #c520a4;
-	--primary11: #af1d92;
-	--primary12: #ad1c91;
-	--primary13: #9a1980;
-	--primary14: #84156e;
-	--primary15: #6e125b;
-	--primary16: #580e49;
-	--primary17: #420b37;
-	--primary18: #2c0725;
-	--primary19: #160412;
+    --primary1: #f8d3f1;
+    --primary2: #f4bde9;
+    --primary3: #f1a7e2;
+    --primary4: #ed91db;
+    --primary5: #ea7bd4;
+    --primary6: #e665cc;
+    --primary7: #e250c5;
+    --primary8: #df3abe;
+    --primary9: #db24b7;
+    --primary10: #c520a4;
+    --primary11: #af1d92;
+    --primary12: #ad1c91;
+    --primary13: #9a1980;
+    --primary14: #84156e;
+    --primary15: #6e125b;
+    --primary16: #580e49;
+    --primary17: #420b37;
+    --primary18: #2c0725;
+    --primary19: #160412;
 }
 
 .bg-dark {
-	background-color: var(--primary17) !important;
+    background-color: var(--primary17) !important;
 }
 
 body {
-	width: 100%;
-	margin: 0;
-	margin-bottom: 50px;
+    width: 100%;
+    margin: 0;
+    margin-bottom: 50px;
 }
 
 .ngoy-title {
-	font-weight: normal;
+    font-weight: normal;
 }
 
 body {
-	letter-spacing: 0.03rem;
+    letter-spacing: 0.03rem;
 }
 
 p {
-	padding-top: 0.5rem;
+    padding-top: 0.5rem;
 }
 
 
 ul {
-	list-style-position: inside;
+    list-style-position: inside;
 }
 
 pre {
-	text-align: left;
-	padding: 1rem;
-	background-color: #f6f8fa;
-	border-radius: 4px;
-	tab-size: 4;
+    text-align: left;
+    padding: 1rem;
+    background-color: #f6f8fa;
+    border-radius: 4px;
+    tab-size: 4;
 }
 
 h3 {
-	font-size: 1.3rem;
+    font-size: 1.3rem;
 }
 
 .navbar {
-	position: fixed;
-	width: 100%;
-	z-index: 1;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
 }
 
 .app-container {
-	padding-top: 2rem;
+    padding-top: 2rem;
 }
 
 @keyframes rotate-clockwise {
-  100% {transform: rotate(360deg);}
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes rotate-counter-clockwise {
-  100% {transform: rotate(-360deg);}
+    100% {
+        transform: rotate(-360deg);
+    }
 }
 
 .logo-spacer {
-	display: block;
-	height: 1rem;
+    display: block;
+    height: 1rem;
 }
 
 .logo {
-	background-image: url("images/logo.png");
-	height: 128px;
+    background-image: url("images/logo.png");
+    height: 128px;
     width: 128px;
     display: block;
- 	margin-left: auto;
+    margin-left: auto;
     margin-right: auto;
-	animation-duration: 40s;
-	animation-iteration-count: infinite;
-	animation-timing-function: linear;
-	animation-play-state: paused;
-	opacity: 0.8;
+    animation-duration: 40s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-play-state: paused;
+    opacity: 0.8;
 }
 
 .logo1 {
-	animation-name: rotate-clockwise;
+    animation-name: rotate-clockwise;
 }
 
 .logo2 {
-	background-image: url("images/logo-beam.png");
-	animation-name: rotate-counter-clockwise;
-	position: relative;
+    background-image: url("images/logo-beam.png");
+    animation-name: rotate-counter-clockwise;
+    position: relative;
     top: -128px;
     pointer-events: none;
     animation-duration: 25s;
@@ -111,52 +115,52 @@ h3 {
 }
 
 .logo1:hover {
-	animation-play-state: running;
+    animation-play-state: running;
 }
 
 .logo1:hover ~ .logo2 {
-	animation-play-state: running;
+    animation-play-state: running;
 }
 
 code {
-	color: var(--primary14);
+    color: var(--primary14);
 }
 
 .hljs {
-	background-color: inherit;
-	padding: 0;
+    background-color: inherit;
+    padding: 0;
 }
 
 .hljs-meta {
-	font-weight: normal;
+    font-weight: normal;
 }
 
 .hljs-string {
-	color: var(--primary11);
+    color: var(--primary11);
 }
 
 .nowrap {
-	white-space: nowrap;
+    white-space: nowrap;
 }
 
 a {
-	color: var(--primary10);
+    color: var(--primary10);
 }
 
 a:hover {
-	color: var(--primary8);
+    color: var(--primary8);
 }
 
 @media (min-width: 768px) {
-  doc, get-started {
-	margin-right: 250px;
-  }
+    doc, get-started {
+        margin-right: 250px;
+    }
 }
 
 @media (min-width: 992px) {
-	doc, get-started {
-		margin-right: 200px;
-	}
+    doc, get-started {
+        margin-right: 200px;
+    }
 }
 
 ngoy-markdown-toc {
@@ -174,14 +178,14 @@ ngoy-markdown-toc {
 ngoy-markdown-toc a {
     display: block;
     white-space: nowrap;
-	color: #99979c;
+    color: #99979c;
 }
 
 ngoy-markdown[toc] *[id]::before {
-  content: "";
-  display: block;
-  height: 70px;
-  margin: -70px 0 0;
+    content: "";
+    display: block;
+    height: 70px;
+    margin: -70px 0 0;
 }
 
 
