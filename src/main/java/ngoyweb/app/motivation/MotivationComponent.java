@@ -4,5 +4,4 @@ import ngoy.core.Component;
 
 @Component(selector = "motivation", templateUrl = "motivation.component.html")
 public class MotivationComponent {
-
 }

@@ -36,12 +36,12 @@ public class Main implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         createApp();
     }
 
     private void createApp() {
-        RouterConfig routerConfig = RouterConfig //
+        RouterConfig routerConfig = RouterConfig
                 .baseHref("/")
                 .location(useValue(Location.class, () -> request.getRequestURI()))
                 .route("index", HomeComponent.class)
